@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/changelog.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Changelog</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+  <style>
+    .cl-ver { font-size:1.35rem;font-weight:800;color:#38bdf8;margin-top:36px; }
+    .cl-item { padding:8px 0 8px 18px;border-left:3px solid #27272a;margin-left:4px; }
+    html.needs-light .cl-item, body.light-mode .cl-item { border-left-color:#e5e7eb; }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="statut.html" class="subpage-back">← Statut</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang()" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <article class="doc-page">
+    <h1>Changelog produit</h1>
+    <p class="doc-lead">Historique public des évolutions majeures. Les correctifs mineurs et le détail technique peuvent être communiqués aux Clients Entreprise sur demande.</p>
+
+    <div class="cl-ver">2026 — Q1</div>
+    <div class="cl-item"><strong>Pack Entreprise</strong> — Pages conformité (CGV B2B, DPA, sous-traitants), hub Pro &amp; Grands comptes, formulaire de demande démo, checklist achat B2B.</div>
+    <div class="cl-item"><strong>Documentation</strong> — SLA cibles, feuille de route SSO, statut des services.</div>
+
+    <div class="cl-ver">Versions antérieures</div>
+    <div class="cl-item">Consulter votre interlocuteur Entreprise ou le dépôt documentaire pour les notes de version détaillées.</div>
+  </article>
+  <script src="subpage-common.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { needsSubpage.updateChromeButtons(); });</script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

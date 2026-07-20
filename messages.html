@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/messages.html">
+  <title>Messagerie — Needs</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme-needs.css">
+  <link rel="stylesheet" href="cursor.css">
+  <link rel="stylesheet" href="mobile-app-shell.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body.page-messages { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+    .messages-shell { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .header { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 14px 5%; border-bottom: 1px solid var(--border); background: var(--card); flex-wrap: wrap; gap: 8px; }
+    .header a { color: var(--text); text-decoration: none; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+    .header-nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .nav-msg-wrap a { font-size: .85rem; font-weight: 600; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); }
+    #navUnreadBadge {
+      position: absolute; top: -6px; right: -4px; min-width: 18px; height: 18px; padding: 0 5px;
+      background: #dc2626; color: #fff; font-size: .65rem; font-weight: 800; border-radius: 999px;
+      display: none; align-items: center; justify-content: center;
+    }
+    .container { flex: 1; display: flex; min-height: 0; max-width: 960px; margin: 0 auto; width: 100%; }
+    .conv-list { width: 300px; border-right: 1px solid var(--border); overflow-y: auto; background: var(--card); flex-shrink: 0; }
+    .chat-area { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; position: relative; }
+    .conv-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; border-bottom: 1px solid var(--border); transition: background .15s; }
+    .conv-item:hover { background: rgba(201, 168, 76, .08); }
+    .conv-item.unread { background: rgba(220, 38, 38, .06); }
+    .conv-item.active { background: rgba(37, 99, 235, .1); }
+    .conv-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #1e293b; flex-shrink: 0; }
+    .conv-info { flex: 1; min-width: 0; }
+    .conv-name { font-weight: 700; font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .conv-prev { font-size: .78rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    .conv-meta { font-size: .7rem; color: var(--muted); text-align: right; flex-shrink: 0; }
+    .conv-meta .badge-unread { background: #dc2626; color: #fff; padding: 2px 7px; border-radius: 999px; font-size: .65rem; font-weight: 800; margin-top: 4px; display: inline-block; min-width: 20px; text-align: center; }
+    .chat-placeholder { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: .95rem; padding: 20px; text-align: center; }
+    .chat-active { display: none; flex: 1; flex-direction: column; min-height: 0; }
+    .chat-active.open { display: flex; }
+    .chat-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--card); flex-shrink: 0; }
+    .chat-header .back { display: none; padding: 8px; border: none; background: none; color: var(--text); cursor: pointer; font-size: 1.1rem; }
+    .chat-header-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+    .msg-priority-badge {
+      font-size: .68rem; font-weight: 800; align-self: flex-start;
+      padding: 3px 8px; border-radius: 999px;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(99, 102, 241, 0.2));
+      color: #c4b5fd; border: 1px solid rgba(167, 139, 250, 0.45);
+    }
+    .chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+    .msg-date-sep { align-self: center; font-size: .72rem; color: var(--muted); padding: 12px 0 8px; }
+    .bubble-wrap { display: flex; flex-direction: column; max-width: 78%; }
+    .bubble-wrap.mine { align-self: flex-end; align-items: flex-end; }
+    .bubble-wrap.theirs { align-self: flex-start; align-items: flex-start; }
+    .bubble {
+      padding: 10px 14px; border-radius: 18px; font-size: .9rem; line-height: 1.45; word-break: break-word;
+    }
+    .bubble.mine { background: #C9A84C; color: #111; border-bottom-right-radius: 6px; }
+    .bubble.theirs { background: #1C1C26; color: #e2e8f0; border: 1px solid var(--border); border-bottom-left-radius: 6px; }
+    .read-receipt { font-size: .68rem; color: var(--muted); margin-top: 4px; padding-right: 2px; }
+    .chat-input-row { display: flex; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--border); background: var(--card); flex-shrink: 0; }
+    .chat-input-row input { flex: 1; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: .95rem; font-family: inherit; outline: none; }
+    .chat-input-row button { padding: 12px 20px; border-radius: 12px; border: none; background: #C9A84C; color: #111; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .auth-prompt { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+    .auth-prompt a { color: var(--blue); }
+    .messages-footer-minimal {
+      flex-shrink: 0; padding: 18px 16px; border-top: 1px solid rgba(42, 42, 56, 0.9);
+      background: #0A0A0F; text-align: center; font-size: 0.82rem; color: #9B99A6; line-height: 1.65;
+    }
+    .messages-footer-minimal a { color: #C9A84C; font-weight: 600; text-decoration: none; margin: 0 6px; }
+    .messages-footer-minimal a:hover { text-decoration: underline; }
+    @media (max-width: 640px) {
+      .conv-list { width: 100%; }
+      .conv-list.hidden-mobile { display: none; }
+      .chat-area { position: fixed; inset: 0; top: 56px; background: var(--bg); z-index: 10; }
+      .chat-area.hidden-mobile { display: none !important; }
+      .chat-active.open .back { display: block; }
+      body.has-app-tabbar.page-messages .messages-shell .container {
+        height: calc(100dvh - 56px - 44px - env(safe-area-inset-bottom, 0px));
+        max-height: calc(100dvh - 56px - 44px - env(safe-area-inset-bottom, 0px));
+      }
+    }
+  </style>
+</head>
+<body class="page-messages" data-no-inject-footer="true">
+  <div class="messages-shell">
+  <header class="header">
+    <a href="compte.html"><i class="fa-solid fa-arrow-left"></i> <span id="tit">Messagerie</span></a>
+    <div class="header-nav">
+      <a href="messages.html" class="needs-nav-messages-link" id="navMessagesLink" style="display:none;position:relative;font-size:.85rem;font-weight:600;">
+        <i class="fa-solid fa-comments"></i> <span id="navMsgLbl">Messages</span>
+        <span class="needs-unread-msg-badge" id="navUnreadBadge" style="position:absolute;top:-8px;right:-8px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:.6rem;font-weight:800;border-radius:999px;display:none;align-items:center;justify-content:center;"></span>
+      </a>
+      <a href="services.html" style="font-size:.85rem;font-weight:600;">Services</a>
+    </div>
+  </header>
+
+  <div id="authPrompt" class="auth-prompt" style="display:none;">
+    <p><span id="authTxt">Connectez-vous pour accéder à la messagerie.</span><br><a href="auth.html?redirect=%2Fmessages.html" id="authLoginLink">Se connecter</a></p>
+  </div>
+
+  <div id="mainContainer" class="container" style="display:none;">
+    <div class="conv-list" id="convList"></div>
+    <div class="chat-area" id="chatArea">
+      <div id="chatPlaceholder" class="chat-placeholder">
+        <span id="placeholderTxt">Sélectionnez une conversation.</span>
+      </div>
+      <div id="chatActive" class="chat-active">
+        <div class="chat-header">
+          <button type="button" class="back" onclick="backToList()" aria-label="Retour"><i class="fa-solid fa-arrow-left"></i></button>
+          <img id="chAvatar" class="conv-avatar" src="" alt="">
+          <div class="chat-header-main">
+            <div id="chName" style="font-weight:800;"></div>
+            <span id="chBizBadge" class="msg-priority-badge" style="display:none;"></span>
+            <div style="font-size:.7rem;color:var(--muted);" id="chOnline">En ligne</div>
+          </div>
+        </div>
+        <div id="chatMsgs" class="chat-msgs"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Écrire un message..." maxlength="2000" autocomplete="off">
+          <button type="button" id="btnSend" aria-label="Envoyer"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <div id="moderationWarn" style="display:none;margin:8px 0 0;color:#E05A5A;font-size:.8rem;font-weight:700;">
+          Ce message contient du contenu inapproprié et ne peut pas être envoyé.
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <footer class="messages-footer-minimal needs-footer-minimal" role="contentinfo" data-i18n-html="footer_minimal_line"></footer>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="js/nav-provider-cta.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="trust-guard.js"></script>
+  <script src="js/conversations.js"></script>
+  <script src="js/messages-nav-badge.js"></script>
+  <script>
+    var fbCfg = { apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU", authDomain: "needs-ae86d.firebaseapp.com", projectId: "needs-ae86d", storageBucket: "needs-ae86d.firebasestorage.app", messagingSenderId: "253900994407", appId: "1:253900994407:web:55168e1b73c878761de1c2" };
+    if (!firebase.apps.length) firebase.initializeApp(fbCfg);
+    var db = firebase.firestore(), auth = firebase.auth();
+    var uid = null, currentConvId = null, currentOther = null, unsubMessages = null, unsubConvList = null, unsubSelfUser = null;
+    var messagingBanned = false;
+    var lang = (window.__needs_prefs && window.__needs_prefs.getLang()) ? window.__needs_prefs.getLang() : 'fr';
+    var T = {
+      fr: { tit: "Messagerie", authTxt: "Connectez-vous pour accéder à la messagerie.", placeholder: "Sélectionnez une conversation.", online: "En ligne", read: "Lu", navMsg: "Messages", msgBlocked: "Ce message contient du contenu inapproprié et ne peut pas être envoyé.", msgBan: "La messagerie est suspendue après violations répétées des règles.", msgBanInput: "Messagerie suspendue après violations répétées." },
+      en: { tit: "Messages", authTxt: "Log in to access messaging.", placeholder: "Select a conversation.", online: "Online", read: "Read", navMsg: "Messages", msgBlocked: "This message contains inappropriate content and cannot be sent.", msgBan: "Messaging is suspended after repeated community violations.", msgBanInput: "Messaging suspended after repeated violations." }
+    };
+    var t = T[lang] || T.fr;
+    document.getElementById('tit').textContent = t.tit;
+    document.getElementById('authTxt').textContent = t.authTxt;
+    document.getElementById('placeholderTxt').textContent = t.placeholder;
+    document.getElementById('chOnline').textContent = t.online;
+    var navLbl = document.getElementById('navMsgLbl');
+    if (navLbl) navLbl.textContent = t.navMsg;
+
+    function isMobile() { return window.matchMedia && window.matchMedia('(max-width: 640px)').matches; }
+
+    function migrateConvDocIfNeeded(d) {
+      var data = d.data();
+      if (!data.lastMessageAt && data.lastAt) {
+        d.ref.set({ lastMessageAt: data.lastAt, lastMessage: data.lastMsg != null ? data.lastMsg : '' }, { merge: true });
+      }
+    }
+
+    function formatMsgTime(ts) {
+      if (!ts || !ts.toDate) return '';
+      return ts.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function formatDateSep(ts) {
+      if (!ts || !ts.toDate) return '';
+      return ts.toDate().toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA', { weekday: 'short', day: 'numeric', month: 'short' });
+    }
+
+    function hoursBetween(a, b) {
+      if (!a || !a.toDate || !b || !b.toDate) return 0;
+      return Math.abs(a.toDate().getTime() - b.toDate().getTime()) / 3600000;
+    }
+
+    function markConversationOpened(convId) {
+      if (!uid || !convId) return Promise.resolve();
+      return db.collection('conversations').doc(convId).collection('messages').get().then(function (snap) {
+        var batch = db.batch();
+        var convRef = db.collection('conversations').doc(convId);
+        var n = 0;
+        snap.docs.forEach(function (doc) {
+          if (n >= 450) return;
+          var m = doc.data();
+          var sid = needsConversations.normalizeSenderId(m);
+          if (sid !== uid && m.read !== true) {
+            batch.update(doc.ref, { read: true });
+            n++;
+          }
+        });
+        batch.update(convRef, { ['unreadCount.' + uid]: 0 });
+        return batch.commit().catch(function (e) { console.warn(e); });
+      });
+    }
+
+    function getOrOpenConversation(otherUid) {
+      return needsConversations.getOrCreateConversationId(uid, otherUid).then(function (id) {
+        history.replaceState(null, '', 'messages.html?conv=' + encodeURIComponent(id));
+        return openChatById(id);
+      });
+    }
+
+    function openChatById(convId) {
+      return db.collection('conversations').doc(convId).get().then(function (doc) {
+        if (!doc.exists) return;
+        var data = doc.data();
+        var otherUid = (data.participants || []).filter(function (p) { return p !== uid; })[0];
+        var otherName = (data.participantNames && data.participantNames[otherUid]) ? data.participantNames[otherUid] : 'Utilisateur';
+        var otherPhoto = (data.participantPhotos && data.participantPhotos[otherUid]) ? data.participantPhotos[otherUid] : '';
+        openChat(convId, { participants: data.participants, participantNames: data.participantNames, participantPhotos: data.participantPhotos, otherName: otherName, otherPhoto: otherPhoto });
+      });
+    }
+
+    function loadConversations() {
+      if (!uid) return;
+      if (unsubConvList) unsubConvList();
+      unsubConvList = db.collection('conversations')
+        .where('participants', 'array-contains', uid)
+        .onSnapshot(function (snap) {
+          snap.docs.forEach(migrateConvDocIfNeeded);
+          var sorted = snap.docs.slice().sort(function (a, b) {
+            var ta = needsConversations.getLastMessageAt(a.data());
+            var tb = needsConversations.getLastMessageAt(b.data());
+            var ma = ta && ta.toMillis ? ta.toMillis() : 0;
+            var mb = tb && tb.toMillis ? tb.toMillis() : 0;
+            return mb - ma;
+          }).slice(0, 40);
+          var el = document.getElementById('convList');
+          el.innerHTML = '';
+          if (!sorted.length) {
+            el.innerHTML = '<div style="padding:20px;color:var(--muted);font-size:.88rem;">' + t.placeholder + '</div>';
+            return;
+          }
+          sorted.forEach(function (d) {
+            var data = d.data();
+            var otherUid = (data.participants || []).filter(function (p) { return p !== uid; })[0];
+            var otherName = (data.participantNames && data.participantNames[otherUid]) ? data.participantNames[otherUid] : 'Utilisateur';
+            var otherPhoto = (data.participantPhotos && data.participantPhotos[otherUid]) ? data.participantPhotos[otherUid] : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(otherName) + '&background=1e293b&color=fff');
+            var unreadN = needsConversations.getUnreadForUid(uid, data);
+            var lm = needsConversations.getLastMessageAt(data);
+            var time = lm && lm.toDate ? lm.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+            var prev = needsConversations.getLastMessageText(data) || '…';
+            var row = document.createElement('div');
+            row.className = 'conv-item' + (unreadN > 0 ? ' unread' : '') + (d.id === currentConvId ? ' active' : '');
+            row.onclick = function () {
+              history.replaceState(null, '', 'messages.html?conv=' + encodeURIComponent(d.id));
+              openChat(d.id, { participants: data.participants, participantNames: data.participantNames, participantPhotos: data.participantPhotos, otherName: otherName, otherPhoto: otherPhoto });
+            };
+            row.innerHTML =
+              '<img class="conv-avatar" src="" alt="">' +
+              '<div class="conv-info"><div class="conv-name"></div><div class="conv-prev"></div></div>' +
+              '<div class="conv-meta"><div></div>' + (unreadN > 0 ? '<span class="badge-unread">' + (unreadN > 99 ? '99+' : unreadN) + '</span>' : '') + '</div>';
+            row.querySelector('.conv-avatar').src = otherPhoto.replace(/"/g, '&quot;');
+            row.querySelector('.conv-name').textContent = otherName;
+            row.querySelector('.conv-prev').textContent = prev;
+            row.querySelector('.conv-meta div').textContent = time;
+            el.appendChild(row);
+          });
+        });
+    }
+
+    function renderMessages(snap) {
+      var area = document.getElementById('chatMsgs');
+      area.innerHTML = '';
+      var lastTs = null;
+      var docs = snap.docs.slice();
+      var lastMineIdx = -1;
+      docs.forEach(function (d, i) {
+        var m = d.data();
+        if (needsConversations.normalizeSenderId(m) === uid) lastMineIdx = i;
+      });
+      docs.forEach(function (d, idx) {
+        var m = d.data();
+        var created = needsConversations.normalizeCreatedAt(m);
+        if (created && created.toDate) {
+          if (lastTs && hoursBetween(created, lastTs) > 1) {
+            var sep = document.createElement('div');
+            sep.className = 'msg-date-sep';
+            sep.textContent = formatDateSep(created);
+            area.appendChild(sep);
+          }
+          lastTs = created;
+        }
+        var sid = needsConversations.normalizeSenderId(m);
+        var mine = sid === uid;
+        var wrap = document.createElement('div');
+        wrap.className = 'bubble-wrap ' + (mine ? 'mine' : 'theirs');
+        var bubble = document.createElement('div');
+        bubble.className = 'bubble ' + (mine ? 'mine' : 'theirs');
+        bubble.textContent = m.text || '';
+        wrap.appendChild(bubble);
+        if (mine && idx === lastMineIdx) {
+          var rr = document.createElement('div');
+          rr.className = 'read-receipt';
+          rr.textContent = m.read === true ? t.read : '';
+          wrap.appendChild(rr);
+        }
+        area.appendChild(wrap);
+      });
+      area.scrollTop = area.scrollHeight;
+    }
+
+    function openChat(convId, data) {
+      currentConvId = convId;
+      var otherUid = (data.participants || []).filter(function (p) { return p !== uid; })[0];
+      currentOther = { uid: otherUid, name: data.otherName || (data.participantNames && data.participantNames[otherUid]) || 'Utilisateur', photo: data.otherPhoto || (data.participantPhotos && data.participantPhotos[otherUid]) || '' };
+      document.getElementById('chatPlaceholder').style.display = 'none';
+      document.getElementById('chatActive').classList.add('open');
+           document.getElementById('chName').textContent = currentOther.name;
+      var biz = document.getElementById('chBizBadge');
+      if (biz) {
+        biz.style.display = 'none';
+        biz.textContent = '';
+      }
+      if (otherUid && db) {
+        db.collection('users').doc(otherUid).get().then(function (ud) {
+          var plan = ud.exists && ud.data().plan === 'business';
+          if (biz && plan) {
+            biz.textContent = window.NeedsI18n && NeedsI18n.t ? NeedsI18n.t('msg_priority_business') : 'Business';
+            biz.style.display = 'inline-block';
+          }
+        }).catch(function () {});
+      }
+      var av = document.getElementById('chAvatar');
+      av.src = currentOther.photo || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(currentOther.name) + '&background=1e293b&color=fff');
+      av.onerror = function () { this.onerror = null; this.src = 'https://ui-avatars.com/api/?name=?&background=1e293b&color=fff'; };
+      if (isMobile()) {
+        document.getElementById('convList').classList.add('hidden-mobile');
+        document.getElementById('chatArea').classList.remove('hidden-mobile');
+      }
+      markConversationOpened(convId).then(function () {
+        loadConversations();
+      });
+      if (unsubMessages) unsubMessages();
+      unsubMessages = db.collection('conversations').doc(convId).collection('messages').orderBy('at').limit(120).onSnapshot(renderMessages);
+    }
+
+    function backToList() {
+      currentConvId = null;
+      currentOther = null;
+      if (unsubMessages) { unsubMessages(); unsubMessages = null; }
+      document.getElementById('chatActive').classList.remove('open');
+      document.getElementById('chatPlaceholder').style.display = 'flex';
+      document.getElementById('convList').classList.remove('hidden-mobile');
+      document.getElementById('chatArea').classList.remove('hidden-mobile');
+      history.replaceState(null, '', 'messages.html');
+      loadConversations();
+    }
+
+    var CLIENT_BANNED_TERMS = [
+      "connard","connasse","encule","enculé","enculee","pute","salope","batard","batarde","fdp",
+      "fils de pute","nique ta mere","nique ta mère","ferme ta gueule","sale noir","sale arabe","sale juif",
+      "sale asiat","sale chinoi","sale blanc","retourne dans ton pays","degage de ce pays","dégage de ce pays",
+      "handicape de merde","handicapé de merde","pd","fuck you","motherfucker","son of a bitch","bitch","whore",
+      "slut","asshole","bastard","nigger","faggot","retard","kike","chink","spic","go back to your country",
+      "kill yourself","stupid bitch"
+    ];
+    function normalizeModerationText(input) {
+      return String(input || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+    function detectBannedTermClient(text) {
+      var n = normalizeModerationText(text);
+      if (!n) return null;
+      for (var i = 0; i < CLIENT_BANNED_TERMS.length; i++) {
+        var t = normalizeModerationText(CLIENT_BANNED_TERMS[i]);
+        if (t && n.indexOf(t) !== -1) return CLIENT_BANNED_TERMS[i];
+      }
+      return null;
+    }
+    function showModerationWarn(show, msg) {
+      var el = document.getElementById('moderationWarn');
+      if (!el) return;
+      var fallback = t.msgBlocked || "Ce message contient du contenu inapproprié et ne peut pas être envoyé.";
+      if (window.NeedsI18n && NeedsI18n.t) fallback = NeedsI18n.t('msg_moderation_blocked');
+      el.textContent = msg || fallback;
+      el.style.display = show ? 'block' : 'none';
+    }
+    function logModerationAttempt(content, term) {
+      if (!uid) return;
+      return db.collection('moderation_logs').add({
+        userId: uid,
+        convId: currentConvId || null,
+        content: String(content || '').substring(0, 2000),
+        matchedTerm: term || null,
+        source: 'messages_client',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(function () {});
+    }
+    function refreshMessagingUiBanState() {
+      var inp = document.getElementById('chatInput');
+      var btn = document.getElementById('btnSend');
+      if (inp) {
+        inp.disabled = !!messagingBanned;
+        if (messagingBanned) {
+          var p = t.msgBanInput || (lang === 'en' ? 'Messaging suspended after repeated violations.' : 'Messagerie suspendue après violations répétées.');
+          if (window.NeedsI18n && NeedsI18n.t) p = NeedsI18n.t('msg_moderation_ban_input');
+          inp.placeholder = p;
+        }
+      }
+      if (btn) btn.disabled = !!messagingBanned;
+      var banMsg = t.msgBan || (lang === 'en'
+        ? 'Messaging is suspended after repeated community violations.'
+        : 'La messagerie est suspendue après violations répétées des règles.');
+      if (window.NeedsI18n && NeedsI18n.t) banMsg = NeedsI18n.t('msg_moderation_ban_notice');
+      showModerationWarn(!!messagingBanned, banMsg);
+    }
+
+    function sendMsg() {
+      var inp = document.getElementById('chatInput');
+      var text = (inp.value || '').trim();
+      if (!text || !currentConvId || !currentOther) return;
+      if (messagingBanned) {
+        refreshMessagingUiBanState();
+        return;
+      }
+      if (window.needsTrust) {
+        var v = window.needsTrust.validateMessage(text);
+        if (!v.ok) {
+          showModerationWarn(true);
+          logModerationAttempt(text, v.hint || null);
+          return;
+        }
+      }
+      var banned = detectBannedTermClient(text);
+      if (banned) {
+        showModerationWarn(true);
+        logModerationAttempt(text, banned);
+        return;
+      } else {
+        showModerationWarn(false);
+      }
+      db.collection('users').doc(uid).get().then(function (uSnap) {
+        if (uSnap.exists && uSnap.data() && uSnap.data().messagingBanned === true) {
+          messagingBanned = true;
+          refreshMessagingUiBanState();
+          return;
+        }
+        inp.value = '';
+        var now = firebase.firestore.FieldValue.serverTimestamp();
+        var recipientUid = currentOther.uid;
+        var up = {
+          lastMessage: text,
+          lastMessageAt: now
+        };
+        up['unreadCount.' + recipientUid] = firebase.firestore.FieldValue.increment(1);
+        db.collection('conversations').doc(currentConvId).collection('messages').add({
+          text: text,
+          senderId: uid,
+          createdAt: now,
+          at: now,
+          read: false
+        });
+        db.collection('conversations').doc(currentConvId).update(up);
+      }).catch(function () {
+        // fail-soft: do not block sending due to read error
+        inp.value = '';
+        var now = firebase.firestore.FieldValue.serverTimestamp();
+        var recipientUid = currentOther.uid;
+        var up = {
+          lastMessage: text,
+          lastMessageAt: now
+        };
+        up['unreadCount.' + recipientUid] = firebase.firestore.FieldValue.increment(1);
+        db.collection('conversations').doc(currentConvId).collection('messages').add({
+          text: text,
+          senderId: uid,
+          createdAt: now,
+          at: now,
+          read: false
+        });
+        db.collection('conversations').doc(currentConvId).update(up);
+      });
+    }
+
+    var chatInput = document.getElementById('chatInput');
+    chatInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMsg();
+      }
+    });
+    document.getElementById('btnSend').addEventListener('click', sendMsg);
+
+    if (typeof initMessagesNavBadge === 'function') initMessagesNavBadge();
+
+    auth.onAuthStateChanged(function (user) {
+      uid = user ? user.uid : null;
+      if (unsubSelfUser) { unsubSelfUser(); unsubSelfUser = null; }
+      messagingBanned = false;
+      if (!uid) {
+        document.getElementById('authPrompt').style.display = 'flex';
+        document.getElementById('mainContainer').style.display = 'none';
+        showModerationWarn(false);
+        return;
+      }
+      unsubSelfUser = db.collection('users').doc(uid).onSnapshot(function (snap) {
+        var d = snap.exists ? (snap.data() || {}) : {};
+        messagingBanned = d.messagingBanned === true;
+        refreshMessagingUiBanState();
+      }, function () {
+        messagingBanned = false;
+        refreshMessagingUiBanState();
+      });
+      document.getElementById('authPrompt').style.display = 'none';
+      document.getElementById('mainContainer').style.display = 'flex';
+      loadConversations();
+      var params = new URLSearchParams(window.location.search);
+      var convParam = params.get('conv');
+      var toParam = params.get('to');
+      if (convParam) {
+        openChatById(convParam);
+      } else if (toParam && toParam !== uid) {
+        getOrOpenConversation(toParam);
+      }
+    });
+  </script>
+
+    <script>
+    (function(){if(window.NeedsI18n&&NeedsI18n.applyDOM){try{NeedsI18n.applyDOM(NeedsI18n.getLang());}catch(e){}}})();
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/identite-acces.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — SSO & rôles (feuille de route)</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="entreprise-grands-comptes.html" class="subpage-back">← Pro &amp; Grands comptes</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang()" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <article class="doc-page">
+    <h1>Identité, SSO et rôles</h1>
+    <p class="doc-lead">Les grands comptes exigent souvent l’<strong>authentification unique (SSO)</strong> et une <strong>gouvernance des accès</strong>. Voici la feuille de route Needs — les jalons peuvent être accélérés dans le cadre d’un partenariat Entreprise.</p>
+
+    <h2>État actuel</h2>
+    <ul>
+      <li>Authentification via <strong>Firebase Auth</strong> (e-mail / mot de passe et méthodes activées sur le projet).</li>
+      <li>Compte utilisateur unique avec possibilité de statut Client / Prestataire selon produit.</li>
+    </ul>
+
+    <h2>Feuille de route — SSO</h2>
+    <ul>
+      <li><strong>Phase 1 :</strong> intégration <strong>OpenID Connect</strong> avec fournisseurs d’identité courants (Azure AD, Okta, Google Workspace) pour les Clients Entreprise.</li>
+      <li><strong>Phase 2 :</strong> support <strong>SAML 2.0</strong> pour les exigences legacy et fédérations sectorielles.</li>
+      <li><strong>Phase 3 :</strong> <strong>SCIM</strong> ou équivalent pour provisionnement / déprovisionnement automatique des comptes.</li>
+    </ul>
+
+    <h2>Rôles prévus (cible)</h2>
+    <table>
+      <thead>
+        <tr><th>Rôle</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Acheteur</strong></td><td>Crée des demandes et commandes dans les limites du budget défini.</td></tr>
+        <tr><td><strong>Valideur</strong></td><td>Approuve les commandes au-delà d’un seuil ou selon workflow interne.</td></tr>
+        <tr><td><strong>Lecture seule</strong></td><td>Consulte factures et reporting sans droit de commande.</td></tr>
+        <tr><td><strong>Admin organisation</strong></td><td>Gère les utilisateurs, rôles et paramètres de l’entité cliente.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>API & intégrations</h2>
+    <p>Une <strong>API REST</strong> pour synchronisation des commandes et exports comptables fait partie de la roadmap Entreprise ; priorisation selon volumétrie et contrat-cadre.</p>
+
+    <p><a href="entreprise-grands-comptes.html" class="btn btn-main no-print">Discuter de votre feuille de route IT</a></p>
+  </article>
+  <script src="subpage-common.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { needsSubpage.updateChromeButtons(); });</script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

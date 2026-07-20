@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/securite.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Sécurité & conformité</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="entreprise-grands-comptes.html" class="subpage-back">← Pro &amp; Grands comptes</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang()" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <article class="doc-page">
+    <h1>Sécurité de l’information</h1>
+    <p class="doc-lead">Needs applique des mesures techniques et organisationnelles proportionnées aux risques. Ce document résume l’approche actuelle et la feuille de route ; une <strong>fiche détaillée</strong> peut être fournie sous NDA dans le cadre d’un projet Entreprise.</p>
+
+    <h2>1. Chiffrement et transport</h2>
+    <p>Les échanges avec la Plateforme s’effectuent en <strong>HTTPS (TLS)</strong>. Les secrets et clés API côté serveur sont gérés via les mécanismes du fournisseur cloud (secrets, IAM). Les mots de passe ne sont jamais stockés en clair.</p>
+
+    <h2>2. Authentification et accès</h2>
+    <p>L’accès aux comptes repose sur le fournisseur d’identité Firebase. Les règles de moindre privilège s’appliquent aux accès administrateur. Une <strong>feuille de route SSO</strong> (SAML 2.0 / OpenID Connect) est décrite sur la page <a href="identite-acces.html">Identité &amp; accès</a>.</p>
+
+    <h2>3. Sauvegardes et disponibilité</h2>
+    <p>Les données sont hébergées sur une infrastructure managée avec réplication et procédures de sauvegarde du fournisseur. Needs vise une <strong>disponibilité élevée</strong> ; le statut en temps quasi réel est publié sur <a href="statut.html">la page Statut</a>.</p>
+
+    <h2>4. Journalisation et supervision</h2>
+    <p>Les journaux techniques (erreurs, accès API sensibles) sont conservés pour investigation et amélioration continue, dans des délais compatibles avec la finalité et la loi.</p>
+
+    <h2>5. Gestion des incidents</h2>
+    <p>En cas d’incident de sécurité susceptible d’affecter les données personnelles, Needs applique une procédure interne : confinement, analyse, <strong>notification aux autorités et/ou aux clients</strong> dans les délais RGPD lorsque requis, et communication sur les mesures correctives.</p>
+
+    <h2>6. Sensibilisation</h2>
+    <p>L’équipe technique suit les bonnes pratiques (mises à jour de dépendances, revue de code pour les changements sensibles).</p>
+
+    <h2>7. Feuille de route certification</h2>
+    <p>Needs s’aligne progressivement sur les exigences des référentiels <strong>ISO/IEC 27001</strong> et bonnes pratiques <strong>SOC 2</strong> (Trust Services Criteria). <strong>Aucun certificat ne revendique aujourd’hui une certification complète</strong> : l’objectif est une démarche structurée avec jalons ; les Clients Entreprise peuvent obtenir le détail des contrôles et preuves dans le cadre d’un audit raisonnable sous NDA.</p>
+
+    <p><a href="sous-traitants.html" class="btn btn-secondary no-print">Sous-traitants</a> <a href="entreprise-grands-comptes.html" class="btn btn-main no-print">Demande de démo</a></p>
+  </article>
+  <script src="subpage-common.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { needsSubpage.updateChromeButtons(); });</script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

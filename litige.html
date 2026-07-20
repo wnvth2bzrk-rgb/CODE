@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/litige.html">
+  <title>Needs — Ouvrir un litige</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme-needs.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .litige-wrap { max-width: 560px; margin: 48px auto; padding: 0 20px 64px; }
+    .litige-wrap h1 { font-size: 1.5rem; margin-bottom: 8px; color: var(--color-text, #fff); }
+    .litige-wrap .lead { color: var(--color-text-secondary, #a8a29e); margin-bottom: 24px; font-size: 0.95rem; }
+    .litige-field { margin-bottom: 18px; }
+    .litige-field label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px; color: var(--color-text-secondary); }
+    .litige-field input, .litige-field select, .litige-field textarea {
+      width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); font: inherit; box-sizing: border-box;
+    }
+    .litige-field textarea { min-height: 120px; resize: vertical; }
+    .litige-files { font-size: 0.85rem; color: var(--color-text-secondary); }
+    .litige-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--color-accent, #c9a84c); color: #1a1510; font-weight: 800; font-size: 1rem; cursor: pointer; margin-top: 8px; }
+    .litige-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .litige-ok { display: none; padding: 16px; border-radius: 12px; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); color: var(--color-text); margin-top: 16px; }
+    .litige-ok.visible { display: block; }
+    .litige-nav { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); }
+    .litige-nav a { color: var(--color-accent); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body data-no-inject-footer="true">
+  <nav class="litige-nav">
+    <a href="compte.html" data-i18n="litige_back">← Mon compte</a>
+    <button type="button" class="subpage-icon-btn" id="litigeLang" onclick="toggleLitigeLang()" style="border-radius:8px;padding:8px 12px;border:1px solid var(--color-border);background:transparent;color:inherit;cursor:pointer;">EN</button>
+  </nav>
+  <div class="litige-wrap">
+    <h1 data-i18n="litige_title">Ouvrir un litige</h1>
+    <p class="lead" data-i18n="litige_lead">Décrivez le problème. Vous pouvez joindre jusqu’à 3 images (5 Mo chacune).</p>
+    <form id="litigeForm">
+      <div class="litige-field">
+        <label for="orderId" data-i18n="litige_order_label">Numéro de commande</label>
+        <input type="text" id="orderId" name="orderId" required autocomplete="off">
+      </div>
+      <div class="litige-field">
+        <label for="reason" data-i18n="litige_reason_label">Motif</label>
+        <select id="reason" name="reason" required>
+          <option value="" data-i18n="litige_reason_placeholder">— Choisir —</option>
+          <option value="not_delivered" data-i18n="litige_r1">Service non rendu</option>
+          <option value="partial" data-i18n="litige_r2">Service rendu partiellement</option>
+          <option value="no_response" data-i18n="litige_r3">Prestataire ne répond plus</option>
+          <option value="not_as_described" data-i18n="litige_r4">Service non conforme à la description</option>
+          <option value="other" data-i18n="litige_r5">Autre</option>
+        </select>
+      </div>
+      <div class="litige-field">
+        <label for="description" data-i18n="litige_desc_label">Description du problème (min. 50 caractères)</label>
+        <textarea id="description" name="description" required minlength="50" maxlength="4000"></textarea>
+      </div>
+      <div class="litige-field">
+        <label data-i18n="litige_files_label">Preuves (images, max 3)</label>
+        <input type="file" id="files" accept="image/*" multiple>
+        <p class="litige-files" data-i18n="litige_files_hint">PNG, JPG — 5 Mo max par fichier</p>
+      </div>
+      <button type="submit" class="litige-btn" id="litigeSubmit" data-i18n="litige_submit">Soumettre le litige</button>
+    </form>
+    <div class="litige-ok" id="litigeOk" role="status">
+      <strong data-i18n="litige_ok_title">Merci</strong>
+      <p data-i18n="litige_ok_body" style="margin:8px 0 0;font-size:0.95rem;">Votre litige a été ouvert. Notre équipe vous répond sous 24h ouvrées.</p>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="js/nav-provider-cta.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  <script>
+    const fbCfg = {
+      apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU",
+      authDomain: "needs-ae86d.firebaseapp.com",
+      projectId: "needs-ae86d",
+      storageBucket: "needs-ae86d.firebasestorage.app",
+      messagingSenderId: "253900994407",
+      appId: "1:253900994407:web:55168e1b73c878761de1c2"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(fbCfg);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    const storage = firebase.storage();
+
+    let litigeLang = (window.__needs_prefs && __needs_prefs.getLang()) ? __needs_prefs.getLang() : "fr";
+    function toggleLitigeLang() {
+      litigeLang = litigeLang === "fr" ? "en" : "fr";
+      if (window.__needs_prefs) __needs_prefs.setLang(litigeLang);
+      document.documentElement.lang = litigeLang === "en" ? "en" : "fr";
+      document.getElementById("litigeLang").textContent = litigeLang === "fr" ? "EN" : "FR";
+      if (window.NeedsI18n) NeedsI18n.applyDOM(litigeLang);
+    }
+    if (window.NeedsI18n) NeedsI18n.applyDOM(litigeLang);
+
+    const params = new URLSearchParams(window.location.search);
+    const preOrder = params.get("orderId");
+    if (preOrder) document.getElementById("orderId").value = preOrder;
+
+    const reasonLabels = {
+      fr: { not_delivered: "Service non rendu", partial: "Service rendu partiellement", no_response: "Prestataire ne répond plus", not_as_described: "Service non conforme à la description", other: "Autre" },
+      en: { not_delivered: "Service not provided", partial: "Partially completed", no_response: "Provider no longer responds", not_as_described: "Not as described", other: "Other" }
+    };
+
+    document.getElementById("litigeForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const btn = document.getElementById("litigeSubmit");
+      const orderId = document.getElementById("orderId").value.trim();
+      const reasonKey = document.getElementById("reason").value;
+      const description = document.getElementById("description").value.trim();
+      const files = document.getElementById("files").files;
+      if (description.length < 50) {
+        alert(litigeLang === "fr" ? "La description doit faire au moins 50 caractères." : "Description must be at least 50 characters.");
+        return;
+      }
+      if (!reasonKey) return;
+      btn.disabled = true;
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          alert(litigeLang === "fr" ? "Vous devez être connecté." : "You must be signed in.");
+          btn.disabled = false;
+          return;
+        }
+        const evidence = [];
+        const maxFiles = Math.min(files.length, 3);
+        const tsBase = Date.now();
+        for (let i = 0; i < maxFiles; i++) {
+          const f = files[i];
+          if (f.size > 5 * 1024 * 1024) continue;
+          const safeName = (f.name || "img").replace(/[^\w.-]/g, "_");
+          const fileName = tsBase + i + "_" + safeName;
+          const path = "disputes/" + user.uid + "/" + fileName;
+          const ref = storage.ref(path);
+          await ref.put(f, { contentType: f.type || "image/jpeg" });
+          const url = await ref.getDownloadURL();
+          evidence.push(url);
+        }
+        const reasonText = (reasonLabels[litigeLang] && reasonLabels[litigeLang][reasonKey]) || reasonKey;
+        await db.collection("disputes").add({
+          orderId,
+          userId: user.uid,
+          reason: reasonText,
+          reasonKey,
+          description,
+          status: "open",
+          evidence,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        document.getElementById("litigeForm").style.display = "none";
+        document.getElementById("litigeOk").classList.add("visible");
+      } catch (err) {
+        console.error(err);
+        alert(litigeLang === "fr" ? "Connexion requise ou erreur d’envoi. Connectez-vous depuis Mon compte." : "Please sign in from My account or try again.");
+        btn.disabled = false;
+      }
+    });
+
+    auth.onAuthStateChanged(function (u) {
+      if (!u) window.location.href = "auth.html?next=" + encodeURIComponent("litige.html" + window.location.search);
+    });
+  </script>
+
+  <footer class="needs-footer-minimal" role="contentinfo" data-i18n-html="footer_minimal_line" style="margin-top:48px;padding:20px 16px;background:#0A0A0F;color:#9B99A6;text-align:center;font-size:0.82rem;line-height:1.65;border-top:1px solid rgba(42,42,56,0.9);"></footer>
+  <script>(function(){if(window.NeedsI18n&&NeedsI18n.applyDOM){try{NeedsI18n.applyDOM(NeedsI18n.getLang());}catch(e){}}})();</script>
+</body>
+</html>

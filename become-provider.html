@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0A0A0F" id="meta-theme-color">
+    <title>Devenir prestataire Needs | Augmentez vos revenus</title>
+    <meta name="description" content="Rejoignez Needs : visibilité, missions qualifiées et paiements sécurisés. Commission transparente, outils de planning et clients premium.">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/become-provider.html">
+    <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme-needs.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cursor.css">
+    <style>
+        .bp-hero { padding: 32px 5% 24px; background: var(--color-bg-secondary); border-bottom: 1px solid var(--color-border); text-align: center; }
+        .bp-hero h1 { color: var(--color-text); font-size: clamp(1.75rem, 4vw, 2.25rem); margin-bottom: 12px; }
+        .bp-hero p { color: var(--color-text-secondary); margin-bottom: 16px; max-width: 560px; margin-left: auto; margin-right: auto; }
+        .bp-hero-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 920px; margin: 0 auto 20px; padding: 0 12px; box-sizing: border-box; text-align: left; }
+        .bp-hero-step { background: var(--color-card); border: 1px solid var(--color-border); border-radius: 12px; padding: 14px 16px; box-sizing: border-box; }
+        .bp-hero-step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(201, 168, 76, 0.22); color: #C9A84C; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+        .bp-hero-step h3 { color: var(--color-text); margin: 0 0 6px; font-size: 0.95rem; font-weight: 800; line-height: 1.25; }
+        .bp-hero-step p { color: var(--color-text-secondary); margin: 0; font-size: 0.82rem; line-height: 1.45; }
+        .cta-btn { background: var(--color-accent); color: #1a1510 !important; padding: 14px 28px; border-radius: 12px; font-weight: 800; text-decoration: none; display: inline-block; transition: background 0.2s ease; }
+        .cta-btn:hover { background: var(--color-accent-hover); color: #1a1510 !important; }
+        .bp-calc-wrap { max-width: 720px; margin: 0 auto 40px; padding: 0 20px; box-sizing: border-box; }
+        .bp-calc-wrap h2 { color: var(--color-text); font-size: 1.35rem; margin-bottom: 16px; text-align: center; }
+        .bp-calc-card { padding: 20px 18px; background: #14141c; border: 1px solid #2A2A38; border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.35); box-sizing: border-box; }
+        .bp-calc-row { margin-bottom: 16px; }
+        .bp-calc-row label { display: block; font-size: 0.9rem; font-weight: 600; color: #F0EDE8; margin-bottom: 10px; }
+        .bp-calc-row input[type="range"] { width: 100%; accent-color: #C9A84C; }
+        .bp-calc-row .disp { font-size: 0.95rem; color: #9B99A6; margin-top: 8px; }
+        .bp-calc-result { text-align: center; margin: 20px 0 10px; font-size: 1.05rem; color: #F0EDE8; line-height: 1.5; }
+        .bp-calc-amount { font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 800; color: #C9A84C; display: inline-block; margin: 0 6px; }
+        .bp-calc-note { font-size: 0.85rem; color: #9B99A6; text-align: center; margin: 0; line-height: 1.55; }
+        .bp-commission { text-align: center; padding: 14px 20px; border-radius: 12px; background: rgba(201, 168, 76, 0.12); border: 1px solid var(--color-border); color: var(--color-text); margin-top: 20px; font-weight: 700; }
+        .bp-faq { max-width: 720px; margin: 0 auto 40px; padding: 0 20px; box-sizing: border-box; }
+        .bp-faq h2 { color: var(--color-text); text-align: center; margin-bottom: 16px; font-size: 1.25rem; }
+        .bp-faq details { border: 1px solid #2A2A38; border-radius: 12px; margin-bottom: 10px; background: var(--color-card); padding: 0 16px; }
+        .bp-faq summary { cursor: pointer; font-weight: 600; color: #F0EDE8; padding: 14px 0; list-style: none; }
+        .bp-faq summary::-webkit-details-marker { display: none; }
+        .bp-faq details[open] summary { border-bottom: 1px solid #2A2A38; margin-bottom: 10px; }
+        .bp-faq .a { color: #9B99A6; font-size: 0.95rem; line-height: 1.6; padding-bottom: 14px; margin: 0; }
+        .bp-form-wrap { max-width: 520px; margin: 0 auto 40px; padding: 0 20px; }
+        .bp-form-wrap h2 { color: var(--color-text); font-size: 1.25rem; margin-bottom: 18px; text-align: center; }
+        .bp-field { margin-bottom: 16px; }
+        .bp-field label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; }
+        .bp-field input, .bp-field select, .bp-field textarea { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); font-family: inherit; box-sizing: border-box; }
+        .bp-field input:focus, .bp-field textarea:focus, .bp-field select:focus { outline: none; border-color: var(--color-accent); }
+        .bp-submit { width: 100%; margin-top: 8px; padding: 14px; border: none; border-radius: 12px; background: var(--color-accent); color: #1a1510; font-weight: 800; font-size: 1rem; cursor: pointer; transition: background 0.2s ease; }
+        .bp-submit:hover { background: var(--color-accent-hover); }
+        .bp-testimonials { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 920px; margin: 0 auto 40px; padding: 0 20px; box-sizing: border-box; }
+        .bp-tcard { background: var(--color-card); border: 1px solid var(--color-border); border-radius: 16px; padding: 18px; box-sizing: border-box; }
+        .bp-tcard p { color: var(--color-text-secondary); font-style: italic; line-height: 1.55; margin: 0 0 14px; font-size: 0.95rem; }
+        .bp-tcard .who { color: var(--color-text); font-weight: 800; font-size: 0.9rem; }
+        .bp-tcard .meta { color: var(--color-accent); font-size: 0.8rem; margin-top: 4px; }
+        .bp-back { display: block; text-align: center; padding-bottom: 32px; }
+        .bp-back a { color: var(--color-accent); font-weight: 600; text-decoration: none; }
+        html.needs-light .bp-hero, body.light-mode .bp-hero { background: var(--color-bg-secondary) !important; }
+        html.needs-light .bp-hero h1, body.light-mode .bp-hero h1 { color: var(--color-text) !important; }
+        .bp-logged-banner { max-width: 560px; margin: 0 auto 40px; padding: 16px 18px; text-align: center; background: rgba(201, 168, 76, 0.12); border: 1px solid rgba(201, 168, 76, 0.35); border-radius: 16px; color: var(--color-text); box-sizing: border-box; }
+        .bp-logged-banner[hidden] { display: none !important; }
+        .bp-logged-banner a { margin-top: 12px; }
+        .bp-signup-section { max-width: 560px; margin: 0 auto 40px; padding: 0 20px; scroll-margin-top: 72px; box-sizing: border-box; }
+        .bp-signup-inner { background: var(--color-card); border: 1px solid var(--color-border); border-radius: 20px; padding: 20px 18px 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.2); box-sizing: border-box; }
+        .bp-lead-capture { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--color-border); }
+        .bp-lead-standalone { max-width: 560px; margin: 0 auto 40px; padding: 0 20px; box-sizing: border-box; }
+        .bp-lead-standalone .bp-signup-inner { padding: 20px 18px; }
+        .bp-btn .fa-spin { margin-right: 8px; }
+        .bp-lead-capture h3 { margin: 0 0 10px; font-size: 1.05rem; color: var(--color-text); text-align: center; }
+        .bp-lead-capture .bp-lead-sub { text-align: center; font-size: 0.88rem; color: var(--color-text-secondary); margin: 0 0 16px; line-height: 1.5; }
+        .bp-lead-grid { display: grid; gap: 12px; }
+        @media (min-width: 480px) { .bp-lead-grid { grid-template-columns: 1fr 1fr auto; align-items: end; } }
+        .bp-lead-msg { font-size: 0.88rem; text-align: center; margin-top: 10px; min-height: 0; font-weight: 600; }
+        .bp-lead-msg.ok { color: var(--color-success, #22c55e); }
+        .bp-lead-msg.err { color: #ef4444; }
+        .bp-badges-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 16px; }
+        .bp-badge { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 12px; border-radius: 999px; background: rgba(201, 168, 76, 0.15); color: #C9A84C; border: 1px solid rgba(201, 168, 76, 0.35); }
+        .bp-signup-h2 { text-align: center; font-size: 1.15rem; margin: 0 0 12px; color: var(--color-text); line-height: 1.3; }
+        .bp-step-label.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+        .bp-prog-bar { display: flex; align-items: flex-start; justify-content: center; gap: 0; margin: 0 auto 16px; width: 100%; max-width: 520px; padding: 0 2px; box-sizing: border-box; }
+        .bp-prog-join { flex: 1 1 0; min-width: 6px; max-width: 48px; height: 3px; background: #2A2A38; margin-top: 17px; border-radius: 2px; align-self: flex-start; transition: background 0.2s; }
+        .bp-prog-join.is-done { background: #4CAF82; }
+        .bp-prog-node { flex: 0 0 auto; width: min(32%, 108px); text-align: center; }
+        .bp-prog-num { width: 36px; height: 36px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.95rem; background: #2A2A38; color: #F0EDE8; transition: background 0.2s, color 0.2s; }
+        .bp-prog-node.is-active .bp-prog-num { background: #C9A84C; color: #1a1510; }
+        .bp-prog-node.is-done .bp-prog-num { background: #4CAF82; color: #fff; }
+        .bp-prog-lbl { display: block; font-size: 0.7rem; font-weight: 700; color: var(--color-text-secondary); line-height: 1.25; hyphens: auto; }
+        .bp-prog-node.is-active .bp-prog-lbl { color: var(--color-text); }
+        .bp-unified-info { max-width: 560px; margin: 0 auto 20px; padding: 14px 16px; text-align: left; font-size: 0.9rem; line-height: 1.5; color: var(--color-text-secondary); background: rgba(201, 168, 76, 0.08); border: 1px solid rgba(201, 168, 76, 0.28); border-radius: 12px; box-sizing: border-box; }
+        .bp-hero-tarifs-link { margin-top: 16px; font-size: 0.95rem; }
+        html.needs-light .bp-unified-info, body.light-mode .bp-unified-info { background: rgba(201, 168, 76, 0.12); color: var(--color-text-secondary); }
+        .bp-step-head { margin-bottom: 20px; }
+        .bp-step-h-title { margin: 0 0 8px; font-size: 1.05rem; color: var(--color-text); font-weight: 800; }
+        .bp-step-h-sub { margin: 0; font-size: 0.88rem; color: var(--color-text-secondary); line-height: 1.45; }
+        .bp-id-post-wrap { max-width: 560px; margin: 0 auto 40px; padding: 0 20px; box-sizing: border-box; scroll-margin-top: 72px; }
+        .bp-id-post-inner { background: var(--color-card); border: 1px solid var(--color-border); border-radius: 20px; padding: 20px 18px; box-shadow: 0 12px 40px rgba(0,0,0,0.2); box-sizing: border-box; }
+        .bp-id-post-kicker { margin: 0 0 10px; font-size: 0.88rem; font-weight: 700; color: #C9A84C; text-align: center; line-height: 1.4; }
+        .bp-id-post-title { margin: 0 0 14px; font-size: 1.08rem; font-weight: 800; color: var(--color-text); text-align: center; line-height: 1.35; }
+        .bp-id-post-desc { margin: 0; font-size: 0.86rem; color: var(--color-text-secondary); line-height: 1.55; text-align: center; }
+        .bp-encourage { text-align: center; font-size: 0.95rem; font-weight: 700; color: #C9A84C; margin: 0 0 12px; min-height: 0; }
+        .bp-inline-toast { text-align: center; font-size: 0.88rem; color: var(--color-success, #22c55e); font-weight: 600; margin-bottom: 12px; }
+        .bp-su-err { color: #ef4444; font-size: 0.88rem; text-align: center; margin-bottom: 14px; font-weight: 600; }
+        .bp-step[hidden] { display: none !important; }
+        .bp-fld { margin-bottom: 12px; }
+        .bp-fld label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 6px; }
+        .bp-fld input, .bp-fld select, .bp-fld textarea { width: 100%; padding: 12px 14px; border-radius: 10px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); font-family: inherit; box-sizing: border-box; transition: border-color 0.15s; }
+        .bp-fld input:focus, .bp-fld textarea:focus, .bp-fld select:focus { outline: none; border-color: rgba(201, 168, 76, 0.65); }
+        .bp-fld--valid input, .bp-fld--valid select, .bp-fld--valid textarea { border-color: #22c55e; }
+        .bp-fld--invalid input, .bp-fld--invalid select, .bp-fld--invalid textarea { border-color: #ef4444; }
+        .bp-fld--invalid.bp-avail-wrap { outline: 2px solid #ef4444; outline-offset: 2px; border-radius: 10px; }
+        .bp-fld--valid.bp-avail-wrap { outline: 2px solid #22c55e; outline-offset: 2px; border-radius: 10px; }
+        .bp-avail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 6px; }
+        @media (min-width: 480px) { .bp-avail-grid { grid-template-columns: repeat(4, 1fr); } }
+        .bp-avail-grid label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.82rem; cursor: pointer; margin: 0; color: var(--color-text); }
+        .bp-avail-grid input { width: auto; }
+        .bp-hint { font-size: 0.72rem; color: var(--color-text-secondary); margin-top: 4px; }
+        #bp_su_phone_fld .bp-phone-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+        #bp_su_phone_fld .bp-phone-row .bp-phone-cc { flex: 0 1 11rem; width: auto; min-width: 9rem; max-width: 100%; }
+        #bp_su_phone_fld .bp-phone-row input[type="tel"] { flex: 1 1 140px; min-width: 0; width: auto; }
+        .bp-nav-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+        .bp-btn { padding: 14px 22px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; cursor: pointer; border: none; font-family: inherit; transition: opacity 0.2s, transform 0.15s; }
+        .bp-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+        .bp-btn-primary { background: #C9A84C; color: #1a1510; flex: 1; min-width: 140px; }
+        .bp-btn-primary:hover:not(:disabled) { filter: brightness(1.05); }
+        .bp-btn-ghost { background: transparent; color: var(--color-text); border: 2px solid var(--color-border); }
+        .bp-btn-ghost:hover { border-color: #C9A84C; color: #C9A84C; }
+        .bp-cgv-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 8px; }
+        .bp-cgv-row input { width: auto; margin-top: 4px; }
+        .bp-cgv-row label { font-size: 0.85rem; font-weight: 600; margin: 0; cursor: pointer; }
+        #bp_su_cgv_wrap.bp-fld--invalid { outline: 2px solid #ef4444; outline-offset: 3px; border-radius: 10px; padding: 8px; }
+        /* Sections : max 40px entre blocs (desktop), 20px mobile ; padding interne max 40px */
+        body.become-provider-page { --reveal-offset: 20px; }
+        body.become-provider-page .bp-hero { padding: 28px 5% 20px; }
+        body.become-provider-page .bp-hero-steps { gap: 10px; margin-bottom: 16px; padding: 0 8px; max-width: 100%; }
+        body.become-provider-page .bp-hero-step { padding: 12px 12px; max-height: none; }
+        body.become-provider-page .bp-calc-wrap { margin: 0 auto 40px !important; padding: 0 20px; }
+        body.become-provider-page .bp-calc-card { padding: 20px 18px !important; max-width: 100%; }
+        body.become-provider-page .bp-calc-row { margin-bottom: 12px; }
+        body.become-provider-page .bp-calc-result { margin: 14px 0 8px; }
+        body.become-provider-page .bp-testimonials {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 14px !important;
+            margin: 0 auto 40px !important;
+        }
+        body.become-provider-page .bp-tcard { padding: 16px 14px !important; }
+        body.become-provider-page .bp-faq { margin: 0 auto 40px !important; display: flex; flex-direction: column; gap: 8px; }
+        body.become-provider-page .bp-faq details { margin-bottom: 0 !important; padding: 0 14px !important; }
+        body.become-provider-page .bp-faq h2 { margin-bottom: 10px !important; }
+        body.become-provider-page .bp-signup-section { margin: 0 auto 40px !important; }
+        body.become-provider-page .bp-signup-inner { padding: 20px 16px 20px !important; }
+        body.become-provider-page .bp-back { padding-bottom: 20px; margin-top: 0; }
+        body.become-provider-page .bp-logged-banner { margin-bottom: 40px !important; }
+        body.become-provider-page > footer.needs-site-footer.needs-unified-footer {
+            padding: 24px 5% 24px !important;
+            gap: 24px !important;
+        }
+        body.become-provider-page > footer.needs-site-footer .footer-cols { gap: 24px !important; }
+        body.become-provider-page > footer.needs-site-footer .footer-rgpd-bar { margin-bottom: 12px !important; }
+        body.become-provider-page .bp-fld input[readonly],
+        body.become-provider-page .bp-fld input.bp-fld-readonly {
+            opacity: 0.92;
+            cursor: not-allowed;
+            background: var(--color-bg-secondary, rgba(255,255,255,0.04));
+        }
+        @media (max-width: 720px) {
+            body.become-provider-page .bp-hero-steps { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            body.become-provider-page .bp-testimonials { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 640px) {
+            body.become-provider-page .bp-hero { padding: 20px 4% 16px; }
+            body.become-provider-page .bp-calc-wrap,
+            body.become-provider-page .bp-testimonials,
+            body.become-provider-page .bp-faq,
+            body.become-provider-page .bp-signup-section,
+            body.become-provider-page .bp-logged-banner { margin-bottom: 20px !important; }
+            body.become-provider-page .bp-calc-wrap,
+            body.become-provider-page .bp-testimonials,
+            body.become-provider-page .bp-faq,
+            body.become-provider-page .bp-signup-section { padding-left: 14px !important; padding-right: 14px !important; }
+            body.become-provider-page .bp-calc-card { padding: 16px 12px !important; }
+            body.become-provider-page .bp-unified-info { margin-bottom: 12px; padding: 10px 12px; font-size: 0.84rem; }
+            body.become-provider-page .bp-prog-lbl { font-size: 0.65rem; }
+            body.become-provider-page .bp-signup-inner { padding: 16px 12px 16px !important; }
+            body.become-provider-page > footer.needs-site-footer.needs-unified-footer {
+                padding: 16px 4% 16px !important;
+                gap: 16px !important;
+            }
+            body.become-provider-page > footer.needs-site-footer .footer-cols { gap: 16px !important; }
+            body.become-provider-page .bp-back { padding-bottom: 16px; }
+        }
+    </style>
+</head>
+<body class="become-provider-page">
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+    <nav class="subpage-topbar">
+        <a href="index.html" class="subpage-back" id="bp_nav_back" data-i18n="bp_nav_back">← Accueil</a>
+        <div class="subpage-actions">
+            <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+            <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(render)" aria-label="Langue">EN</button>
+        </div>
+    </nav>
+    <div class="bp-hero">
+        <p class="bp-unified-info" data-i18n="bp_unified_info">En créant votre compte prestataire, vous pourrez publier vos services et recevoir des commandes directement sur Needs. Le même compte vous permet aussi de réserver des services en tant que client.</p>
+        <h1 id="p_title" data-i18n="bp_title">Augmentez vos revenus avec Needs</h1>
+        <p id="p_desc" data-i18n="bp_desc">Rejoignez la plateforme des services premium : clients vérifiés, missions claires et paiement sécurisé.</p>
+        <div class="bp-hero-steps">
+            <div class="bp-hero-step">
+                <div class="bp-hero-step-num">1</div>
+                <h3 data-i18n="bp_pf_s1_t">Créez votre profil</h3>
+                <p data-i18n="bp_pf_s1_d">Décrivez vos services, fixez vos tarifs et ajoutez vos photos.</p>
+            </div>
+            <div class="bp-hero-step">
+                <div class="bp-hero-step-num">2</div>
+                <h3 data-i18n="bp_pf_s2_t">Recevez des demandes</h3>
+                <p data-i18n="bp_pf_s2_d">Les clients vous contactent directement via la plateforme.</p>
+            </div>
+            <div class="bp-hero-step">
+                <div class="bp-hero-step-num">3</div>
+                <h3 data-i18n="bp_pf_s3_t">Soyez payé en sécurité</h3>
+                <p data-i18n="bp_pf_s3_d">Paiement garanti après validation du service, virement sous 24 h.</p>
+            </div>
+        </div>
+        <a href="#inscription" class="cta-btn" id="p_btn" data-i18n="bp_btn">Envoyer ma candidature</a>
+        <p class="bp-hero-tarifs-link"><a href="tarifs.html" style="color:#C9A84C;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.5);" data-i18n="bp_pro_offers_link">Voir les offres Pro →</a></p>
+    </div>
+
+    <section class="bp-calc-wrap reveal">
+        <h2 id="earn_title" data-i18n="bp_calc_title">Combien pouvez-vous gagner ?</h2>
+        <div class="bp-calc-card">
+            <div class="bp-calc-row">
+                <label for="bp_calc_hours" data-i18n="bp_calc_hours_l">Combien d'heures par semaine ?</label>
+                <input type="range" id="bp_calc_hours" min="5" max="40" value="20" step="1">
+                <div class="disp"><span id="bp_calc_hours_disp">20</span></div>
+            </div>
+            <div class="bp-calc-row">
+                <label for="bp_calc_rate" data-i18n="bp_calc_rate_l">Quel est votre tarif horaire ?</label>
+                <input type="range" id="bp_calc_rate" min="25" max="150" value="65" step="5">
+                <div class="disp"><span id="bp_calc_rate_disp">65</span></div>
+            </div>
+            <p class="bp-calc-result">
+                <span data-i18n="bp_calc_result_lead">Vous pourriez gagner jusqu'à</span>
+                <span id="bp_calc_amount" class="bp-calc-amount">0</span>
+                <span data-i18n="bp_calc_result_tail">$ CA par mois avec Needs</span>
+            </p>
+            <p class="bp-calc-note" data-i18n="bp_calc_note">Estimation après commission Needs de 15 % (85 % pour vous), sur 4 semaines. Montants indicatifs.</p>
+            <div class="bp-commission" id="commission_txt" data-i18n="bp_commission_txt"></div>
+        </div>
+    </section>
+
+    <section class="bp-testimonials">
+        <div class="bp-tcard">
+            <p id="t1_p" data-i18n="bp_story_marie_q">« J’ai doublé mes revenus en 3 mois. Les clients sont sérieux et les paiements arrivent toujours. »</p>
+            <div class="who" id="t1_n" data-i18n="bp_story_marie_n">Marie T.</div>
+            <div class="meta" id="t1_m" data-i18n="bp_story_marie_m">Plateau-Mont-Royal — ménage</div>
+        </div>
+        <div class="bp-tcard">
+            <p id="t2_p" data-i18n="bp_story_jean_q">« Plus besoin de courir après les paiements. Needs gère tout, je me concentre sur mon travail. »</p>
+            <div class="who" id="t2_n" data-i18n="bp_story_jean_n">Jean B.</div>
+            <div class="meta" id="t2_m" data-i18n="bp_story_jean_m">Mile-End — plombier</div>
+        </div>
+    </section>
+
+    <section class="bp-faq reveal">
+        <h2 data-i18n="bp_faq_h2">FAQ prestataires</h2>
+        <details><summary data-i18n="bp_faq_q1">Quelle commission prend Needs ?</summary><p class="a" data-i18n="bp_faq_a1"></p></details>
+        <details><summary data-i18n="bp_faq_q2">Quand suis-je payé ?</summary><p class="a" data-i18n="bp_faq_a2"></p></details>
+        <details><summary data-i18n="bp_faq_q3">Puis-je refuser une commande ?</summary><p class="a" data-i18n="bp_faq_a3"></p></details>
+        <details><summary data-i18n="bp_faq_q4">Comment Needs vérifie mon identité ?</summary><p class="a" data-i18n="bp_faq_a4"></p></details>
+        <details><summary data-i18n="bp_faq_q5">Y a-t-il des frais d’inscription ?</summary><p class="a" data-i18n="bp_faq_a5"></p></details>
+    </section>
+
+    <section class="bp-lead-standalone reveal" id="bp_lead_section" aria-labelledby="bp_lead_heading">
+        <div class="bp-signup-inner">
+            <div class="bp-lead-capture" id="bp_lead_block" style="margin-top:0;padding-top:0;border-top:none;">
+                <h3 id="bp_lead_heading" data-i18n="bp_lead_title">Recevez nos conseils pour démarrer sur Needs</h3>
+                <p class="bp-lead-sub" data-i18n="bp_lead_sub">Astuces et parcours d’inscription — sans engagement.</p>
+                <form id="bp_lead_form" class="bp-lead-grid" novalidate>
+                    <div class="bp-fld" style="margin-bottom:0;">
+                        <label for="bp_lead_email" data-i18n="bp_lead_email_l">Courriel</label>
+                        <input type="email" id="bp_lead_email" name="email" required autocomplete="email" maxlength="320" data-i18n-placeholder="bp_lead_email_ph">
+                    </div>
+                    <div class="bp-fld" style="margin-bottom:0;">
+                        <label for="bp_lead_source" data-i18n="bp_lead_source_l">Comment nous avez-vous connus ?</label>
+                        <select id="bp_lead_source" name="source" required>
+                            <option value="Facebook" data-i18n="bp_lead_opt_facebook">Facebook</option>
+                            <option value="Kijiji" data-i18n="bp_lead_opt_kijiji">Kijiji</option>
+                            <option value="LinkedIn" data-i18n="bp_lead_opt_linkedin">LinkedIn</option>
+                            <option value="Réseau perso" data-i18n="bp_lead_opt_network">Réseau perso</option>
+                            <option value="Autre" data-i18n="bp_lead_opt_other">Autre</option>
+                        </select>
+                    </div>
+                    <div class="bp-fld" style="margin-bottom:0;">
+                        <button type="submit" class="bp-btn bp-btn-primary" id="bp_lead_submit" style="width:100%;margin:0;" data-i18n="bp_lead_submit">Recevoir les infos</button>
+                    </div>
+                </form>
+                <p id="bp_lead_msg" class="bp-lead-msg" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
+    <div id="bp_logged_banner" class="bp-logged-banner" hidden>
+        <p data-i18n="bp_su_already_provider">Vous avez déjà un compte prestataire Needs.</p>
+        <a href="compte.html" class="cta-btn" data-i18n="bp_su_go_compte">Mon compte</a>
+    </div>
+
+    <section class="bp-signup-section" id="inscription" aria-labelledby="bp_su_heading">
+        <div class="bp-signup-inner">
+            <div class="bp-badges-row">
+                <span class="bp-badge" data-i18n="bp_su_badge_free">Inscription 100% gratuite</span>
+                <span class="bp-badge" data-i18n="bp_su_badge_bonus">Premiers 100 prestataires : bonus 50 CA$</span>
+                <span class="bp-badge" data-i18n="bp_su_badge_orders">Première commande en 24-48h</span>
+            </div>
+            <h2 class="bp-signup-h2" id="bp_su_heading" data-i18n="bp_su_title">Créez votre compte prestataire en 3 étapes</h2>
+            <p class="bp-step-label sr-only" id="bp_step_label">Étape 1/3</p>
+            <div class="bp-prog-bar" data-i18n-attr="aria-label:bp_prog_nav_aria" role="navigation">
+                <div class="bp-prog-node is-active" data-prog-step="1">
+                    <div class="bp-prog-num" aria-hidden="true">1</div>
+                    <span class="bp-prog-lbl" data-i18n="bp_prog_l1">Infos personnelles</span>
+                </div>
+                <div class="bp-prog-join" aria-hidden="true"></div>
+                <div class="bp-prog-node" data-prog-step="2">
+                    <div class="bp-prog-num" aria-hidden="true">2</div>
+                    <span class="bp-prog-lbl" data-i18n="bp_prog_l2">Votre service</span>
+                </div>
+                <div class="bp-prog-join" aria-hidden="true"></div>
+                <div class="bp-prog-node" data-prog-step="3">
+                    <div class="bp-prog-num" aria-hidden="true">3</div>
+                    <span class="bp-prog-lbl" data-i18n="bp_prog_l3">Finalisation</span>
+                </div>
+            </div>
+            <p id="bp_encourage" class="bp-encourage" hidden></p>
+            <div id="bp_toast" class="bp-inline-toast" hidden role="status"></div>
+
+            <div id="bp_signup_card">
+                <p id="bp_su_err" class="bp-su-err" hidden></p>
+
+                <div class="bp-step" data-step="1">
+                    <div class="bp-step-head">
+                        <h3 class="bp-step-h-title" data-i18n="bp_step1_h">Vos informations</h3>
+                        <p class="bp-step-h-sub" data-i18n="bp_step1_sub">Comment vous appelle-t-on ?</p>
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_first" data-i18n="bp_su_l_first">Prénom</label>
+                        <input type="text" id="bp_su_first" name="firstName" autocomplete="given-name">
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_last" data-i18n="bp_su_l_last">Nom</label>
+                        <input type="text" id="bp_su_last" name="lastName" autocomplete="family-name">
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_email" data-i18n="bp_su_l_email">Courriel</label>
+                        <input type="email" id="bp_su_email" name="email" autocomplete="email">
+                    </div>
+                    <div class="bp-fld" id="bp_su_phone_fld">
+                        <label for="bp_su_phone" data-i18n="bp_su_l_phone">Téléphone</label>
+                        <div class="bp-phone-row">
+                            <select id="bp_su_phone_cc" class="bp-phone-cc" data-i18n-attr="aria-label:bp_su_phone_cc_aria"></select>
+                            <input type="tel" id="bp_su_phone" name="phone" autocomplete="tel-national" data-i18n-placeholder="bp_su_ph_phone" placeholder="514 555 1234">
+                        </div>
+                        <p class="bp-hint" data-i18n="bp_su_phone_hint">Indicatif pays + numéro local</p>
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_city" data-i18n="bp_su_l_city">Ville / quartier (Montréal)</label>
+                        <input type="text" id="bp_su_city" name="city" autocomplete="address-level2" data-i18n-placeholder="bp_su_ph_city" placeholder="Ex. Plateau, Verdun…">
+                    </div>
+                </div>
+
+                <div class="bp-step" data-step="2" hidden>
+                    <div class="bp-step-head">
+                        <h3 class="bp-step-h-title" data-i18n="bp_step2_h">Votre service</h3>
+                        <p class="bp-step-h-sub" data-i18n="bp_step2_sub">Qu'est-ce que vous proposez ?</p>
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_category" data-i18n="bp_su_l_category">Catégorie principale</label>
+                        <select id="bp_su_category" name="category">
+                            <option value="" data-i18n="bp_su_cat_placeholder">Choisir…</option>
+                            <option value="menage" data-i18n="bp_cat_menage">Ménage</option>
+                            <option value="plomberie" data-i18n="bp_cat_plomberie">Plomberie</option>
+                            <option value="electricite" data-i18n="bp_cat_electricite">Électricité</option>
+                            <option value="demenagement" data-i18n="bp_cat_demenagement">Déménagement</option>
+                            <option value="cours" data-i18n="bp_cat_cours">Cours</option>
+                            <option value="photo" data-i18n="bp_cat_photo">Photo</option>
+                            <option value="tech" data-i18n="bp_cat_tech">Tech</option>
+                            <option value="autre" data-i18n="bp_cat_autre">Autre</option>
+                        </select>
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_desc" data-i18n="bp_su_l_desc">Description courte du service</label>
+                        <textarea id="bp_su_desc" name="serviceDesc" maxlength="200" rows="3" data-i18n-placeholder="bp_su_ph_desc" placeholder="Décrivez ce que vous proposez…"></textarea>
+                        <p class="bp-hint"><span id="bp_su_desc_count">0 / 200</span></p>
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_rate" data-i18n="bp_su_l_rate">Tarif horaire (CA$)</label>
+                        <input type="number" id="bp_su_rate" name="hourlyRate" min="15" max="500" step="1" placeholder="65">
+                    </div>
+                    <div class="bp-fld bp-avail-wrap" id="bp_su_avail_wrap">
+                        <span data-i18n="bp_su_l_avail">Disponibilités générales</span>
+                        <div class="bp-avail-grid">
+                            <label><input type="checkbox" id="bp_su_av_week" name="availWeek"> <span data-i18n="bp_su_av_week">Semaine</span></label>
+                            <label><input type="checkbox" id="bp_su_av_we" name="availWeekend"> <span data-i18n="bp_su_av_weekend">Week-end</span></label>
+                            <label><input type="checkbox" id="bp_su_av_eve" name="availEvening"> <span data-i18n="bp_su_av_evening">Soir</span></label>
+                            <label><input type="checkbox" id="bp_su_av_urg" name="availUrgent"> <span data-i18n="bp_su_av_urgent">Urgences</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-step" data-step="3" hidden>
+                    <div class="bp-step-head">
+                        <h3 class="bp-step-h-title" data-i18n="bp_step3_h">Finalisation</h3>
+                        <p class="bp-step-h-sub" data-i18n="bp_step3_sub">Derniers détails avant de commencer</p>
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_photo" data-i18n="bp_su_l_photo">Photo de profil (optionnel)</label>
+                        <input type="file" id="bp_su_photo" name="photo" accept="image/*">
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_bio" data-i18n="bp_su_l_bio">Bio courte (optionnel)</label>
+                        <textarea id="bp_su_bio" name="bio" rows="3" data-i18n-placeholder="bp_su_ph_bio" placeholder="Quelques mots sur vous…"></textarea>
+                    </div>
+                    <div id="bp_su_pass_wrap">
+                    <div class="bp-fld">
+                        <label for="bp_su_pass" data-i18n="bp_su_l_password">Mot de passe</label>
+                        <input type="password" id="bp_su_pass" name="password" autocomplete="new-password" minlength="8">
+                        <p class="bp-hint" data-i18n="bp_su_pass_hint">Au moins 8 caractères</p>
+                    </div>
+                    <div class="bp-fld">
+                        <label for="bp_su_pass2" data-i18n="bp_su_l_password2">Confirmer le mot de passe</label>
+                        <input type="password" id="bp_su_pass2" name="password2" autocomplete="new-password" minlength="8">
+                    </div>
+                    </div>
+                    <div class="bp-fld bp-cgv-wrap" id="bp_su_cgv_wrap" style="margin-top:12px;">
+                        <div class="bp-cgv-row">
+                            <input type="checkbox" id="bp_su_cgv" name="cgv">
+                            <label for="bp_su_cgv" data-i18n="bp_su_cgv">J'accepte les CGV Needs</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-nav-row">
+                    <button type="button" class="bp-btn bp-btn-ghost" id="bp_btn_back">← Retour</button>
+                    <button type="button" class="bp-btn bp-btn-primary" id="bp_btn_next">Suivant →</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bp-id-post-wrap reveal" id="bp_identity_followup" aria-labelledby="bp_id_post_title">
+        <div class="bp-id-post-inner">
+            <p class="bp-id-post-kicker" data-i18n="bp_next_step_identity_lead">Étape suivante après votre inscription :</p>
+            <h2 class="bp-id-post-title" id="bp_id_post_title" data-i18n="bp_next_step_identity_title">Vérifiez votre identité pour recevoir des paiements sous 48 h.</h2>
+            <p class="bp-id-post-desc" data-i18n="bp_identity_desc">Pour recevoir des paiements sur Needs, les prestataires doivent soumettre une pièce d'identité officielle. Notre équipe vérifie chaque dossier sous 48 h ouvrées.</p>
+        </div>
+    </section>
+
+    <div class="bp-back"><a href="index.html" id="bp_back_link" data-i18n="bp_back_link">← Retour</a></div>
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+    <script src="subpage-common.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+    <script>
+        var bpFbCfg = { apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU", authDomain: "needs-ae86d.firebaseapp.com", projectId: "needs-ae86d", storageBucket: "needs-ae86d.firebasestorage.app", messagingSenderId: "253900994407", appId: "1:253900994407:web:55168e1b73c878761de1c2" };
+        if (!firebase.apps.length) firebase.initializeApp(bpFbCfg);
+        function updateBpCalc() {
+            var hEl = document.getElementById("bp_calc_hours");
+            var rEl = document.getElementById("bp_calc_rate");
+            if (!hEl || !rEl) return;
+            var l = (needsSubpage.getLang && needsSubpage.getLang()) || "fr";
+            var h = parseInt(hEl.value, 10) || 0;
+            var rate = parseInt(rEl.value, 10) || 0;
+            var hd = document.getElementById("bp_calc_hours_disp");
+            var rd = document.getElementById("bp_calc_rate_disp");
+            if (hd) hd.textContent = h + (l === "en" ? " h/wk" : " h/sem.");
+            if (rd) rd.textContent = rate + (l === "en" ? " CAD/h" : " CA$/h");
+            var monthly = Math.round(h * rate * 4 * 0.85);
+            var amt = document.getElementById("bp_calc_amount");
+            if (amt) amt.textContent = monthly.toLocaleString(l === "en" ? "en-CA" : "fr-CA");
+        }
+        function render() {
+            var l = needsSubpage.getLang();
+            if (window.__needs_prefs) __needs_prefs.setLang(l);
+            document.documentElement.lang = l === "en" ? "en" : "fr";
+            if (window.NeedsI18n) NeedsI18n.applyDOM(l);
+            document.title = l === "en" ? "Become a Needs provider | Grow your income" : "Devenir prestataire Needs | Augmentez vos revenus";
+            var m = document.querySelector('meta[name="description"]');
+            if (m) m.setAttribute("content", l === "en"
+              ? "Join Needs: visibility, qualified jobs and secure payouts. Transparent commission and premium clients."
+              : "Rejoignez Needs : visibilité, missions qualifiées et paiements sécurisés. Commission transparente et clients premium.");
+            needsSubpage.updateChromeButtons();
+            var meta = document.getElementById("meta-theme-color");
+            if (meta && window.__needs_prefs) meta.setAttribute("content", __needs_prefs.getTheme() === "light" ? "#faf9f6" : "#0A0A0F");
+            updateBpCalc();
+            if (window.bpSignupSyncI18n) window.bpSignupSyncI18n();
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            render();
+            var hEl = document.getElementById("bp_calc_hours");
+            var rEl = document.getElementById("bp_calc_rate");
+            if (hEl) hEl.addEventListener("input", updateBpCalc);
+            if (rEl) rEl.addEventListener("input", updateBpCalc);
+        });
+    </script>
+    <script src="js/become-provider-lead.js"></script>
+    <script src="js/bp-phone-countries.js"></script>
+    <script src="js/become-provider-signup.js"></script>
+    <script src="cursor.js" defer></script>
+</body>
+</html>

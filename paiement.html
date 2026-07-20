@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/paiement.html">
+  <title>Needs — Paiement Sécurisé</title>
+  <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+  <style>
+    :root {
+      --navy-bg: #070B14;
+      --navy-card: #111827;
+      --navy-border: #374151;
+      --pro-blue: #2563EB;
+      --accent: #F59E0B;
+      --white: #F9FAFB;
+      --text-muted: #9CA3AF;
+    }
+
+    body {
+      background: var(--navy-bg);
+      color: var(--white);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; margin: 0;
+    }
+
+    .payment-container {
+      background: var(--navy-card);
+      width: 100%; max-width: 400px;
+      padding: 30px; border-radius: 24px;
+      border: 1px solid var(--navy-border);
+      text-align: center;
+    }
+
+    .loader {
+      display: none;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--pro-blue);
+      border-radius: 50%;
+      width: 40px; height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .price-box { font-size: 3rem; font-weight: 800; color: var(--accent); margin: 20px 0; }
+    
+    input {
+      width: 100%; padding: 12px; margin-bottom: 15px;
+      border-radius: 8px; border: 1px solid var(--navy-border);
+      background: #000; color: white; outline: none;
+    }
+
+    .btn-pay {
+      width: 100%; padding: 15px; border-radius: 12px;
+      background: var(--pro-blue); color: white; border: none;
+      font-weight: bold; cursor: pointer;
+    }
+
+    .success-msg { display: none; color: #10B981; }
+  </style>
+    <script src="js/needs-analytics.js"></script>
+</head>
+<body>
+
+<div class="payment-container" id="mainBox">
+  <h2 id="title">Finaliser la commande</h2>
+  <p id="serviceName" style="color: var(--text-muted);">---</p>
+  
+  <div class="price-box" id="priceDisplay">0€</div>
+
+  <div id="formFields">
+    <input type="text" id="cardName" placeholder="Nom sur la carte">
+    <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+    <div style="display:flex; gap:10px;">
+      <input type="text" placeholder="MM/YY" maxlength="5">
+      <input type="text" placeholder="CVC" maxlength="3">
+    </div>
+    <button class="btn-pay" onclick="startPayment()">Confirmer le paiement</button>
+  </div>
+
+  <div class="loader" id="loader"></div>
+  
+  <div class="success-msg" id="success">
+    <svg width="60" height="60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+    <h3>Paiement Confirmé !</h3>
+    <p>Redirection vers votre compte...</p>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+  // Ta config Firebase ici
+  const firebaseConfig = { apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU", authDomain: "needs-ae86d.firebaseapp.com", projectId: "needs-ae86d", storageBucket: "needs-ae86d.firebasestorage.app", messagingSenderId: "253900994407", appId: "1:253900994407:web:55168e1b73c878761de1c2" };
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+
+  // Récupérer les infos de l'URL
+  const params = new URLSearchParams(window.location.search);
+  const price = params.get('price');
+  const title = params.get('title');
+  const serviceId = params.get('id');
+
+  document.getElementById('serviceName').textContent = title;
+  document.getElementById('priceDisplay').textContent = price + "€";
+
+  async function startPayment() {
+    const name = document.getElementById('cardName').value;
+    if(!name) return alert("Veuillez remplir les informations.");
+
+    // 1. Cacher le formulaire et montrer le chargement
+    document.getElementById('formFields').style.display = 'none';
+    document.getElementById('loader').style.display = 'block';
+    document.getElementById('title').textContent = "Vérification en cours...";
+
+    // 2. Simuler un délai bancaire (2 secondes)
+    setTimeout(async () => {
+      try {
+        const user = auth.currentUser;
+        
+        // 3. Enregistrer la transaction dans Firebase
+        await db.collection("transactions").add({
+          buyerId: user.uid,
+          serviceId: serviceId,
+          amount: parseFloat(price),
+          title: title,
+          date: firebase.firestore.FieldValue.serverTimestamp(),
+          status: "success"
+        });
+
+        // 4. Afficher le succès
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('success').style.display = 'block';
+        document.getElementById('title').textContent = "Merci !";
+
+        // 5. Rediriger après 3 secondes
+        setTimeout(() => {
+          window.location.href = "compte.html";
+        }, 3000);
+
+      } catch (e) {
+        alert("Erreur lors de la transaction : " + e.message);
+        location.reload();
+      }
+    }, 2500);
+  }
+</script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

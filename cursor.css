@@ -1,0 +1,20 @@
+/* Curseur personnalisé — chargé sur toutes les pages */
+body.custom-cursor { cursor: none; }
+body.custom-cursor a, body.custom-cursor button, body.custom-cursor .cat-card, body.custom-cursor .btn,
+body.custom-cursor .nav-link, body.custom-cursor .service-card, body.custom-cursor .filter-btn,
+body.custom-cursor .btn-view, body.custom-cursor .btn-details, body.custom-cursor .btn-fav,
+body.custom-cursor .quick-bubble, body.custom-cursor .search-suggestion-row,
+body.custom-cursor [role="button"] { cursor: none; }
+.cursor-dot {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--pro-blue, var(--primary, #1d4ed8));
+  border-radius: 50%; pointer-events: none; z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease-out, width 0.2s, height 0.2s;
+  mix-blend-mode: difference;
+}
+.cursor-dot.hover { width: 36px; height: 36px; background: rgba(29, 78, 216, 0.25); }
+@media (hover: none) {
+  .cursor-dot { display: none !important; }
+  body.custom-cursor, body.custom-cursor a, body.custom-cursor button { cursor: auto; }
+}

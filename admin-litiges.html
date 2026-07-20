@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/needs-analytics.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/admin-litiges.html">
+  <meta name="theme-color" content="#0A0A0F">
+  <title>Needs — Litiges (administration)</title>
+  <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: #0A0A0F !important;
+      color: #F0EDE8 !important;
+      min-height: 100vh;
+    }
+    .admin-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+    .admin-shell h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #F0EDE8;
+    }
+    .admin-shell .admin-lead {
+      color: rgba(240, 237, 232, 0.75);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+    }
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 768px) {
+      .admin-stats { grid-template-columns: 1fr; }
+    }
+    .admin-stat-card {
+      background: rgba(201, 168, 76, 0.08);
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+    .admin-stat-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(240, 237, 232, 0.65);
+      margin-bottom: 8px;
+    }
+    .admin-stat-value {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #C9A84C;
+      line-height: 1.2;
+    }
+    .admin-table-wrap {
+      overflow-x: auto;
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    table.admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .admin-table thead th {
+      text-align: left;
+      padding: 14px 16px;
+      color: #C9A84C;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+      white-space: nowrap;
+    }
+    .admin-table tbody td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      vertical-align: middle;
+      color: #F0EDE8;
+    }
+    .admin-table tbody tr:last-child td { border-bottom: none; }
+    .admin-table .cell-muted { color: rgba(240, 237, 232, 0.65); font-size: 0.85rem; }
+    .admin-actions-cell {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .btn-admin-refund {
+      background: #b91c1c;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .btn-admin-refund:hover { filter: brightness(1.08); }
+    .btn-admin-release {
+      background: #15803d;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .btn-admin-release:hover { filter: brightness(1.08); }
+    .admin-loading { text-align: center; padding: 48px 20px; color: rgba(240, 237, 232, 0.8); }
+    .adm-denied {
+      text-align: center;
+      padding: 48px 20px;
+      color: #f87171;
+      font-weight: 600;
+    }
+    .admin-empty { padding: 32px; text-align: center; color: rgba(240, 237, 232, 0.7); }
+  </style>
+</head>
+<body data-no-inject-footer="true">
+  <a href="#main-content" class="skip-link">Aller au contenu</a>
+
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo-3d">N</div>
+      <span style="font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px;">NEEDS</span>
+    </a>
+    <button type="button" class="burger-btn" onclick="toggleNavDrawer()" aria-label="Ouvrir le menu" aria-expanded="false" id="burgerBtn">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="nav-overlay" id="navOverlay" onclick="toggleNavDrawer()" aria-hidden="true"></div>
+    <nav class="nav-group">
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="compte.html" class="nav-link">Mon compte</a>
+      <a href="index.html" class="btn btn-main" style="padding: 10px 20px; font-size: 0.9rem;">Accueil</a>
+    </nav>
+    <div class="nav-drawer" id="navDrawer" aria-label="Menu">
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="compte.html" class="nav-link">Mon compte</a>
+      <a href="index.html" class="btn btn-main" style="width: 100%; justify-content: center;">Accueil</a>
+    </div>
+  </header>
+
+  <main id="main-content" class="admin-shell" tabindex="-1">
+    <p id="admLoading" class="admin-loading"><i class="fa-solid fa-spinner fa-spin"></i> Chargement…</p>
+    <div id="admDenied" class="adm-denied" style="display: none;">Accès réservé aux administrateurs.</div>
+    <div id="admContent" style="display: none;">
+      <h1><i class="fa-solid fa-gavel" style="color: #C9A84C;"></i> Gestion des litiges</h1>
+      <p class="admin-lead">Litiges ouverts, résolutions du mois et remboursements (CA$).</p>
+
+      <div class="admin-stats">
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Litiges ouverts</div>
+          <div class="admin-stat-value" id="statOpen">—</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Litiges résolus (ce mois)</div>
+          <div class="admin-stat-value" id="statResolved">—</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Montant remboursé (ce mois)</div>
+          <div class="admin-stat-value" id="statRefunded">—</div>
+        </div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Email client</th>
+              <th>Motif</th>
+              <th>Montant (CA$)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admTableBody"></tbody>
+        </table>
+        <div id="admTableEmpty" class="admin-empty" style="display: none;">Aucun litige ouvert.</div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+  <script>
+    function toggleNavDrawer() {
+      document.body.classList.toggle("nav-open");
+      var btn = document.getElementById("burgerBtn");
+      var overlay = document.getElementById("navOverlay");
+      if (btn) btn.setAttribute("aria-expanded", document.body.classList.contains("nav-open"));
+      if (overlay) overlay.setAttribute("aria-hidden", !document.body.classList.contains("nav-open"));
+    }
+
+    const fbCfg = {
+      apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU",
+      authDomain: "needs-ae86d.firebaseapp.com",
+      projectId: "needs-ae86d",
+      storageBucket: "needs-ae86d.firebasestorage.app",
+      messagingSenderId: "253900994407",
+      appId: "1:253900994407:web:55168e1b73c878761de1c2"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(fbCfg);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    const fns = firebase.app().functions("us-central1");
+
+    function fmtCad(n) {
+      var x = Number(n);
+      if (isNaN(x)) return "—";
+      return x.toLocaleString("fr-CA", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " CA$";
+    }
+
+    window.doRefund = function (disputeId) {
+      if (!confirm("Confirmer le remboursement intégral au client ?")) return;
+      fns.httpsCallable("refundOrder")({ disputeId: disputeId })
+        .then(function () {
+          alert("Remboursement lancé.");
+          location.reload();
+        })
+        .catch(function (e) {
+          alert(e.message || "Erreur");
+        });
+    };
+
+    window.doRelease = function (disputeId) {
+      if (!confirm("Libérer le paiement au prestataire et clôturer le litige ?")) return;
+      fns.httpsCallable("adminReleaseToSeller")({ disputeId: disputeId })
+        .then(function () {
+          alert("Paiement libéré.");
+          location.reload();
+        })
+        .catch(function (e) {
+          alert(e.message || "Erreur");
+        });
+    };
+
+    function startOfMonth(d) {
+      return new Date(d.getFullYear(), d.getMonth(), 1, 0, 0, 0, 0);
+    }
+
+    auth.onAuthStateChanged(function (user) {
+      var loading = document.getElementById("admLoading");
+      var denied = document.getElementById("admDenied");
+      var content = document.getElementById("admContent");
+
+      if (!user) {
+        window.location.href = "auth.html?next=" + encodeURIComponent("admin-litiges.html");
+        return;
+      }
+
+      db.collection("users")
+        .doc(user.uid)
+        .get()
+        .then(function (snap) {
+          if (loading) loading.style.display = "none";
+          if (!snap.exists || !snap.data().isAdmin) {
+            if (denied) denied.style.display = "block";
+            return;
+          }
+          if (content) content.style.display = "block";
+
+          return Promise.all([
+            db.collection("disputes").where("status", "==", "open").get(),
+            db.collection("disputes").where("status", "==", "resolved").get(),
+            db.collection("orders").where("status", "==", "refunded").get()
+          ]).then(function (results) {
+            var openSnap = results[0];
+            var resolvedSnap = results[1];
+            var ordersSnap = results[2];
+            var now = new Date();
+            var som = startOfMonth(now);
+
+            var resolvedThisMonth = 0;
+            resolvedSnap.docs.forEach(function (d) {
+              var x = d.data();
+              var t = x.resolvedAt && x.resolvedAt.toDate ? x.resolvedAt.toDate() : null;
+              if (t && t >= som) resolvedThisMonth++;
+            });
+
+            var refundedCad = 0;
+            ordersSnap.docs.forEach(function (d) {
+              var x = d.data();
+              var t = x.refundedAt && x.refundedAt.toDate ? x.refundedAt.toDate() : null;
+              if (t && t >= som) refundedCad += Number(x.amount) || 0;
+            });
+
+            document.getElementById("statOpen").textContent = String(openSnap.size);
+            document.getElementById("statResolved").textContent = String(resolvedThisMonth);
+            document.getElementById("statRefunded").textContent = fmtCad(refundedCad);
+
+            var tbody = document.getElementById("admTableBody");
+            var emptyEl = document.getElementById("admTableEmpty");
+            tbody.innerHTML = "";
+
+            if (openSnap.empty) {
+              emptyEl.style.display = "block";
+              return;
+            }
+            emptyEl.style.display = "none";
+
+            var rows = openSnap.docs.map(function (docSnap) {
+              var x = docSnap.data();
+              var id = docSnap.id;
+              var dateStr =
+                x.createdAt && x.createdAt.toDate
+                  ? x.createdAt.toDate().toLocaleString("fr-CA")
+                  : "—";
+              var uid = x.userId || "";
+              var orderId = x.orderId || "";
+              return db
+                .collection("users")
+                .doc(uid)
+                .get()
+                .then(function (uSnap) {
+                  var email = "—";
+                  if (uSnap.exists && uSnap.data().email) email = uSnap.data().email;
+                  return db
+                    .collection("orders")
+                    .doc(orderId)
+                    .get()
+                    .then(function (oSnap) {
+                      var amt = "—";
+                      if (oSnap.exists) {
+                        var od = oSnap.data();
+                        amt = fmtCad(od.amount);
+                      }
+                      return {
+                        id: id,
+                        dateStr: dateStr,
+                        email: email,
+                        reason: x.reason || x.reasonKey || "—",
+                        amount: amt
+                      };
+                    });
+                });
+            });
+
+            return Promise.all(rows).then(function (list) {
+              list.forEach(function (row) {
+                var tr = document.createElement("tr");
+                function tdText(text) {
+                  var td = document.createElement("td");
+                  td.textContent = text;
+                  return td;
+                }
+                tr.appendChild(tdText(row.dateStr));
+                var tdMail = document.createElement("td");
+                var a = document.createElement("a");
+                a.href = "mailto:" + row.email;
+                a.style.color = "#C9A84C";
+                a.textContent = row.email;
+                tdMail.appendChild(a);
+                tr.appendChild(tdMail);
+                tr.appendChild(tdText(row.reason));
+                tr.appendChild(tdText(row.amount));
+                var tdAct = document.createElement("td");
+                var wrap = document.createElement("div");
+                wrap.className = "admin-actions-cell";
+                var b1 = document.createElement("button");
+                b1.type = "button";
+                b1.className = "btn-admin-refund";
+                b1.textContent = "Rembourser";
+                b1.addEventListener("click", function () {
+                  doRefund(row.id);
+                });
+                var b2 = document.createElement("button");
+                b2.type = "button";
+                b2.className = "btn-admin-release";
+                b2.textContent = "Libérer au prestataire";
+                b2.addEventListener("click", function () {
+                  doRelease(row.id);
+                });
+                wrap.appendChild(b1);
+                wrap.appendChild(b2);
+                tdAct.appendChild(wrap);
+                tr.appendChild(tdAct);
+                tbody.appendChild(tr);
+              });
+            });
+          });
+        })
+        .catch(function (e) {
+          console.error(e);
+          if (loading) loading.style.display = "none";
+          if (denied) {
+            denied.style.display = "block";
+            denied.textContent = "Erreur de chargement : " + (e.message || String(e));
+          }
+        });
+    });
+  </script>
+
+<footer class="needs-unified-footer needs-site-footer">
+  <div class="footer-rgpd-bar" role="note" data-i18n-html="footer_rgpd_bar">
+    Needs utilise des données pour la mise en relation et l’amélioration du service. Consultez notre
+    <a href="privacy.html">politique de confidentialité</a> pour en savoir plus sur vos droits (Loi 25 au Québec) et les cookies essentiels.
+  </div>
+  <div class="footer-filter-row">
+    <button type="button" class="filter-btn" onclick="location.href='services.html?cat=pro'"><i class="fa-solid fa-briefcase"></i> <span data-tr="footer_filter_pro">Business & Maintenance</span></button>
+    <button type="button" class="filter-btn" onclick="location.href='services.html?cat=rent'"><i class="fa-solid fa-key"></i> <span data-tr="footer_filter_rent">Locations & Studios</span></button>
+  </div>
+  <div class="footer-trust-row" style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:20px;font-size:0.8rem;color:rgba(255,255,255,0.85);">
+    <span><i class="fa-solid fa-shield-halved" style="color:#22c55e;"></i> <span data-tr="footer_trust_secure">Paiement sécurisé</span></span>
+    <span><i class="fa-solid fa-badge-check" style="color:#2563eb;"></i> <span data-tr="footer_trust_verified">Prestataires vérifiés</span></span>
+    <span><i class="fa-solid fa-rotate-left" style="color:#f59e0b;"></i> <span data-tr="footer_trust_cancel">Annulation gratuite 24h avant</span></span>
+    <span><i class="fa-solid fa-headset" style="color:#8b5cf6;"></i> <span data-tr="footer_trust_support">Support 7j/7</span></span>
+  </div>
+  <div class="footer-cols">
+  <div class="footer-col">
+    <div class="brand"><div class="logo-3d">N</div><span>NEEDS</span></div>
+    <p class="footer-slogan" data-tr="footer_slogan">L'excellence au service de vos besoins quotidiens.</p>
+    <p style="margin-top:14px;"><a href="entreprise-grands-comptes.html" class="footer-link" data-tr="f_enterprise_pro" style="font-weight:600;">Needs Pro &amp; Grands comptes</a></p>
+    <p style="margin-top:12px;font-size:0.8rem;">
+      <label for="footerCurrencyAdmin" style="color:rgba(255,255,255,0.7);" data-i18n="footer_currency_label">Devise :</label>
+      <select id="footerCurrencyAdmin" onchange="if(window.__needs_prefs){window.__needs_prefs.setCurrency(this.value);location.reload();}" style="margin-left:6px;background:#1a1a1a;border:1px solid #333;color:#fff;padding:4px 8px;border-radius:6px;cursor:pointer;max-width:100%;">
+        <option value="cad">CA$ CAD</option>
+        <option value="usd">$ USD</option>
+        <option value="eur">€ EUR</option>
+        <option value="gbp">£ GBP</option>
+        <option value="chf">CHF</option>
+        <option value="mxn">MX$ MXN</option>
+      </select>
+    </p>
+  </div>
+  <div class="footer-col">
+    <h4 data-tr="f_col1_t">Plateforme</h4>
+    <ul>
+      <li><a href="how-it-works.html" class="footer-link" data-tr="f_how">Comment ça marche</a></li>
+      <li><a href="entreprise.html" class="footer-link" data-tr="f_entreprises_link">Needs pour les entreprises</a></li>
+      <li><a href="particuliers.html" class="footer-link" data-tr="f_particuliers_link">Needs pour les particuliers</a></li>
+      <li><a href="become-provider.html" class="footer-link" data-tr="f_provider">Devenir Prestataire</a></li>
+      <li><a href="insurance.html" class="footer-link" data-tr="f_insurance">Assurance Needs</a></li>
+      <li><a href="a-propos.html" class="footer-link" data-i18n="f_about">À propos</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4 data-tr="f_col2_t">Assistance</h4>
+    <ul>
+      <li><a href="help.html" class="footer-link" data-tr="f_help">Centre d'aide</a></li>
+      <li><a href="contact.html" class="footer-link" data-tr="f_contact">Contactez-nous</a></li>
+      <li><a href="privacy.html" class="footer-link" data-tr="f_privacy">Confidentialité</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4 data-tr="f_col3_t">Conformité &amp; B2B</h4>
+    <ul>
+      <li><a href="conformite.html" class="footer-link" data-tr="f_conf">Espace conformité</a></li>
+      <li><a href="cgv-b2b.html" class="footer-link" data-tr="f_cgv">CGV B2B</a></li>
+      <li><a href="securite.html" class="footer-link" data-tr="f_sec">Sécurité</a></li>
+      <li><a href="statut.html" class="footer-link" data-tr="f_status">Statut des services</a></li>
+    </ul>
+  </div>
+  </div>
+  <p class="footer-copyright" style="text-align:center;padding:20px 16px 28px;font-size:0.78rem;color:rgba(255,255,255,0.55);max-width:1200px;margin:0 auto;"></p>
+</footer>
+<script defer src="js/inject-unified-footer.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var foot=document.querySelector('footer.needs-unified-footer');
+  if(foot&&window.NeedsI18n&&NeedsI18n.applyDOM){
+    var lang=(window.__needs_prefs&&__needs_prefs.getLang)?__needs_prefs.getLang():'fr';
+    try{NeedsI18n.applyDOM(lang,foot);}catch(e){}
+  }
+  var cr=foot&&foot.querySelector('.footer-copyright');
+  if(cr&&window.NeedsI18n&&typeof NeedsI18n.t==='function'){
+    var y=new Date().getFullYear();
+    cr.textContent=(NeedsI18n.t('footer_copyright')||'').replace(/\{year\}/g,String(y));
+  }
+  var sel=document.getElementById('footerCurrencyAdmin');
+  if(sel&&window.__needs_prefs&&__needs_prefs.getCurrency){
+    try{sel.value=__needs_prefs.getCurrency();}catch(e){}
+  }
+});
+</script>
+</body>
+</html>

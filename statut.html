@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/statut.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Statut des services</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+  <style>
+    .status-badge { display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-weight:600;font-size:0.9rem; }
+    .status-ok { background:rgba(34,197,94,0.15);color:#4ade80;border:1px solid rgba(34,197,94,0.4); }
+    .status-row { display:flex;justify-content:space-between;align-items:center;padding:16px 18px;background:#0a0a0a;border:1px solid #27272a;border-radius:12px;margin-bottom:10px; }
+    html.needs-light .status-row, body.light-mode .status-row { background:#fff;border-color:#e5e7eb; }
+    .doc-page { max-width: 100%; box-sizing: border-box; }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="entreprise-grands-comptes.html" class="subpage-back">← Pro &amp; Grands comptes</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(updateStatusDate)" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <article class="doc-page">
+    <h1 data-i18n="statut_h1">Statut des services</h1>
+    <p class="doc-lead"><span data-i18n="statut_lead_prefix">État opérationnel des composants principaux.</span> <strong data-i18n="statut_updated">Dernière mise à jour :</strong> <span id="statusDynamicDate"></span></p>
+
+    <p><span class="status-badge status-ok"><i class="fa-solid fa-circle" style="font-size:0.5rem;"></i> <span data-i18n="statut_all_ok">Tous les systèmes opérationnels</span></span></p>
+
+    <h2 style="margin-top:32px;" data-i18n="statut_components">Composants</h2>
+    <div class="status-row"><span><i class="fa-solid fa-globe" style="color:#38bdf8;margin-right:10px;"></i> <span data-i18n="statut_comp_web">Site &amp; application web</span></span><span class="status-badge status-ok" data-i18n="statut_ok">Opérationnel</span></div>
+    <div class="status-row"><span><i class="fa-solid fa-key" style="color:#a78bfa;margin-right:10px;"></i> <span data-i18n="statut_comp_auth">Authentification</span></span><span class="status-badge status-ok" data-i18n="statut_ok">Opérationnel</span></div>
+    <div class="status-row"><span><i class="fa-solid fa-database" style="color:#fbbf24;margin-right:10px;"></i> <span data-i18n="statut_comp_api">API &amp; base de données</span></span><span class="status-badge status-ok" data-i18n="statut_ok">Opérationnel</span></div>
+    <div class="status-row"><span><i class="fa-solid fa-credit-card" style="color:#34d399;margin-right:10px;"></i> <span data-i18n="statut_comp_pay">Paiements (Stripe)</span></span><span class="status-badge status-ok" data-i18n="statut_ok">Opérationnel</span></div>
+    <div class="status-row"><span><i class="fa-solid fa-comments" style="color:#60a5fa;margin-right:10px;"></i> <span data-i18n="statut_comp_msg">Messagerie</span></span><span class="status-badge status-ok" data-i18n="statut_ok">Opérationnel</span></div>
+
+    <h2 data-i18n="statut_history">Historique récent</h2>
+    <p data-i18n="statut_history_p">Aucun incident majeur déclaré sur les 90 derniers jours. Les maintenances planifiées seront annoncées ici et par courriel aux clients Entreprise concernés.</p>
+
+    <p><a href="changelog.html" class="btn btn-secondary no-print" data-i18n="statut_changelog">Voir le changelog</a></p>
+  </article>
+  <script src="subpage-common.js"></script>
+  <script>
+    function updateStatusDate() {
+      var el = document.getElementById("statusDynamicDate");
+      if (!el) return;
+      var lang = (window.__needs_prefs && __needs_prefs.getLang()) || "fr";
+      var locale = lang === "fr" ? "fr-CA" : "en-CA";
+      el.textContent = new Date().toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
+      if (window.NeedsI18n) NeedsI18n.applyDOM(lang);
+      needsSubpage.updateChromeButtons();
+    }
+    document.addEventListener("DOMContentLoaded", updateStatusDate);
+  </script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

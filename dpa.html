@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/dpa.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Accord de traitement des données (DPA)</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="conformite.html" class="subpage-back">← Espace conformité</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang()" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <article class="doc-page">
+    <p class="legal-disclaimer"><strong>Avertissement :</strong> présent <strong>modèle d’accord de traitement</strong> (Article 28 RGPD) à personnaliser (identité du responsable, description des traitements, durées, transferts hors UE). Faire valider par vos équipes juridiques et le DPO.</p>
+
+    <h1>Accord de traitement des données (DPA)</h1>
+    <p class="doc-lead">Entre le <strong>Responsable de traitement</strong> : le Client professionnel identifié dans le contrat-cadre ou les conditions d’inscription,<br>
+    Et le <strong>Sous-traitant</strong> : Needs — <a href="mailto:contact@needs-app.com">contact@needs-app.com</a></p>
+
+    <h2>1. Objet et durée</h2>
+    <p>Le présent accord encadre le traitement des données à caractère personnel confiées par le Responsable de traitement au Sous-traitant pour la durée de fourniture des Services Needs (mise en relation, compte, messagerie, facturation, support).</p>
+
+    <h2>2. Nature des traitements et catégories de données</h2>
+    <p>Peuvent être concernés : identité, coordonnées professionnelles, contenus échangés via la messagerie, données de commande et de facturation, journaux de connexion techniques. <strong>Pas de traitement systématique de données sensibles</strong> au sens de l’article 9 RGPD, sauf instruction documentée du Responsable.</p>
+
+    <h2>3. Obligations du Sous-traitant</h2>
+    <ul>
+      <li>Traiter les données <strong>uniquement sur instruction documentée</strong> du Responsable, sauf obligation légale.</li>
+      <li>Garantir la <strong>confidentialité</strong> des personnes autorisées à traiter les données.</li>
+      <li>Mettre en œuvre les <strong>mesures de sécurité</strong> décrites dans la documentation Needs (voir page <a href="securite.html">Sécurité</a>).</li>
+      <li>Assister le Responsable pour les <strong>droits des personnes</strong> (accès, rectification, effacement, limitation, portabilité, opposition).</li>
+      <li>Notifier toute <strong>violation de données</strong> dans les meilleurs délais après en avoir pris connaissance, avec les informations permettant le registre du Responsable.</li>
+      <li>À la fin du service, <strong>supprimer ou restituer</strong> les données selon instruction, sauf conservation imposée par la loi.</li>
+      <li>Fournir les informations nécessaires pour démontrer le respect des obligations et permettre les audits raisonnables, sous réserve de confidentialité.</li>
+    </ul>
+
+    <h2>4. Sous-traitants ultérieurs</h2>
+    <p>Le Sous-traitant peut faire appel à des sous-traitants listés et mis à jour sur <a href="sous-traitants.html">la page Sous-traitants</a>. Toute évolution substantielle fera l’objet d’une information au Responsable. Le Responsable peut s’opposer pour motif légitime dans un délai raisonnable.</p>
+
+    <h2>5. Transferts hors de l’Espace économique européen</h2>
+    <p>Si des transferts ont lieu (ex. fournisseurs cloud), ils sont encadrés par les clauses contractuelles types de la Commission européenne ou un mécanisme reconnu (Décision d’adéquation, BCR, etc.), comme documenté avec le fournisseur concerné.</p>
+
+    <h2>6. Responsabilité</h2>
+    <p>Chaque partie supporte sa responsabilité au titre du RGPD. Le Sous-traitant répond des manquements à ses obligations spécifiques de sous-traitant.</p>
+
+    <h2>7. Contact DPO / référent</h2>
+    <p>Pour toute question relative au présent DPA : <a href="mailto:contact@needs-app.com">contact@needs-app.com</a>. Pour une <strong>version signée</strong> ou des ajustements contractuels : <a href="entreprise-grands-comptes.html">contacter l’équipe Entreprise</a>.</p>
+  </article>
+  <script src="subpage-common.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { needsSubpage.updateChromeButtons(); });</script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

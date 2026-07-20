@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/privacy.html">
+    <meta name="theme-color" content="#000000" id="meta-theme-color">
+    <title>Needs — Confidentialité</title>
+    <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cursor.css">
+    <style>
+        body.page-privacy { background: #0A0A0F; color: #F0EDE8; }
+        .priv-hero { padding: 28px 5% 24px; border-bottom: 1px solid #2A2A38; background: rgba(19, 19, 26, 0.5); }
+        .priv-hero h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; color: #F0EDE8; margin: 0 0 8px; letter-spacing: -0.02em; }
+        .priv-hero .priv-upd { color: #9B99A6; font-size: 0.92rem; margin: 0 0 14px; }
+        .priv-hero .priv-intro { color: #F0EDE8; font-size: 0.98rem; line-height: 1.65; max-width: 720px; margin: 0; opacity: 0.95; }
+        .priv-wrap { max-width: 820px; margin: 0 auto; padding: 28px 22px 48px; line-height: 1.65; }
+        .priv-toc { background: #13131A; border: 1px solid #2A2A38; border-radius: 14px; padding: 18px 20px 16px; margin-bottom: 28px; }
+        .priv-toc h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9B99A6; margin: 0 0 12px; font-weight: 700; }
+        .priv-toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .priv-toc a { color: #C9A84C; text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+        .priv-toc a:hover { text-decoration: underline; }
+        .priv-section { margin-bottom: 22px; padding: 22px 20px; border-radius: 14px; border: 1px solid #2A2A38; background: #13131A; }
+        .priv-section h2 { font-size: 1.08rem; font-weight: 800; color: #C9A84C; margin: 0 0 12px; }
+        .priv-section p, .priv-section li { color: #F0EDE8; font-size: 0.95rem; margin: 0 0 10px; opacity: 0.95; }
+        .priv-section ul { padding-left: 1.1rem; margin: 0 0 8px; }
+        .priv-section a { color: #7dd3fc; }
+        html.needs-light body.page-privacy,
+        body.page-privacy.light-mode { background: #faf8f5 !important; color: #1c1917 !important; }
+        html.needs-light .priv-hero, body.page-privacy.light-mode .priv-hero { background: #fff !important; border-color: #e5e7eb !important; }
+        html.needs-light .priv-hero h1, body.page-privacy.light-mode .priv-hero h1 { color: #111 !important; }
+        html.needs-light .priv-toc, body.page-privacy.light-mode .priv-toc { background: #fff !important; border-color: #e5e7eb !important; }
+        html.needs-light .priv-section, body.page-privacy.light-mode .priv-section { background: #fff !important; border-color: #e5e7eb !important; }
+        html.needs-light .priv-section h2, body.page-privacy.light-mode .priv-section h2 { color: #a16207 !important; }
+        html.needs-light .priv-section p, html.needs-light .priv-section li,
+        body.page-privacy.light-mode .priv-section p, body.page-privacy.light-mode .priv-section li { color: #44403c !important; }
+    </style>
+</head>
+<body class="page-privacy">
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+    <nav class="subpage-topbar">
+        <a href="index.html" class="subpage-back" id="back_link" data-i18n="privacy_back">← Retour</a>
+        <div class="subpage-actions">
+            <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+            <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(renderPrivacy)" aria-label="Langue">EN</button>
+        </div>
+    </nav>
+
+    <header class="priv-hero">
+        <h1 data-i18n="privacy_h1">Politique de confidentialité</h1>
+        <p class="priv-upd" data-i18n="privacy_updated">Dernière mise à jour : avril 2026</p>
+        <p class="priv-intro" data-i18n="privacy_intro"></p>
+    </header>
+
+    <main class="priv-wrap">
+        <nav class="priv-toc" aria-label="Sommaire">
+            <h2 data-i18n="privacy_toc_title">Sommaire</h2>
+            <ul>
+                <li><a href="#section-1" data-i18n="privacy_toc_1"></a></li>
+                <li><a href="#section-2" data-i18n="privacy_toc_2"></a></li>
+                <li><a href="#section-3" data-i18n="privacy_toc_3"></a></li>
+                <li><a href="#section-4" data-i18n="privacy_toc_4"></a></li>
+                <li><a href="#section-5" data-i18n="privacy_toc_5"></a></li>
+                <li><a href="#section-6" data-i18n="privacy_toc_6"></a></li>
+                <li><a href="#section-7" data-i18n="privacy_toc_7"></a></li>
+                <li><a href="#section-8" data-i18n="privacy_toc_8"></a></li>
+                <li><a href="#section-9" data-i18n="privacy_toc_9"></a></li>
+                <li><a href="#section-10" data-i18n="privacy_toc_10"></a></li>
+            </ul>
+        </nav>
+
+        <section class="priv-section" id="section-1">
+            <h2 data-i18n="privacy_s1_title"></h2>
+            <p data-i18n-html="privacy_s1_body"></p>
+        </section>
+
+        <section class="priv-section" id="section-2">
+            <h2 data-i18n="privacy_s2_title"></h2>
+            <ul>
+                <li data-i18n="privacy_s2_l1"></li>
+                <li data-i18n="privacy_s2_l2"></li>
+                <li data-i18n="privacy_s2_l3"></li>
+                <li data-i18n="privacy_s2_l4"></li>
+                <li data-i18n="privacy_s2_l5"></li>
+                <li data-i18n="privacy_s2_l6"></li>
+            </ul>
+        </section>
+
+        <section class="priv-section" id="section-3">
+            <h2 data-i18n="privacy_s3_title"></h2>
+            <ul>
+                <li data-i18n="privacy_s3_l1"></li>
+                <li data-i18n="privacy_s3_l2"></li>
+                <li data-i18n="privacy_s3_l3"></li>
+                <li data-i18n="privacy_s3_l4"></li>
+                <li data-i18n="privacy_s3_l5"></li>
+                <li data-i18n="privacy_s3_l6"></li>
+                <li data-i18n="privacy_s3_l7"></li>
+            </ul>
+        </section>
+
+        <section class="priv-section" id="section-4">
+            <h2 data-i18n="privacy_s4_title"></h2>
+            <p data-i18n-html="privacy_s4_body"></p>
+        </section>
+
+        <section class="priv-section" id="section-5">
+            <h2 data-i18n="privacy_s5_title"></h2>
+            <p data-i18n="privacy_s5_intro"></p>
+            <ul>
+                <li data-i18n-html="privacy_s5_l1"></li>
+                <li data-i18n-html="privacy_s5_l2"></li>
+                <li data-i18n="privacy_s5_l3"></li>
+                <li data-i18n-html="privacy_s5_l4"></li>
+            </ul>
+        </section>
+
+        <section class="priv-section" id="section-6">
+            <h2 data-i18n="privacy_s6_title"></h2>
+            <ul>
+                <li data-i18n="privacy_s6_l1"></li>
+                <li data-i18n="privacy_s6_l2"></li>
+                <li data-i18n="privacy_s6_l3"></li>
+                <li data-i18n="privacy_s6_l4"></li>
+                <li data-i18n="privacy_s6_l5"></li>
+                <li data-i18n="privacy_s6_l6"></li>
+            </ul>
+            <p data-i18n-html="privacy_s6_footer"></p>
+        </section>
+
+        <section class="priv-section" id="section-7">
+            <h2 data-i18n="privacy_s7_title"></h2>
+            <p data-i18n="privacy_s7_body"></p>
+        </section>
+
+        <section class="priv-section" id="section-8">
+            <h2 data-i18n="privacy_s8_title"></h2>
+            <ul>
+                <li data-i18n="privacy_s8_l1"></li>
+                <li data-i18n="privacy_s8_l2"></li>
+                <li data-i18n="privacy_s8_l3"></li>
+                <li data-i18n="privacy_s8_l4"></li>
+                <li data-i18n="privacy_s8_l5"></li>
+            </ul>
+        </section>
+
+        <section class="priv-section" id="section-9">
+            <h2 data-i18n="privacy_s9_title"></h2>
+            <ul>
+                <li data-i18n="privacy_s9_l1"></li>
+                <li data-i18n="privacy_s9_l2"></li>
+                <li data-i18n="privacy_s9_l3"></li>
+                <li data-i18n="privacy_s9_l4"></li>
+            </ul>
+        </section>
+
+        <section class="priv-section" id="section-10">
+            <h2 data-i18n="privacy_s10_title"></h2>
+            <p data-i18n-html="privacy_s10_body"></p>
+        </section>
+    </main>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+    <script src="subpage-common.js"></script>
+    <script>
+        function renderPrivacy() {
+            var l = needsSubpage.getLang();
+            if (window.NeedsI18n) NeedsI18n.applyDOM(l);
+            document.title = l === "en" ? "Needs — Privacy policy" : "Needs — Confidentialité";
+            needsSubpage.updateChromeButtons();
+            var meta = document.getElementById("meta-theme-color");
+            if (meta && window.__needs_prefs) meta.setAttribute("content", __needs_prefs.getTheme() === "light" ? "#ffffff" : "#000000");
+        }
+        document.addEventListener("DOMContentLoaded", renderPrivacy);
+    </script>
+    <script src="cursor.js" defer></script>
+</body>
+</html>

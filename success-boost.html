@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boost</title>
+  <link rel="manifest" href="/manifest.json">
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+  <link rel="stylesheet" href="theme-needs.css">
+  <style>
+    body { margin: 0; min-height: 100vh; background: #0A0A0F; color: #F0EDE8; font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .box { text-align: center; max-width: 480px; background: #14141c; border: 1px solid #2A2A38; border-radius: 24px; padding: 40px 28px; }
+    .rocket { font-size: 4rem; animation: bounce 1s ease infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    h1 { font-size: 1.5rem; margin: 16px 0 12px; color: #C9A84C; }
+    p { color: #9B99A6; line-height: 1.55; margin: 0 0 24px; }
+    a.btn { display: inline-block; background: #C9A84C; color: #1a1510; font-weight: 800; padding: 14px 28px; border-radius: 12px; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="rocket" aria-hidden="true">&#128640;</div>
+    <h1 data-i18n="success_boost_h1"></h1>
+    <p data-i18n="success_boost_p"></p>
+    <a href="services.html" class="btn" data-i18n="success_boost_cta"></a>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.NeedsI18n) {
+        NeedsI18n.applyDOM();
+        document.title = NeedsI18n.t('success_boost_meta') || document.title;
+      }
+    });
+  </script>
+</body>
+</html>

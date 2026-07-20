@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Pour les particuliers</title>
+  <meta name="description" content="Besoins à Montréal : ménage, plomberie, cours, tech. Prestataires vérifiés, paiement sécurisé et annulation gratuite 24 h avant.">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="canonical" href="https://needs-ae86d.web.app/particuliers.html">
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme-needs.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+  <style>
+    .lp-popular { max-width: 1000px; margin: 48px auto; padding: 0 20px; }
+    .lp-popular h2 { text-align: center; color: var(--color-text); margin-bottom: 24px; font-size: 1.35rem; }
+    .lp-cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
+    .lp-cat-card {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 22px 14px; border-radius: 16px; border: 1px solid var(--color-border);
+      background: var(--color-card); text-decoration: none; color: var(--color-text);
+      transition: transform 0.2s, border-color 0.2s; min-height: 110px;
+    }
+    .lp-cat-card:hover { transform: translateY(-3px); border-color: var(--color-accent); color: var(--color-text); }
+    .lp-cat-card .cat-ico { font-size: 1.5rem; margin-bottom: 8px; color: var(--color-accent); }
+    .lp-cat-card span:last-child { font-weight: 700; font-size: 0.9rem; text-align: center; }
+    .lp-hiw { max-width: 900px; margin: 56px auto; padding: 0 20px 24px; }
+    .lp-hiw h2 { text-align: center; color: var(--color-text); margin-bottom: 32px; font-size: 1.35rem; }
+    .lp-step { display: flex; gap: 22px; margin-bottom: 28px; align-items: flex-start; }
+    .lp-step-num {
+      flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px;
+      background: rgba(201, 168, 76, 0.2); color: #C9A84C; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lp-step h3 { margin: 0 0 8px; color: var(--color-text); font-size: 1.1rem; }
+    .lp-step p { margin: 0; color: var(--color-text-secondary); line-height: 1.6; }
+    .lp-why { max-width: 1000px; margin: 0 auto 48px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .lp-why h2 { grid-column: 1 / -1; text-align: center; color: var(--color-text); margin: 0 0 12px; font-size: 1.35rem; }
+    .lp-why-card { background: var(--color-card); border: 1px solid var(--color-border); border-radius: 16px; padding: 22px; }
+    .lp-why-card h3 { color: var(--color-text); margin: 0 0 10px; font-size: 1.05rem; }
+    .lp-why-card p { color: var(--color-text-secondary); margin: 0; line-height: 1.6; font-size: 0.95rem; }
+    .lp-final-cta { text-align: center; padding: 40px 20px 56px; }
+    .lp-final-cta a {
+      display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px;
+      background: var(--color-accent); color: #1a1510 !important; font-weight: 800; border-radius: 12px; text-decoration: none;
+    }
+    .lp-final-cta a:hover { filter: brightness(1.05); color: #1a1510 !important; }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+  <nav class="subpage-topbar">
+    <a href="index.html" class="subpage-back" id="lp_back" data-i18n="lp_ind_back">← Accueil</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(applyLpI18n)" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="lp-hero">
+      <h1 id="lp_h1" data-i18n-html="lp_ind_h1">Needs pour les <span class="blue-text">particuliers</span></h1>
+      <p id="lp_intro" data-i18n="lp_ind_intro">Plombier, ménage, cours à domicile, déménagement : réservez en quelques clics les meilleurs prestataires près de chez vous. Paiement sécurisé et avis vérifiés.</p>
+      <a href="services.html" class="btn btn-main" id="lp_cta1"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="lp_ind_cta1">Trouver un service</span></a>
+    </section>
+
+    <section class="lp-popular reveal">
+      <h2 data-i18n="lp_popular_h2">Services populaires à Montréal</h2>
+      <div class="lp-cat-grid">
+        <a class="lp-cat-card" href="services.html?q=Ménage"><i class="fa-solid fa-broom cat-ico" aria-hidden="true"></i><span data-i18n="lp_pop_menage">Ménage</span></a>
+        <a class="lp-cat-card" href="services.html?q=Plomberie"><i class="fa-solid fa-wrench cat-ico" aria-hidden="true"></i><span data-i18n="lp_pop_plomb">Plomberie</span></a>
+        <a class="lp-cat-card" href="services.html?q=Déménagement"><i class="fa-solid fa-boxes-packing cat-ico" aria-hidden="true"></i><span data-i18n="lp_pop_demo">Déménagement</span></a>
+        <a class="lp-cat-card" href="services.html?cat=tech"><i class="fa-solid fa-laptop-code cat-ico" aria-hidden="true"></i><span data-i18n="lp_pop_tech">Tech</span></a>
+        <a class="lp-cat-card" href="services.html?q=Photo"><i class="fa-solid fa-camera cat-ico" aria-hidden="true"></i><span data-i18n="lp_pop_photo">Photo</span></a>
+        <a class="lp-cat-card" href="services.html?q=Cours"><i class="fa-solid fa-graduation-cap cat-ico" aria-hidden="true"></i><span data-i18n="lp_pop_cours">Cours</span></a>
+      </div>
+    </section>
+
+    <section class="lp-benefits">
+      <div class="lp-benefit">
+        <i class="fa-solid fa-house"></i>
+        <h3 id="lp_b1t" data-i18n="lp_ind_b1t">À la carte</h3>
+        <p id="lp_b1d" data-i18n="lp_ind_b1d">Choisissez le bon professionnel pour chaque besoin, sans engagement.</p>
+      </div>
+      <div class="lp-benefit">
+        <i class="fa-solid fa-star"></i>
+        <h3 id="lp_b2t" data-i18n="lp_ind_b2t">Avis réels</h3>
+        <p id="lp_b2d" data-i18n="lp_ind_b2d">Consultez les notes et témoignages laissés par d'autres particuliers.</p>
+      </div>
+      <div class="lp-benefit">
+        <i class="fa-solid fa-bolt"></i>
+        <h3 id="lp_b3t" data-i18n="lp_ind_b3t">Réservation rapide</h3>
+        <p id="lp_b3d" data-i18n="lp_ind_b3d">Réservez en 1 clic et recevez une confirmation instantanée.</p>
+      </div>
+    </section>
+
+    <section class="lp-hiw reveal">
+      <h2 data-i18n="lp_hiw_h2">Comment ça marche</h2>
+      <div class="lp-step">
+        <div class="lp-step-num">1</div>
+        <div>
+          <h3 data-i18n="lp_hiw_s1_t">Publiez votre besoin</h3>
+          <p data-i18n="lp_hiw_s1_d">Décrivez ce dont vous avez besoin et parcourez les experts disponibles.</p>
+        </div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-num">2</div>
+        <div>
+          <h3 data-i18n="lp_hiw_s2_t">Choisissez votre expert</h3>
+          <p data-i18n="lp_hiw_s2_d">Comparez profils, avis vérifiés et échangez en messagerie sécurisée.</p>
+        </div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-num">3</div>
+        <div>
+          <h3 data-i18n="lp_hiw_s3_t">Payez en toute confiance</h3>
+          <p data-i18n="lp_hiw_s3_d">Le paiement est en séquestre jusqu'à votre validation de la prestation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="lp-why reveal">
+      <h2 data-i18n="lp_why_h2">Pourquoi Needs ?</h2>
+      <div class="lp-why-card">
+        <h3 data-i18n="lp_why_1_t">Prestataires vérifiés et notés</h3>
+        <p data-i18n="lp_why_1_d">Identité contrôlée et avis authentiques après chaque mission.</p>
+      </div>
+      <div class="lp-why-card">
+        <h3 data-i18n="lp_why_2_t">Paiement sécurisé par séquestre</h3>
+        <p data-i18n="lp_why_2_d">Les fonds sont libérés seulement quand vous confirmez que tout s'est bien passé.</p>
+      </div>
+      <div class="lp-why-card">
+        <h3 data-i18n="lp_why_3_t">Annulation gratuite 24 h avant</h3>
+        <p data-i18n="lp_why_3_d">Modifiez ou annulez sans frais jusqu'à la veille du créneau.</p>
+      </div>
+    </section>
+
+    <section class="lp-final-cta reveal">
+      <a href="services.html" data-i18n="lp_final_cta">Trouver mon prestataire →</a>
+    </section>
+
+    <section class="lp-cta" style="padding-bottom: 24px;">
+      <a href="how-it-works.html" class="btn btn-secondary" id="lp_cta2" data-i18n="lp_ind_cta2">Comment ça marche ?</a>
+    </section>
+  </main>
+
+  <div id="needs-unified-footer"></div>
+  <script defer src="js/inject-unified-footer.js"></script>
+  <script src="subpage-common.js"></script>
+  <script>
+    function applyLpI18n() {
+      var lang = needsSubpage.getLang();
+      if (window.__needs_prefs) __needs_prefs.setLang(lang);
+      document.documentElement.lang = lang === "en" ? "en" : "fr";
+      if (window.NeedsI18n) NeedsI18n.applyDOM(lang);
+      document.title = lang === "en" ? "Needs — For individuals" : "Needs — Pour les particuliers";
+      needsSubpage.updateChromeButtons();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      applyLpI18n();
+      var meta = document.getElementById("meta-theme-color");
+      if (meta && window.__needs_prefs) meta.setAttribute("content", __needs_prefs.getTheme() === "light" ? "#ffffff" : "#000000");
+    });
+  </script>
+  <script src="cursor.js" defer></script>
+</body>
+</html>

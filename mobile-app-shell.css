@@ -1,0 +1,158 @@
+/**
+ * UI mobile type application : barre d’onglets, espacements, safe area.
+ * (≤600px — le script n’injecte la barre que dans ce cas.)
+ */
+
+@media (max-width: 600px) {
+  .app-tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    padding: 4px 6px 0;
+    padding-bottom: max(4px, env(safe-area-inset-bottom, 0px));
+    background: rgba(10, 10, 10, 0.94);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.4);
+  }
+
+  html.needs-light .app-tabbar,
+  body.light-mode .app-tabbar {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-top-color: rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  .app-tabbar__link {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 48px;
+    max-width: 92px;
+    margin: 0 auto;
+    padding: 4px 6px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 14px;
+    transition: color 0.2s, background 0.2s, transform 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html.needs-light .app-tabbar__link,
+  body.light-mode .app-tabbar__link {
+    color: rgba(55, 65, 81, 0.88) !important;
+  }
+
+  .app-tabbar__link i {
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+
+  .app-tabbar__link[aria-current="page"] {
+    color: var(--color-accent, #c9a84c);
+    background: rgba(201, 168, 76, 0.14);
+  }
+
+  .app-tabbar__link[aria-current="page"] i {
+    opacity: 1;
+  }
+
+  html.needs-light .app-tabbar__link[aria-current="page"],
+  body.light-mode .app-tabbar__link[aria-current="page"] {
+    color: #b45309 !important;
+    background: rgba(245, 158, 11, 0.14) !important;
+  }
+
+  .app-tabbar__link:active {
+    transform: scale(0.96);
+  }
+
+  /* Espace sous le contenu pour la barre */
+  body.has-app-tabbar {
+    padding-bottom: calc(44px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body.has-app-tabbar main {
+    padding-bottom: 0 !important;
+  }
+
+  /* Flottants au-dessus de l’onglet */
+  body.has-app-tabbar .scroll-top {
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  body.has-app-tabbar .ai-chat-trigger {
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 14px !important;
+  }
+
+  body.has-app-tabbar .ai-chat-window {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Accueil : blocs compacts */
+  body.has-app-tabbar .page-block {
+    padding: 20px 0 28px;
+  }
+
+  body.has-app-tabbar .page-block--hero {
+    padding-top: 8px;
+  }
+
+  body.has-app-tabbar .page-block__inner {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  body.has-app-tabbar .card-relief {
+    border-radius: 14px;
+    padding: 12px 10px !important;
+  }
+
+  body.has-app-tabbar .why-us-card {
+    border-radius: 12px;
+    padding: 10px 8px;
+  }
+
+  body.has-app-tabbar .cat-row {
+    gap: 8px !important;
+  }
+
+  body.has-app-tabbar .cat-card {
+    border-radius: 12px;
+    padding: 10px 8px !important;
+  }
+
+  body.has-app-tabbar footer {
+    padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px) + 12px) !important;
+  }
+
+  /* Page services (même fichier CSS) */
+  body.has-app-tabbar .pagination {
+    margin-bottom: 24px !important;
+  }
+
+  /* Messagerie : hauteur utile au-dessus de la barre */
+  body.has-app-tabbar.page-messages .container {
+    height: calc(100dvh - 56px - 44px - env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media print {
+  .app-tabbar {
+    display: none !important;
+  }
+}

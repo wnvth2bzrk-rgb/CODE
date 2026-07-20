@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0f">
+  <title>Tarifs prestataires — Needs</title>
+  <meta name="description" content="Offres Gratuit, Pro et Business pour les prestataires Needs.">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="canonical" href="https://needs-ae86d.web.app/tarifs.html">
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme-needs.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+  <style>
+    body.tarifs-page { font-family: Inter, system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); margin: 0; min-height: 100vh; }
+    .tarifs-wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px 80px; }
+    .tarifs-hero { text-align: center; margin-bottom: 28px; }
+    .tarifs-hero h1 { font-size: clamp(1.65rem, 4vw, 2.25rem); font-weight: 800; margin: 0 0 14px; color: var(--text-primary, #111827) !important; letter-spacing: -0.02em; }
+    .tarifs-hero p { color: #0A0A0F !important; max-width: 520px; margin: 0 auto; line-height: 1.6; font-size: 0.98rem; }
+    .billing-toggle-wrap { display: flex; justify-content: center; margin-bottom: 32px; }
+    .billing-toggle { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--bg-secondary); border: 1px solid var(--border-color); gap: 4px; }
+    .billing-toggle button {
+      border: none; cursor: pointer; font-family: inherit; font-size: 0.8rem; font-weight: 700;
+      padding: 10px 20px; border-radius: 999px; background: transparent; color: var(--text-primary, #111827) !important; transition: color .2s, background .2s;
+    }
+    .billing-toggle button:not(:disabled) { cursor: pointer; }
+    .billing-toggle button.is-active { background: var(--border-color); color: var(--text-primary, #111827) !important; }
+    .billing-toggle button:disabled { cursor: not-allowed; opacity: 0.75; color: var(--text-secondary, #4b5563) !important; }
+    .billing-soon { display: block; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary, #4b5563) !important; margin-top: 2px; }
+    .billing-soon.is-hidden { display: none; }
+    .tarifs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
+    @media (max-width: 900px) { .tarifs-grid { grid-template-columns: 1fr; } }
+    .price-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 26px 22px 24px; display: flex; flex-direction: column; }
+    .price-card.featured { border: 2px solid #c9a84c; box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.2); }
+    .plan-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; width: fit-content; padding: 4px 8px; border-radius: 6px; }
+    .plan-badge--muted { color: var(--text-secondary); background: rgba(74, 74, 90, 0.12); border: 1px solid var(--border-color); }
+    .plan-badge--gold { color: #e8d49a; background: rgba(201, 168, 76, 0.14); border: 1px solid rgba(201, 168, 76, 0.45); }
+    html.needs-light .plan-badge--gold, body.light-mode .plan-badge--gold { color: #6b5220; background: rgba(201, 168, 76, 0.18); border-color: rgba(201, 168, 76, 0.5); }
+    .plan-badge--offer {
+      color: #f5cd73;
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      display: inline-block;
+      margin-left: 8px;
+      opacity: 0;
+      transform: scale(0.82);
+      transform-origin: center;
+      pointer-events: none;
+    }
+    .plan-badge--offer.is-visible {
+      opacity: 1;
+      transform: scale(1);
+      animation: yearlyBadgePop 300ms ease-in-out;
+    }
+    .plan-badge--offer.is-hiding {
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+    }
+    html.needs-light .plan-badge--offer, body.light-mode .plan-badge--offer { color: #92400e; background: rgba(245, 158, 11, 0.22); border-color: rgba(217, 119, 6, 0.5); }
+    .price-main-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 10px; margin-bottom: 6px; }
+    .price-main { font-size: 1.9rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; }
+    .price-period { font-size: 0.95rem; font-weight: 600; color: var(--text-secondary); }
+    .price-sub { font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 16px; line-height: 1.45; }
+    .price-sub--cream { color: var(--text-secondary); opacity: 0.95; }
+    .price-rule { height: 1px; background: var(--border-color); margin: 0 0 18px; border: none; }
+    .price-card ul { list-style: none; padding: 0; margin: 0 0 22px; flex: 1; font-size: 0.88rem; line-height: 1.55; color: var(--text-primary); opacity: 0.92; }
+    .price-card li { margin-bottom: 11px; padding-left: 1.15em; position: relative; }
+    .price-card li::before { content: '\2713'; position: absolute; left: 0; color: #4caf82; font-weight: 700; }
+    .btn-tarif { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 0.92rem; border: none; cursor: pointer; text-decoration: none; box-sizing: border-box; font-family: inherit; }
+    .btn-tarif-outline-gold { background: transparent; color: #c9a84c; border: 2px solid #c9a84c; }
+    .btn-tarif-outline-gold:hover { background: rgba(201, 168, 76, 0.1); }
+    .btn-tarif-gold { background: #c9a84c; color: #1a1510; border: 2px solid #c9a84c; }
+    .btn-tarif-gold:hover { filter: brightness(1.05); }
+    .btn-tarif-outline-light { background: transparent; color: var(--text-primary); border: 2px solid var(--border-color); }
+    .btn-tarif-outline-light:hover { background: rgba(74, 74, 90, 0.08); }
+    .compare-wrap { margin-top: 56px; overflow-x: auto; }
+    .compare-wrap h2 { font-size: 1.05rem; margin-bottom: 18px; text-align: center; font-weight: 800; color: var(--text-primary, #111827) !important; }
+    table.compare { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 560px; background: var(--bg-secondary); }
+    table.compare th, table.compare td { border: 1px solid var(--border-color); padding: 12px 14px; text-align: center; }
+    table.compare th { background: var(--bg-secondary); color: var(--text-primary, #111827) !important; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    table.compare td:first-child { text-align: left; font-weight: 600; color: var(--text-primary); }
+    .cmp-chk { color: #4caf82; font-weight: 800; }
+    .cmp-dash { color: var(--text-secondary); }
+    .cmp-pill { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
+    .cmp-pill--pro { color: #c9a84c; }
+    html.needs-light .cmp-pill--pro, body.light-mode .cmp-pill--pro { color: #8a6a1f; }
+    .cmp-pill--biz { color: var(--text-secondary); }
+    html.needs-light .cmp-pill--biz, body.light-mode .cmp-pill--biz { color: #4a4a5a; }
+    .faq-wrap { margin-top: 48px; max-width: 720px; margin-left: auto; margin-right: auto; }
+    .faq-wrap > h2 { text-align: center; font-size: 1.05rem; margin-bottom: 18px; font-weight: 800; color: var(--text-primary, #111827) !important; }
+    .faq-item { border: none; border-bottom: 1px solid var(--border-color); border-radius: 0; margin-bottom: 0; background: var(--bg-secondary); }
+    .faq-item + .faq-item { margin-top: 0; }
+    .faq-item summary { cursor: pointer; padding: 16px 4px 16px 0; font-weight: 700; list-style: none; color: var(--text-primary, #111827) !important; font-size: 0.92rem; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item p { margin: 0; padding: 0 0 16px; color: var(--text-secondary, #374151) !important; line-height: 1.55; font-size: 0.88rem; }
+    .price-card .price-main,
+    .price-card .price-period,
+    .price-card .price-sub,
+    .price-card .btn-tarif {
+      transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+      transform-origin: center;
+      will-change: opacity, transform;
+    }
+    .price-card.is-switching-out .price-main,
+    .price-card.is-switching-out .price-period,
+    .price-card.is-switching-out .price-sub,
+    .price-card.is-switching-out .btn-tarif {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    .price-card.is-switching-in .price-main,
+    .price-card.is-switching-in .price-period,
+    .price-card.is-switching-in .price-sub,
+    .price-card.is-switching-in .btn-tarif {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+    @keyframes yearlyBadgePop {
+      0% { opacity: 0; transform: scale(0.82); }
+      60% { opacity: 1; transform: scale(1.08); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .price-card {
+      background: #161620 !important;
+      border-color: #2e2e3d !important;
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .tarifs-wrap,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .tarifs-hero h1,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .compare-wrap h2,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-wrap > h2,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-item summary,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .price-card,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .price-main,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .price-card ul,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .price-card li,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .price-card a,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .price-card button {
+      color: var(--text-primary, #f0ede8) !important;
+      opacity: 1 !important;
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .tarifs-hero p,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .price-sub,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .price-period,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-item p,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .cmp-dash {
+      color: var(--text-secondary, #c5c4cf) !important;
+      opacity: 1 !important;
+    }
+    /* Mode sombre : textes demandés, forcés lisibles */
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .tarifs-hero h1,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .tarifs-hero p,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) #billMonthly,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) #billYearly,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .billing-soon,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .compare-wrap h2,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) table.compare th,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-wrap > h2,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-item summary,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-item p {
+      color: var(--text-primary, #f0ede8) !important;
+      opacity: 1 !important;
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .tarifs-hero p,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .billing-soon,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-item p {
+      color: var(--text-secondary, #d1d5db) !important;
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .billing-toggle {
+      background: #12121a !important;
+      border-color: #2e2e3d !important;
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .billing-toggle button.is-active {
+      background: #2a2a38 !important;
+      color: var(--text-primary, #f0ede8) !important;
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .btn-tarif-outline-light {
+      color: #f0ede8 !important;
+      border-color: #3a3a4b !important;
+      background: transparent !important;
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .btn-tarif-outline-light:hover {
+      background: rgba(255, 255, 255, 0.06) !important;
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) table.compare {
+      background: #12121a !important;
+    }
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) table.compare th,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) table.compare td {
+      border-color: #2e2e3d !important;
+      color: #f0ede8 !important;
+    }
+    html.needs-light .price-card,
+    body.light-mode .price-card {
+      background: var(--bg-card, #ffffff);
+      border-color: var(--border-color, #e7e2dc);
+    }
+    html.needs-light .price-card,
+    html.needs-light .price-card .price-main,
+    html.needs-light .price-card ul,
+    html.needs-light .price-card li,
+    html.needs-light .tarifs-hero h1,
+    html.needs-light .compare-wrap h2,
+    html.needs-light .faq-wrap > h2,
+    html.needs-light .faq-item summary,
+    body.light-mode .price-card,
+    body.light-mode .price-card .price-main,
+    body.light-mode .price-card ul,
+    body.light-mode .price-card li,
+    body.light-mode .tarifs-hero h1,
+    body.light-mode .compare-wrap h2,
+    body.light-mode .faq-wrap > h2,
+    body.light-mode .faq-item summary {
+      color: var(--text-primary, #1f2937);
+      opacity: 1;
+    }
+    html.needs-light .tarifs-hero p,
+    html.needs-light .price-sub,
+    html.needs-light .price-period,
+    html.needs-light .faq-item p,
+    body.light-mode .tarifs-hero p,
+    body.light-mode .price-sub,
+    body.light-mode .price-period,
+    body.light-mode .faq-item p {
+      color: var(--text-secondary, #4b5563);
+      opacity: 1;
+    }
+    html.needs-light .tarifs-hero h1,
+    body.light-mode .tarifs-hero h1 {
+      color: #111827 !important;
+    }
+    html.needs-light .tarifs-hero p,
+    body.light-mode .tarifs-hero p {
+      color: #374151 !important;
+    }
+    html.needs-light .billing-toggle,
+    body.light-mode .billing-toggle {
+      background: #f3f4f6 !important;
+      border-color: #d1d5db !important;
+    }
+    html.needs-light .billing-toggle button,
+    body.light-mode .billing-toggle button {
+      color: #374151 !important;
+    }
+    html.needs-light .billing-toggle button.is-active,
+    body.light-mode .billing-toggle button.is-active {
+      background: #e5e7eb !important;
+      color: #111827 !important;
+    }
+    html.needs-light .billing-soon,
+    body.light-mode .billing-soon {
+      color: #6b7280 !important;
+    }
+    html.needs-light .compare-wrap h2,
+    body.light-mode .compare-wrap h2 {
+      color: #111827 !important;
+    }
+    html.needs-light table.compare th,
+    body.light-mode table.compare th {
+      color: #1f2937 !important;
+      background: #f9fafb !important;
+    }
+    html.needs-light table.compare td,
+    body.light-mode table.compare td {
+      color: #1f2937 !important;
+      background: #ffffff !important;
+    }
+    html.needs-light .faq-wrap > h2,
+    body.light-mode .faq-wrap > h2 {
+      color: #111827 !important;
+    }
+    html.needs-light .faq-item summary,
+    body.light-mode .faq-item summary {
+      color: #111827 !important;
+    }
+    html.needs-light .faq-item p,
+    body.light-mode .faq-item p {
+      color: #374151 !important;
+    }
+    /* Mode jour : textes foncés (sans forcer #000 en mode nuit — fond sombre global) */
+    html.needs-light body.tarifs-page .tarifs-hero h1,
+    body.light-mode.tarifs-page .tarifs-hero h1,
+    html.needs-light body.tarifs-page .tarifs-hero p,
+    body.light-mode.tarifs-page .tarifs-hero p,
+    html.needs-light body.tarifs-page .compare-wrap h2,
+    body.light-mode.tarifs-page .compare-wrap h2,
+    html.needs-light body.tarifs-page table.compare th,
+    body.light-mode.tarifs-page table.compare th,
+    html.needs-light body.tarifs-page .faq-wrap > h2,
+    body.light-mode.tarifs-page .faq-wrap > h2,
+    html.needs-light body.tarifs-page .faq-item summary,
+    body.light-mode.tarifs-page .faq-item summary,
+    html.needs-light body.tarifs-page .faq-item p,
+    body.light-mode.tarifs-page .faq-item p {
+      color: #0a0a0f !important;
+      opacity: 1 !important;
+    }
+    /* Forçage demandé: ces textes restent noirs en mode nuit */
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .tarifs-hero h1,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .tarifs-hero p,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .compare-wrap h2,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) table.compare th,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-wrap > h2,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-item summary,
+    html:not(.needs-light) body.tarifs-page:not(.light-mode) .faq-item p {
+      color: #0A0A0F !important;
+      opacity: 1 !important;
+    }
+  </style>
+</head>
+<body class="tarifs-page">
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="index.html" class="subpage-back" data-i18n="bp_nav_back"></a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Theme"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(applyTarifsI18n)" aria-label="Lang">EN</button>
+    </div>
+  </nav>
+
+  <div class="tarifs-wrap">
+    <div class="tarifs-hero">
+      <h1 data-i18n="tarifs_hero_title"></h1>
+      <p data-i18n="tarifs_hero_sub"></p>
+    </div>
+
+    <div class="billing-toggle-wrap">
+      <div class="billing-toggle" role="group" aria-label="Billing period">
+        <button type="button" class="is-active" id="billMonthly" data-i18n="tarifs_bill_month"></button>
+        <button type="button" id="billYearly" title="">
+          <span data-i18n="tarifs_bill_year"></span>
+          <span class="billing-soon is-hidden" data-i18n="tarifs_bill_soon"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="tarifs-grid">
+      <div class="price-card">
+        <span class="plan-badge plan-badge--muted" data-i18n="tarifs_badge_free"></span>
+        <div class="price-main-row">
+          <span class="price-main" data-i18n="tarifs_price_free_main"></span>
+        </div>
+        <p class="price-sub" data-i18n="tarifs_price_free_sub"></p>
+        <hr class="price-rule" />
+        <ul>
+          <li data-i18n="tarifs_f_free_1"></li>
+          <li data-i18n="tarifs_f_free_2"></li>
+          <li data-i18n="tarifs_f_free_3"></li>
+          <li data-i18n="tarifs_f_free_4"></li>
+        </ul>
+        <a href="auth.html" class="btn-tarif btn-tarif-outline-gold" data-i18n="tarifs_cta_free"></a>
+      </div>
+      <div class="price-card featured" id="proCard">
+        <span class="plan-badge plan-badge--gold" data-i18n="tarifs_badge_pro"></span>
+        <span class="plan-badge plan-badge--offer" id="proOfferBadge" data-i18n="tarifs_yearly_offer">2 mois offerts</span>
+        <div class="price-main-row">
+          <span class="price-main" id="proPriceMain" data-i18n="tarifs_price_pro_main"></span>
+          <span class="price-period" id="proPricePeriod" data-i18n="tarifs_price_period"></span>
+        </div>
+        <p class="price-sub price-sub--cream" id="proPriceSub" data-i18n="tarifs_plan_sub_cancel"></p>
+        <hr class="price-rule" />
+        <ul>
+          <li data-i18n="tarifs_f_pro_1"></li>
+          <li data-i18n="tarifs_f_pro_2"></li>
+          <li data-i18n="tarifs_f_pro_3"></li>
+          <li data-i18n="tarifs_f_pro_4"></li>
+          <li data-i18n="tarifs_f_pro_5"></li>
+          <li data-i18n="tarifs_f_pro_6"></li>
+          <li data-i18n="tarifs_f_pro_7"></li>
+        </ul>
+        <button type="button" class="btn-tarif btn-tarif-gold" id="btnSubPro" data-i18n="tarifs_cta_pro"></button>
+      </div>
+      <div class="price-card" id="bizCard">
+        <span class="plan-badge plan-badge--muted" data-i18n="tarifs_badge_biz"></span>
+        <span class="plan-badge plan-badge--offer" id="bizOfferBadge" data-i18n="tarifs_yearly_offer">2 mois offerts</span>
+        <div class="price-main-row">
+          <span class="price-main" id="bizPriceMain" data-i18n="tarifs_price_biz_main"></span>
+          <span class="price-period" id="bizPricePeriod" data-i18n="tarifs_price_period"></span>
+        </div>
+        <p class="price-sub price-sub--cream" id="bizPriceSub" data-i18n="tarifs_plan_sub_cancel"></p>
+        <hr class="price-rule" />
+        <ul>
+          <li data-i18n="tarifs_f_biz_1"></li>
+          <li data-i18n="tarifs_f_biz_2"></li>
+          <li data-i18n="tarifs_f_biz_3"></li>
+          <li data-i18n="tarifs_f_biz_4"></li>
+          <li data-i18n="tarifs_f_biz_5"></li>
+          <li data-i18n="tarifs_f_biz_6"></li>
+          <li data-i18n="tarifs_f_biz_7"></li>
+          <li data-i18n="tarifs_f_biz_8"></li>
+        </ul>
+        <button type="button" class="btn-tarif btn-tarif-outline-light" id="btnSubBiz" data-i18n="tarifs_cta_biz"></button>
+      </div>
+    </div>
+
+    <div class="compare-wrap">
+      <h2 data-i18n="tarifs_compare_title"></h2>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th data-i18n="tarifs_cmp_feat"></th>
+            <th data-i18n="tarifs_cmp_free"></th>
+            <th data-i18n="tarifs_cmp_pro"></th>
+            <th data-i18n="tarifs_cmp_biz"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-i18n="tarifs_cmp_row_pub"></td>
+            <td data-i18n="tarifs_cmp_v1"></td>
+            <td data-i18n="tarifs_cmp_v10"></td>
+            <td data-i18n="tarifs_cmp_unl"></td>
+          </tr>
+          <tr>
+            <td data-i18n="tarifs_cmp_row_com"></td>
+            <td data-i18n="tarifs_cmp_p15"></td>
+            <td data-i18n="tarifs_cmp_p12"></td>
+            <td data-i18n="tarifs_cmp_p10"></td>
+          </tr>
+          <tr>
+            <td data-i18n="tarifs_cmp_row_clients"></td>
+            <td><span class="cmp-chk">&#10003;</span></td>
+            <td><span class="cmp-chk">&#10003;</span></td>
+            <td><span class="cmp-chk">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td data-i18n="tarifs_cmp_row_bad"></td>
+            <td><span class="cmp-dash">—</span></td>
+            <td><span class="cmp-pill cmp-pill--pro" data-i18n="tarifs_cmp_badge_pro_cell"></span></td>
+            <td><span class="cmp-pill cmp-pill--biz" data-i18n="tarifs_cmp_badge_biz_cell"></span></td>
+          </tr>
+          <tr>
+            <td data-i18n="tarifs_cmp_row_pri"></td>
+            <td><span class="cmp-dash">—</span></td>
+            <td><span class="cmp-chk">&#10003;</span></td>
+            <td><span class="cmp-chk">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td data-i18n="tarifs_cmp_row_stats"></td>
+            <td><span class="cmp-dash">—</span></td>
+            <td><span class="cmp-chk">&#10003;</span></td>
+            <td><span class="cmp-chk">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td data-i18n="tarifs_cmp_row_sup"></td>
+            <td data-i18n="tarifs_cmp_std"></td>
+            <td data-i18n="tarifs_cmp_std"></td>
+            <td data-i18n="tarifs_cmp_pri_sup"></td>
+          </tr>
+          <tr>
+            <td data-i18n="tarifs_cmp_row_boost"></td>
+            <td><span class="cmp-dash">—</span></td>
+            <td data-i18n="tarifs_cmp_b1"></td>
+            <td data-i18n="tarifs_cmp_b3"></td>
+          </tr>
+          <tr>
+            <td data-i18n="tarifs_cmp_row_leads"></td>
+            <td><span class="cmp-dash">—</span></td>
+            <td><span class="cmp-dash">—</span></td>
+            <td><span class="cmp-chk">&#10003;</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="faq-wrap">
+      <h2 data-i18n="tarifs_faq_title"></h2>
+      <details class="faq-item">
+        <summary data-i18n="tarifs_faq_q1"></summary>
+        <p data-i18n="tarifs_faq_a1"></p>
+      </details>
+      <details class="faq-item">
+        <summary data-i18n="tarifs_faq_q2"></summary>
+        <p data-i18n="tarifs_faq_a2"></p>
+      </details>
+      <details class="faq-item">
+        <summary data-i18n="tarifs_faq_q3"></summary>
+        <p data-i18n="tarifs_faq_a3"></p>
+      </details>
+    </div>
+  </div>
+
+  <div id="needs-unified-footer"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+  <script src="subpage-common.js"></script>
+  <script src="js/inject-unified-footer.js"></script>
+  <script src="cursor.js" defer></script>
+  <script>
+    function applyTarifsI18n() {
+      if (window.NeedsI18n) {
+        NeedsI18n.applyDOM();
+        document.title = NeedsI18n.t('tarifs_meta_title') || document.title;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      applyTarifsI18n();
+      if (window.needsSubpage) needsSubpage.updateChromeButtons();
+    });
+    var fbCfg = { apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU", authDomain: "needs-ae86d.firebaseapp.com", projectId: "needs-ae86d", storageBucket: "needs-ae86d.firebasestorage.app", messagingSenderId: "253900994407", appId: "1:253900994407:web:55168e1b73c878761de1c2" };
+    if (!firebase.apps.length) firebase.initializeApp(fbCfg);
+    var fns = firebase.app().functions('us-central1');
+    var db = firebase.firestore();
+    function startSubscription(plan) {
+      var u = firebase.auth().currentUser;
+      if (!u) {
+        window.location.href = 'auth.html?redirect=' + encodeURIComponent('/tarifs.html');
+        return;
+      }
+      fns.httpsCallable('createSubscription')({ plan: plan }).then(function (r) {
+        if (r.data && r.data.url) window.location.href = r.data.url;
+      }).catch(function (e) {
+        alert(String(e.message || e.details || 'Error'));
+      });
+    }
+    function startStripeCheckoutByPriceId(priceId) {
+      var u = firebase.auth().currentUser;
+      if (!u) {
+        window.location.href = 'auth.html?redirect=' + encodeURIComponent('/tarifs.html');
+        return;
+      }
+      db.collection('customers')
+        .doc(u.uid)
+        .collection('checkout_sessions')
+        .add({
+          price: priceId,
+          mode: 'subscription',
+          success_url: window.location.origin + '/success-subscription.html',
+          cancel_url: window.location.origin + '/tarifs.html'
+        })
+        .then(function (docRef) {
+          docRef.onSnapshot(function (snap) {
+            var data = snap.data() || {};
+            if (data.error) {
+              alert(String(data.error.message || 'Erreur Stripe'));
+              return;
+            }
+            if (data.url) window.location.assign(data.url);
+          });
+        })
+        .catch(function (e) {
+          alert(String(e.message || 'Erreur de paiement'));
+        });
+    }
+
+    var BILLING_MONTHLY = 'monthly';
+    var BILLING_YEARLY = 'yearly';
+    var currentBilling = BILLING_MONTHLY;
+
+    function t(key, fallback) {
+      if (window.NeedsI18n && NeedsI18n.t) {
+        var translated = NeedsI18n.t(key);
+        if (translated && translated !== key) return translated;
+      }
+      return fallback;
+    }
+
+    function setSwitchingState(phase) {
+      ['proCard', 'bizCard'].forEach(function (id) {
+        var card = document.getElementById(id);
+        if (!card) return;
+        card.classList.remove('is-switching-out', 'is-switching-in');
+        if (phase === 'out') card.classList.add('is-switching-out');
+        if (phase === 'in') card.classList.add('is-switching-in');
+      });
+    }
+
+    function updateBillingUI(mode) {
+      var monthlyBtn = document.getElementById('billMonthly');
+      var yearlyBtn = document.getElementById('billYearly');
+      var proMain = document.getElementById('proPriceMain');
+      var proPeriod = document.getElementById('proPricePeriod');
+      var proSub = document.getElementById('proPriceSub');
+      var bizMain = document.getElementById('bizPriceMain');
+      var bizPeriod = document.getElementById('bizPricePeriod');
+      var bizSub = document.getElementById('bizPriceSub');
+      var proOffer = document.getElementById('proOfferBadge');
+      var bizOffer = document.getElementById('bizOfferBadge');
+      var proBtn = document.getElementById('btnSubPro');
+      var bizBtn = document.getElementById('btnSubBiz');
+
+      var isYearly = mode === BILLING_YEARLY;
+      monthlyBtn.classList.toggle('is-active', !isYearly);
+      yearlyBtn.classList.toggle('is-active', isYearly);
+
+      if (isYearly) {
+        proMain.textContent = t('tarifs_price_pro_yearly_main', 'CA$189');
+        bizMain.textContent = t('tarifs_price_biz_yearly_main', 'CA$479');
+        proPeriod.textContent = t('tarifs_price_period_yearly', '/yr');
+        bizPeriod.textContent = t('tarifs_price_period_yearly', '/yr');
+        proSub.textContent = t('tarifs_price_pro_yearly_sub', '\u2248 CA$15.75/mo');
+        bizSub.textContent = t('tarifs_price_biz_yearly_sub', '\u2248 CA$39.92/mo');
+        proOffer.textContent = t('tarifs_yearly_offer', '2 months free');
+        bizOffer.textContent = t('tarifs_yearly_offer', '2 months free');
+        proOffer.classList.remove('is-hiding');
+        bizOffer.classList.remove('is-hiding');
+        proOffer.classList.add('is-visible');
+        bizOffer.classList.add('is-visible');
+        proBtn.textContent = t('tarifs_cta_pro_yearly', 'Upgrade to Pro - Yearly');
+        bizBtn.textContent = t('tarifs_cta_biz_yearly', 'Upgrade to Business - Yearly');
+      } else {
+        proMain.textContent = t('tarifs_price_pro_main', 'CA$19.99');
+        bizMain.textContent = t('tarifs_price_biz_main', 'CA$49.99');
+        proPeriod.textContent = t('tarifs_price_period', '/mo');
+        bizPeriod.textContent = t('tarifs_price_period', '/mo');
+        proSub.textContent = t('tarifs_plan_sub_cancel', 'No commitment · Cancel anytime');
+        bizSub.textContent = t('tarifs_plan_sub_cancel', 'No commitment · Cancel anytime');
+        proOffer.classList.add('is-hiding');
+        bizOffer.classList.add('is-hiding');
+        proOffer.classList.remove('is-visible');
+        bizOffer.classList.remove('is-visible');
+        proBtn.textContent = t('tarifs_cta_pro', 'Upgrade to Pro');
+        bizBtn.textContent = t('tarifs_cta_biz', 'Upgrade to Business');
+      }
+    }
+
+    function setBillingMode(mode) {
+      if (mode !== BILLING_MONTHLY && mode !== BILLING_YEARLY) return;
+      if (mode === currentBilling) return;
+      setSwitchingState('out');
+      window.setTimeout(function () {
+        currentBilling = mode;
+        updateBillingUI(mode);
+        setSwitchingState('in');
+        window.setTimeout(function () { setSwitchingState(''); }, 300);
+      }, 300);
+    }
+
+    document.getElementById('billMonthly').addEventListener('click', function () { setBillingMode(BILLING_MONTHLY); });
+    document.getElementById('billYearly').addEventListener('click', function () { setBillingMode(BILLING_YEARLY); });
+    document.getElementById('btnSubPro').addEventListener('click', function () {
+      if (currentBilling === BILLING_YEARLY) return startStripeCheckoutByPriceId('price_1TP78K9Ggjo07LKQZk0rGfve');
+      startSubscription('pro');
+    });
+    document.getElementById('btnSubBiz').addEventListener('click', function () {
+      if (currentBilling === BILLING_YEARLY) return startStripeCheckoutByPriceId('price_1TP79X9Ggjo07LKQnylAK9AJ');
+      startSubscription('business');
+    });
+
+    document.addEventListener('needs:lang-changed', function () {
+      window.setTimeout(function () { updateBillingUI(currentBilling); }, 0);
+    });
+    updateBillingUI(currentBilling);
+  </script>
+</body>
+</html>

@@ -1,0 +1,3034 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tous nos services | Needs</title>
+  <meta name="description" content="Découvrez les services premium Needs : ménage, plomberie, digital, événements et plus. Prestataires certifiés, avis et tarifs transparents.">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="canonical" href="https://needs-ae86d.web.app/services.html">
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/needs-analytics.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="theme-needs.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+  <link rel="stylesheet" href="mobile-app-shell.css">
+
+  <style>
+    html.needs-light body,
+    body.light-mode { color: #1c1917 !important; }
+    html.needs-light header,
+    body.light-mode header { background: rgba(255,255,255,0.95) !important; border-color: var(--border); }
+    html.needs-light .logo,
+    body.light-mode .logo { color: #1c1917 !important; }
+    html.needs-light .hero h1, body.light-mode .hero h1, html.needs-light .hero p, body.light-mode .hero p,
+    html.needs-light .result-count, body.light-mode .result-count,
+    html.needs-light .filter-btn, body.light-mode .filter-btn, html.needs-light .sort-select, body.light-mode .sort-select,
+    html.needs-light .service-card h3, body.light-mode .service-card h3,
+    html.needs-light .card-desc, body.light-mode .card-desc, html.needs-light .price-tag, body.light-mode .price-tag,
+    html.needs-light .btn-details, body.light-mode .btn-details,
+    html.needs-light .modal-content h2, body.light-mode .modal-content h2, html.needs-light .description-text, body.light-mode .description-text,
+    html.needs-light .option-item, body.light-mode .option-item,
+    html.needs-light .btn-pay, body.light-mode .btn-pay, html.needs-light .btn-chat, body.light-mode .btn-chat,
+    html.needs-light .feature-item, body.light-mode .feature-item,
+    html.needs-light .secure-txt, body.light-mode .secure-txt, html.needs-light .info-badge, body.light-mode .info-badge,
+    html.needs-light #m-provider, body.light-mode #m-provider,
+    html.needs-light .review-section h3, body.light-mode .review-section h3, html.needs-light .review-section h4, body.light-mode .review-section h4,
+    html.needs-light input, body.light-mode input, html.needs-light textarea, body.light-mode textarea,
+    html.needs-light select, body.light-mode select { color: #1c1917 !important; }
+    html.needs-light input::placeholder, html.needs-light textarea::placeholder,
+    body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: #64748B !important; }
+    html.needs-light .btn-nav { color: #1c1917 !important; border-color: rgba(15,23,42,0.2); }
+    html.needs-light .toast { color: #1c1917 !important; background: #fff !important; border: 1px solid #E2E8F0; }
+    /* Pagination : chiffres des pages inactives lisibles sur fond clair */
+    html.needs-light .page-btn:not(.active),
+    body.light-mode .page-btn:not(.active) { color: #1c1917 !important; }
+    html.needs-light .page-btn.active,
+    body.light-mode .page-btn.active { color: #fff !important; }
+    html.needs-light .page-ellipsis,
+    body.light-mode .page-ellipsis { color: #64748B !important; }
+
+    /* Modal détail service en mode jour : fond clair, texte lisible */
+    html.needs-light .modal-content,
+    body.light-mode .modal-content { background: #ffffff !important; border-color: #e2e8f0 !important; box-shadow: 0 25px 60px rgba(0,0,0,0.15); }
+    html.needs-light .modal-hero::after,
+    body.light-mode .modal-hero::after { background: linear-gradient(transparent, #ffffff) !important; }
+    html.needs-light .modal-main,
+    body.light-mode .modal-main { background: #ffffff; }
+    html.needs-light .modal-info h2,
+    body.light-mode .modal-info h2 { color: #1c1917 !important; }
+    html.needs-light .description-text,
+    body.light-mode .description-text { color: #334155 !important; opacity: 1; }
+    html.needs-light .info-badge,
+    body.light-mode .info-badge { background: #f1f5f9 !important; color: #475569 !important; }
+    html.needs-light .provider-card,
+    body.light-mode .provider-card { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
+    html.needs-light .provider-card .provider-avatar,
+    body.light-mode .provider-card .provider-avatar { background: var(--primary) !important; color: #fff !important; }
+    html.needs-light .sidebar-booking,
+    body.light-mode .sidebar-booking { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
+    html.needs-light .price-big,
+    body.light-mode .price-big { color: #1c1917 !important; }
+    html.needs-light .price-unit,
+    body.light-mode .price-unit { color: #64748B !important; }
+    html.needs-light .options-title,
+    body.light-mode .options-title { color: #64748B !important; }
+    html.needs-light .option-item,
+    body.light-mode .option-item { background: #f8fafc !important; border-color: #e2e8f0 !important; }
+    html.needs-light .option-item.selected,
+    body.light-mode .option-item.selected { background: rgba(29,78,216,0.08) !important; border-color: var(--primary) !important; }
+    html.needs-light .btn-chat,
+    body.light-mode .btn-chat { background: #f1f5f9 !important; color: #1c1917 !important; border-color: #e2e8f0 !important; }
+    html.needs-light .btn-chat:hover,
+    body.light-mode .btn-chat:hover { background: #e2e8f0 !important; border-color: #cbd5e1 !important; }
+    html.needs-light .feature-item,
+    body.light-mode .feature-item { color: var(--success) !important; }
+    html.needs-light .secure-txt,
+    body.light-mode .secure-txt { color: #64748B !important; }
+    html.needs-light .review-section,
+    body.light-mode .review-section { border-top-color: #e2e8f0 !important; }
+    html.needs-light .review-section h3,
+    body.light-mode .review-section h3 { color: #1c1917 !important; }
+    html.needs-light .review-card,
+    body.light-mode .review-card { background: #f8fafc !important; border-color: #e2e8f0 !important; }
+    html.needs-light .review-name,
+    body.light-mode .review-name { color: #1c1917 !important; }
+    html.needs-light .review-body,
+    body.light-mode .review-body { color: #475569 !important; }
+    html.needs-light .add-review,
+    body.light-mode .add-review { background: rgba(29,78,216,0.06) !important; border-color: rgba(29,78,216,0.2) !important; }
+    html.needs-light .add-review h4,
+    body.light-mode .add-review h4 { color: #1c1917 !important; }
+    html.needs-light .add-review input,
+    html.needs-light .add-review textarea,
+    body.light-mode .add-review input,
+    body.light-mode .add-review textarea { background: #ffffff !important; color: #1c1917 !important; border-color: #e2e8f0 !important; }
+    html.needs-light .add-review .review-meta label,
+    body.light-mode .add-review .review-meta label { color: #64748B !important; }
+    html.needs-light .add-review .review-meta select,
+    body.light-mode .add-review .review-meta select { background: #fff !important; color: #1c1917 !important; border-color: #e2e8f0 !important; }
+    html.needs-light .modal-close,
+    body.light-mode .modal-close { background: rgba(0,0,0,0.4) !important; color: #fff !important; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 6%; backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(0,0,0,0.95);
+    }
+    .logo {
+      font-weight: 800; font-size: 1.2rem; letter-spacing: 2px;
+      text-decoration: none; color: white; display: flex; align-items: center; gap: 10px;
+    }
+    .logo-box {
+      background: var(--primary); width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .btn-nav {
+      background: var(--surface); border: 1px solid var(--border); color: white;
+      padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 12px; font-weight: 700;
+      text-decoration: none; font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-nav:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+    .btn-nav-fav {
+      background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: #FCA5A5;
+    }
+    .btn-nav-fav:hover { background: rgba(239,68,68,0.15); }
+
+    /* ── HERO ── */
+    .hero { padding: 64px 20px 80px; text-align: center; position: relative; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 14px; }
+    .hero h1 span { color: var(--primary); }
+    .hero p { color: var(--text-mute); max-width: 560px; margin: 0 auto; font-size: 1.05rem; line-height: 1.6; }
+
+    /* ── CONTROLS ── */
+    .controls { max-width: 1200px; margin: -36px auto 32px; padding: 0 5%; position: relative; z-index: 10; }
+    .search-container {
+      background: var(--card-bg); border: 1px solid rgba(29,78,216,0.25);
+      backdrop-filter: blur(12px); border-radius: 16px; padding: 14px 22px;
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-container:focus-within { border-color: var(--primary); box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 3px var(--primary-glow); }
+    .search-container input {
+      background: transparent; border: none; color: white; width: 100%; outline: none;
+      font-size: 15px; font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .search-container input::placeholder { color: var(--text-mute); }
+    .search-clear {
+      background: none; border: none; color: var(--text-mute); cursor: pointer;
+      font-size: 13px; padding: 4px; transition: color 0.2s; display: none;
+    }
+    .search-clear.show { display: block; }
+    .search-clear:hover { color: white; }
+
+    .filter-bar { display: flex; gap: 8px; margin-top: 20px; justify-content: center; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 9px 20px; border-radius: 12px; border: 1px solid var(--border);
+      /* var(--text) = thème Needs ; évite --text-primary cassé si OS clair + site sombre */
+      background: var(--surface); color: var(--text) !important; cursor: pointer;
+      font-size: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex; align-items: center; gap: 7px;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--primary); color: white; transform: translateY(-2px); }
+    .filter-btn.active {
+      background: var(--primary); color: white; border-color: transparent;
+      box-shadow: 0 6px 16px var(--primary-glow);
+    }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      max-width: 1400px; margin: 0 auto 20px; padding: 0 5%;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .result-count { font-size: 13px; color: var(--text-mute); font-weight: 600; }
+    .result-count strong { color: white; }
+
+    .toolbar-right { display: flex; align-items: center; gap: 10px; }
+    .sort-wrapper {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 10px;
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .sort-wrapper:hover { border-color: var(--primary); }
+    .sort-select {
+      background: transparent; border: none; color: white;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700;
+      outline: none; cursor: pointer; appearance: none;
+    }
+    .view-toggle { display: flex; gap: 6px; }
+    .btn-view {
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-mute);
+      width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 13px; transition: all 0.2s;
+    }
+    .btn-view:hover { color: white; border-color: rgba(255,255,255,0.2); }
+    .btn-view.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+    /* ── GRILLE SERVICES TROUVÉS : bien espacées, occupe toute la largeur ── */
+    .services-zone {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto 48px;
+      padding: 0 24px;
+      box-sizing: border-box;
+    }
+    /* Grille : 4 colonnes sur desktop — une « page » = 12 cartes (3 lignes × 4) avant pagination */
+    .services-grid {
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 28px 22px;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      list-style: none;
+    }
+    .services-grid .service-card {
+      width: 100%;
+      min-width: 0;
+    }
+    .services-grid.list-view {
+      grid-template-columns: 1fr !important;
+      gap: 20px;
+    }
+
+    @media (max-width: 1200px) {
+      .services-grid:not(.list-view) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 26px 18px;
+      }
+    }
+    @media (max-width: 900px) {
+      .services-grid:not(.list-view) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    /* Grille téléphone : voir bloc @media (max-width: 600px) en fin de styles */
+
+    /* ── SKELETON ── */
+    .skeleton {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px;
+      height: 380px; overflow: hidden; position: relative;
+    }
+    .skeleton::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent 20%, rgba(255,255,255,0.04) 50%, transparent 80%);
+      background-size: 200% 100%; animation: shimmer 1.6s infinite;
+    }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+
+    /* ── CARTES : espacées, lisibles ── */
+    .service-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      animation: cardIn 0.4s ease backwards;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
+      min-height: 340px;
+    }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(201, 168, 76, 0.35);
+      box-shadow: 0 8px 24px rgba(201, 168, 76, 0.15);
+    }
+
+    /* LIST MODE */
+    .services-grid.list-view .service-card { flex-direction: row; min-height: 0; height: 140px; border-radius: 18px; }
+    .services-grid.list-view .card-image-wrap { width: 160px; flex-shrink: 0; }
+    .services-grid.list-view .card-image { height: 130px; border-radius: 18px 0 0 18px; border-bottom: none; border-right: 1px solid var(--border); }
+    .services-grid.list-view .card-content { padding: 14px 18px; justify-content: center; }
+    .services-grid.list-view .card-desc { display: none; }
+    .services-grid.list-view .service-card:hover { transform: translateY(-4px); }
+    .services-grid.list-view .type-badge { top: auto; bottom: 10px; left: 10px; }
+    .services-grid.list-view .card-badges { display: none; }
+    .services-grid.list-view .btn-fav { top: 10px; right: 10px; }
+
+    /* BADGES */
+    .type-badge {
+      position: absolute; bottom: 13px; left: 13px; top: auto; padding: 4px 10px;
+      border-radius: 8px; font-size: 9px; font-weight: 800; color: white;
+      z-index: 5; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    @keyframes pulseFire { 0%,100% { opacity: 1; } 50% { opacity: 0.65; } }
+    .card-badges {
+      display: flex; flex-direction: row; gap: 6px; flex-wrap: wrap; align-items: center;
+      margin-bottom: 8px; position: absolute; top: 10px; left: 10px; z-index: 6;
+      max-width: calc(100% - 80px); pointer-events: none;
+    }
+    .card-badge, .card-badges span {
+      font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600;
+      letter-spacing: 0.5px; white-space: nowrap; line-height: 1.2; text-transform: uppercase;
+    }
+    .svc-badge-featured { background: linear-gradient(135deg, #C9A84C, #a88a3d); color: #1a1510; }
+    .svc-badge-top-rated { background: #16a34a; color: #fff; animation: pulseFire 2s infinite; }
+    .svc-badge-plan-business { background: #6d28d9; color: #fff; }
+    .svc-badge-plan-pro { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; }
+    .svc-badge-partner { background: #64748b; color: #fff; }
+
+    #m-booking-date.day-fully-booked { opacity: 0.55; border-color: #b45309; }
+    .m-slot-live-status { font-size: 12px; margin-top: 6px; min-height: 20px; font-weight: 600; }
+    .m-slot-live-status--ok { color: #16a34a; }
+    .m-slot-live-status--bad { color: #dc2626; }
+    .m-slot-live-status--neutral { color: var(--text-mute); }
+    .m-slot-badge-pill { font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+    .m-slot-badge-pill--warn { border-color: rgba(220, 38, 38, 0.45); background: rgba(220, 38, 38, 0.08); color: #fecaca; }
+    .m-slot-badge-pill--ok { border-color: rgba(22, 163, 74, 0.45); background: rgba(22, 163, 74, 0.1); color: #bbf7d0; }
+    .btn-pay:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+    /* FAV BTN */
+    .btn-fav {
+      position: absolute; top: 13px; right: 13px;
+      background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+      width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: white; cursor: pointer; z-index: 10;
+      transition: all 0.2s;
+    }
+    .btn-fav:hover { transform: scale(1.15); }
+    .btn-fav.active { color: var(--danger); background: rgba(239,68,68,0.15); border-color: var(--danger); }
+    .btn-fav i { font-size: 13px; transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+    .btn-fav:hover i { transform: scale(1.2); }
+
+    /* IMAGE */
+    .card-image-wrap { width: 100%; overflow: hidden; flex-shrink: 0; }
+    .card-image {
+      width: 100%; height: 200px; object-fit: cover;
+      border-bottom: 1px solid var(--border);
+      display: block; transition: transform 0.5s ease;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+    }
+    .service-card:hover .card-image { transform: scale(1.06); }
+
+    /* CARD CONTENT */
+    .card-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; min-height: 0; }
+    .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .rating { color: var(--gold); font-size: 12px; display: flex; align-items: center; gap: 4px; font-weight: 700; }
+    .distance-tag {
+      font-size: 11px; font-weight: 700; color: var(--success);
+      background: rgba(16,185,129,0.1); padding: 3px 9px; border-radius: 7px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .card-category {
+      font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--primary);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 6px; letter-spacing: 0.3px;
+    }
+    .service-card h3 { font-size: 1.05rem; margin-bottom: 8px; color: white; font-weight: 700; line-height: 1.3; }
+    .card-desc {
+      color: var(--text-mute); font-size: 12px; margin-bottom: 16px; line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--border); padding-top: 16px; margin-top: auto; gap: 8px;
+    }
+    .price-tag { font-size: 1.25rem; font-weight: 800; color: white; }
+    .price-tag span { font-size: 11px; color: var(--text-mute); font-weight: 400; }
+    .btn-details {
+      background: rgba(29,78,216,0.1); color: white; border: 1px solid var(--primary);
+      padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 11px;
+      display: flex; align-items: center; gap: 6px; transition: all 0.2s; white-space: nowrap;
+    }
+    .btn-details:hover { background: var(--primary); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      grid-column: 1 / -1; text-align: center; padding: 80px 20px;
+    }
+    .empty-icon {
+      width: 72px; height: 72px; border-radius: 18px; background: var(--surface);
+      border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; font-size: 1.8rem; color: var(--text-mute);
+    }
+    .empty-state h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+    .empty-state p { color: var(--text-mute); font-size: 14px; }
+
+    /* ── PAGINATION ── */
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 80px; flex-wrap: wrap; max-width: 100%; padding: 0 12px; box-sizing: border-box; }
+    .page-btn {
+      background: var(--card-bg); border: 1px solid var(--border); color: white;
+      padding: 8px 14px; border-radius: 10px; cursor: pointer;
+      font-weight: 700; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+      flex-shrink: 0; min-width: 40px;
+    }
+    .page-btn:hover { border-color: var(--primary); }
+    .page-btn.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 4px 12px var(--primary-glow); }
+    .page-ellipsis { color: var(--text-mute); padding: 0 4px; user-select: none; flex-shrink: 0; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(14px); display: none; align-items: center;
+      justify-content: center; z-index: 2000; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-content {
+      background: #0B1118; border: 1px solid var(--border);
+      width: 100%; max-width: 960px; max-height: 90vh; overflow-y: auto;
+      border-radius: 28px; position: relative; display: flex; flex-direction: column;
+      box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+      animation: modalIn 0.4s cubic-bezier(0.16,1,0.3,1);
+      -webkit-overflow-scrolling: touch;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(30px) scale(0.98); } }
+
+    .modal-hero { position: relative; width: 100%; height: 320px; flex-shrink: 0; overflow: hidden; }
+    .modal-hero .card-badges { top: 14px; left: 14px; z-index: 4; }
+    .modal-hero img { width: 100%; height: 100%; object-fit: cover; display: block; background: linear-gradient(135deg,#1e293b,#0f172a); }
+    .modal-hero::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 55%; background: linear-gradient(transparent, #0B1118); pointer-events: none; }
+
+    .modal-close {
+      position: absolute; top: 18px; right: 18px; background: rgba(0,0,0,0.55);
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border: 1px solid rgba(255,255,255,0.15); color: white; z-index: 10;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.1); }
+    .modal-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+      color: white; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10; transition: all 0.2s;
+    }
+    .modal-nav:hover { background: var(--primary); border-color: var(--primary); }
+    .modal-nav-prev { left: 12px; }
+    .modal-nav-next { right: 12px; }
+
+    .modal-main { display: grid; grid-template-columns: 1.5fr 1fr; gap: 36px; padding: 36px; }
+    @media (max-width: 780px) { .modal-main { grid-template-columns: 1fr; padding: 24px; } }
+
+    .modal-info h2 { font-size: 2rem; font-weight: 800; margin-bottom: 14px; line-height: 1.2; }
+    .badge-row { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; }
+    .info-badge {
+      background: rgba(255,255,255,0.05); padding: 6px 13px; border-radius: 100px;
+      font-size: 11px; font-weight: 700; color: var(--text-mute);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .provider-card {
+      display: flex; align-items: center; gap: 14px; padding: 18px;
+      background: rgba(255,255,255,0.03); border-radius: 18px; margin-bottom: 24px;
+      text-decoration: none; border: 1px solid transparent; transition: all 0.2s;
+    }
+    .provider-card:hover { border-color: var(--primary); background: rgba(29,78,216,0.05); }
+    .provider-avatar {
+      width: 48px; height: 48px; border-radius: 50%; background: var(--primary);
+      display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: white;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .provider-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .social-proof {
+      background: rgba(16,185,129,0.08); border: 1px dashed rgba(16,185,129,0.4);
+      padding: 12px 15px; border-radius: 12px; margin-bottom: 22px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12px; color: var(--success); font-weight: 600;
+    }
+
+    .description-text { color: var(--text); opacity: 0.9; line-height: 1.8; font-size: 1rem; white-space: pre-line; }
+
+    /* SIDEBAR */
+    .sidebar-booking {
+      background: rgba(29,78,216,0.05); border: 1px solid rgba(29,78,216,0.3);
+      border-radius: 22px; padding: 28px; height: fit-content;
+      position: sticky; top: 20px;
+    }
+    .price-block { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px; }
+    .price-big { font-size: 2.2rem; font-weight: 800; }
+    .price-unit { font-size: 14px; color: var(--text-mute); padding-bottom: 6px; }
+
+    /* OPTIONS */
+    .options-title { font-size: 11px; font-weight: 800; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .option-item {
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,0.03); padding: 12px 14px; border-radius: 12px;
+      margin-bottom: 8px; border: 1px solid var(--border); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .option-item:hover { border-color: var(--primary); }
+    .option-item.selected { border-color: var(--primary); background: rgba(29,78,216,0.08); }
+    .option-item .opt-label { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .option-item .opt-check { color: var(--primary); display: none; font-size: 12px; }
+    .option-item.selected .opt-check { display: inline; }
+
+    .btn-pay {
+      width: 100%; background: var(--primary); color: white; border: none;
+      padding: 16px; border-radius: 14px; font-weight: 800; font-size: 15px;
+      cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+      box-shadow: 0 10px 25px var(--primary-glow);
+      transition: all 0.2s; margin-bottom: 10px;
+    }
+    .btn-pay { transition: background 0.2s ease, transform 0.2s ease; }
+    .btn-pay:hover { background: var(--color-accent-hover, var(--primary-hover)) !important; transform: translateY(-2px); }
+    .btn-pay:active { transform: translateY(0); }
+
+    .m-booking-pay-hint {
+      display: none;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      font-weight: 700;
+      border: 1px solid;
+    }
+    .m-booking-pay-hint--12 {
+      background: rgba(201, 168, 76, 0.12);
+      border-color: rgba(201, 168, 76, 0.45);
+      color: #c9a84c;
+    }
+    .m-booking-pay-hint--1h {
+      background: rgba(224, 90, 90, 0.12);
+      border-color: rgba(224, 90, 90, 0.55);
+      color: #e05a5a;
+    }
+    html.needs-light .m-booking-pay-hint--12,
+    body.light-mode .m-booking-pay-hint--12 {
+      background: rgba(201, 168, 76, 0.15);
+      color: #8a722e;
+    }
+    html.needs-light .m-booking-pay-hint--1h,
+    body.light-mode .m-booking-pay-hint--1h {
+      background: rgba(224, 90, 90, 0.12);
+      color: #b91c1c;
+    }
+
+    .btn-chat {
+      width: 100%; background: transparent; color: white;
+      border: 1px solid var(--border); padding: 11px;
+      border-radius: 12px; font-weight: 700; font-size: 12px;
+      cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all 0.2s; margin-bottom: 20px;
+    }
+    .btn-chat:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+    .share-menu-wrap { position: relative; margin-top: 8px; margin-bottom: 20px; }
+    .share-menu-btn { margin-top: 0 !important; margin-bottom: 0 !important; }
+    .share-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+      z-index: 20;
+      display: none;
+    }
+    .share-menu.open { display: block; }
+    .share-menu button {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      padding: 9px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      text-align: left;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .share-menu button:hover { background: rgba(255,255,255,0.06); }
+
+    .feature-list { border-top: 1px solid var(--border); padding-top: 18px; margin-top: 4px; }
+    .feature-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12px; color: var(--success); margin-bottom: 10px; font-weight: 600;
+    }
+
+    .secure-txt { font-size: 11px; color: var(--text-mute); text-align: center; margin-top: 14px; }
+
+    /* REVIEWS */
+    .review-section { margin-top: 36px; border-top: 1px solid var(--border); padding-top: 28px; }
+    .review-section h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 18px; }
+    .review-card {
+      background: rgba(255,255,255,0.02); padding: 18px; border-radius: 16px;
+      margin-bottom: 12px; border: 1px solid var(--border);
+    }
+    .review-header { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center; }
+    .review-name { font-weight: 800; font-size: 14px; }
+    .review-stars { color: var(--gold); font-size: 11px; font-weight: 700; }
+    .review-body { font-size: 13px; color: var(--text-mute); line-height: 1.5; }
+
+    .add-review {
+      background: rgba(29,78,216,0.05); padding: 20px; border-radius: 18px;
+      border: 1px dashed rgba(29,78,216,0.35); margin-top: 18px;
+    }
+    .add-review h4 { font-size: 13px; font-weight: 800; margin-bottom: 14px; }
+    .add-review input, .add-review textarea {
+      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 14px; color: white; margin-bottom: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .add-review input:focus, .add-review textarea:focus { border-color: var(--primary); }
+    .add-review textarea { resize: vertical; min-height: 80px; }
+    .review-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .review-meta label { font-size: 12px; color: var(--text-mute); font-weight: 700; }
+    .review-meta select {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: white;
+      border-radius: 8px; padding: 6px 10px; font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px; outline: none;
+    }
+    .btn-submit-review {
+      background: var(--primary); color: white; border: none; padding: 11px 20px;
+      border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif; width: 100%; transition: background 0.2s;
+    }
+    .btn-submit-review:hover { background: var(--primary-hover); }
+
+    /* ── LOADING OVERLAY ── */
+    #loadingOverlay {
+      position: fixed; inset: 0; background: rgba(4,7,13,0.85);
+      backdrop-filter: blur(6px); display: none; flex-direction: column;
+      align-items: center; justify-content: center; z-index: 9999;
+    }
+    .spinner {
+      width: 42px; height: 42px; border: 4px solid rgba(255,255,255,0.1);
+      border-top: 4px solid var(--primary); border-radius: 50%;
+      animation: spin 0.9s linear infinite; margin-bottom: 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--navy-card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 13px 20px; display: flex; align-items: center; gap: 12px;
+      font-size: 14px; z-index: 9999; opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34,1.3,0.64,1);
+      white-space: nowrap; box-shadow: 0 16px 40px rgba(0,0,0,0.5); pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast-icon { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+    .toast.t-success .toast-icon { background: rgba(16,185,129,0.15); color: var(--success); }
+    .toast.t-danger .toast-icon { background: rgba(239,68,68,0.15); color: var(--danger); }
+    .toast.t-info .toast-icon { background: rgba(29,78,216,0.15); color: #60A5FA; }
+    .suggest-chip { display: inline-block; margin: 2px 6px 2px 0; padding: 6px 12px; background: var(--primary); color: white; border-radius: 20px; font-size: 11px; font-weight: 700; text-decoration: none; transition: opacity 0.2s, transform 0.2s; }
+    .suggest-chip:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ── OFFLINE ── */
+    .offline-banner {
+      position: sticky; top: 68px; z-index: 900;
+      background: rgba(239,68,68,0.08); border-bottom: 1px solid rgba(239,68,68,0.2);
+      text-align: center; padding: 10px; color: var(--danger);
+      font-size: 13px; font-weight: 600; display: none; align-items: center;
+      justify-content: center; gap: 8px;
+    }
+    .offline-banner.show { display: flex; }
+
+    /* ── RESPONSIVE ── */
+    .services-map-section { max-width: 1400px; margin: 0 auto 28px; padding: 0 5%; box-sizing: border-box; width: 100%; }
+    .services-map-section h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; color: var(--text); }
+    .map-toggle-mobile { display: none; width: 100%; margin-bottom: 10px; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
+    html.needs-light .map-toggle-mobile,
+    body.light-mode .map-toggle-mobile { color: #1c1917 !important; }
+    #needsMap {
+      height: 450px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      max-width: 100%;
+      position: relative;
+      z-index: 0;
+    }
+    .leaflet-container { font-family: 'Plus Jakarta Sans', sans-serif; }
+    #needsMap .leaflet-control-container { position: absolute; z-index: 1000; }
+    .leaflet-top, .leaflet-bottom { z-index: 1000 !important; }
+    @media (min-width: 769px) {
+      .services-map-section.map-collapsed #needsMap { display: block !important; }
+    }
+    @media (max-width: 768px) {
+      .map-toggle-mobile { display: block; }
+      .services-map-section.map-collapsed #needsMap { display: none; }
+    }
+    .neighborhood-tag { font-size: 11px; color: var(--text-mute); margin-top: 4px; }
+
+    @media (max-width: 768px) {
+      #needsMap { height: 300px; }
+
+      .modal-overlay {
+        padding: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .modal-content {
+        width: 100%;
+        max-width: 100%;
+        max-height: min(92dvh, 100dvh);
+        border-radius: 22px 22px 0 0;
+        margin: 0;
+      }
+      .modal-hero { height: 200px; }
+      .modal-close { top: 12px; right: 12px; }
+      .modal-nav { width: 40px; height: 40px; }
+      .modal-nav-prev { left: 8px; }
+      .modal-nav-next { right: 8px; }
+
+      .toast {
+        white-space: normal;
+        text-align: center;
+        max-width: calc(100vw - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+        padding-bottom: max(13px, env(safe-area-inset-bottom, 0px));
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        box-sizing: border-box;
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .services-grid.list-view .service-card {
+        flex-direction: column;
+        height: auto;
+        min-height: 0;
+      }
+      .services-grid.list-view .card-image-wrap {
+        width: 100%;
+      }
+      .services-grid.list-view .card-image {
+        height: 160px;
+        border-radius: 18px 18px 0 0;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .services-grid.list-view .card-content {
+        padding: 16px;
+      }
+
+      body {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+    }
+
+    @media (max-width: 768px) and (min-width: 601px) {
+      .toolbar { flex-direction: column; align-items: flex-start; }
+      .toolbar-right { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+      .hero h1 { font-size: 1.85rem; }
+
+      header {
+        padding: 12px 4%;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+      }
+      .nav-right {
+        flex: 1;
+        min-width: 0;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .btn-nav {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 10px 12px;
+        font-size: 11px;
+      }
+      .nav-right .btn-nav span { display: none; }
+
+      .hero { padding: 36px 16px 44px; }
+      .controls {
+        margin: -20px auto 24px;
+        padding: 0 4%;
+      }
+      .search-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 12px 14px;
+      }
+      .search-container > i:first-child { align-self: flex-start; }
+    }
+
+    /* Téléphone : dense, 2 colonnes, recherche sur une ligne */
+    @media (max-width: 600px) {
+      .hero { padding: 20px 10px 28px; }
+      .hero h1 { font-size: 1.28rem !important; letter-spacing: -0.5px; margin-bottom: 8px; }
+      .hero p { font-size: 0.82rem !important; line-height: 1.45 !important; }
+
+      .controls { margin: -12px auto 0; padding: 0 10px; }
+      .search-container {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 6px 10px !important;
+        border-radius: 12px !important;
+      }
+      .search-container input { font-size: 0.78rem !important; padding: 4px 0 !important; }
+      .search-container > i:first-child { font-size: 0.85rem !important; }
+
+      .filter-bar { gap: 5px !important; margin-top: 10px !important; justify-content: flex-start !important; }
+      .filter-btn {
+        padding: 5px 8px !important;
+        font-size: 0.62rem !important;
+        border-radius: 8px !important;
+        gap: 4px !important;
+      }
+
+      .toolbar {
+        flex-direction: row !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        padding: 0 10px !important;
+        margin-bottom: 12px !important;
+      }
+      .toolbar-filters { margin-top: 4px !important; gap: 6px !important; }
+      .toolbar-filters label { font-size: 9px !important; }
+      .toolbar-filters input { width: 52px !important; padding: 4px 5px !important; font-size: 11px !important; }
+      .result-count { font-size: 10px !important; }
+      .sort-wrapper { padding: 6px 10px !important; }
+      .sort-select { font-size: 11px !important; }
+      .btn-view { width: 32px !important; height: 32px !important; font-size: 11px !important; }
+
+      .services-zone { padding: 0 8px !important; margin-bottom: 8px !important; }
+      .services-grid:not(.list-view) {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+      }
+      .service-card { min-height: 0 !important; border-radius: 14px !important; }
+      .card-image { height: 88px !important; }
+      .card-content { padding: 8px 10px 10px !important; }
+      .service-card h3 { font-size: 0.78rem !important; margin-bottom: 4px !important; line-height: 1.25 !important; }
+      .card-desc { font-size: 10px !important; line-clamp: 2; -webkit-line-clamp: 2; }
+      .price-tag { font-size: 0.95rem !important; }
+      .btn-details { padding: 4px 8px !important; font-size: 9px !important; }
+      .skeleton { height: 200px !important; border-radius: 14px !important; }
+
+      .pagination { gap: 4px !important; margin-bottom: 20px !important; }
+      .page-btn { padding: 5px 8px !important; font-size: 11px !important; min-width: 32px !important; }
+
+      .map-toggle-mobile { padding: 8px 12px !important; font-size: 0.75rem !important; margin-bottom: 6px !important; }
+      .services-map-section h2 { font-size: 0.95rem !important; margin-bottom: 8px !important; }
+      #needsMap { height: 300px !important; border-radius: 12px !important; }
+
+      header {
+        padding: 8px 10px !important;
+        gap: 6px !important;
+      }
+      .btn-nav {
+        min-height: 36px !important;
+        min-width: 36px !important;
+        padding: 6px 8px !important;
+        font-size: 10px !important;
+      }
+      .nav-right .btn-nav span { display: none; }
+
+      .modal-hero { height: 140px !important; }
+      .modal-main { padding: 14px !important; gap: 12px !important; }
+      .modal-info h2 { font-size: 1.15rem !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loadingOverlay">
+  <div class="spinner"></div>
+  <p id="loadingText" style="font-size:14px;color:var(--text-mute);">Redirection vers le paiement sécurisé...</p>
+</div>
+
+<!-- OFFLINE -->
+<div class="offline-banner" id="offline-banner">
+  <i class="fa-solid fa-wifi-slash"></i>
+  <span id="txt-offline">Mode hors-ligne — certains services peuvent ne pas être à jour</span>
+  <button type="button" id="offline-retry-btn" onclick="retryLoadServices()" style="margin-left:12px;padding:6px 14px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-weight:700;cursor:pointer;font-size:12px;"><i class="fa-solid fa-rotate-right"></i> <span id="offline-retry-label">Réessayer</span></button>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-box">N</div> NEEDS
+  </a>
+  <div class="nav-right">
+    <a href="messages.html" class="btn-nav needs-nav-messages-link" id="navMessagesLink" style="display:none;position:relative;">
+      <i class="fa-solid fa-comments"></i> <span id="navMsgLbl">Messages</span>
+      <span class="needs-unread-msg-badge" id="navUnreadBadge" style="position:absolute;top:-8px;right:-6px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:.6rem;font-weight:800;border-radius:999px;display:none;align-items:center;justify-content:center;"></span>
+    </a>
+    <a href="favoris.html" class="btn-nav btn-nav-fav"><i class="fa-solid fa-heart"></i> <span id="txt-favs">Favoris</span></a>
+    <a href="compte.html" class="btn-nav"><i class="fa-regular fa-user"></i> <span id="txt-acc">Mon Compte</span></a>
+    <button class="btn-nav" onclick="toggleTheme()" id="themeBtn" title="Jour / Nuit"><i class="fa-solid fa-moon"></i></button>
+    <button class="btn-nav" onclick="toggleLang()" id="langBtn">EN</button>
+  </div>
+</header>
+
+<main role="main" id="main-content" tabindex="-1">
+<!-- HERO -->
+<section class="hero">
+  <h1 id="txt-hero-title">Plateforme <span>Multi-Services</span></h1>
+  <p id="txt-hero-desc">Locations, Expertise et Événements au même endroit.</p>
+</section>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="search-container">
+    <i class="fa-solid fa-magnifying-glass" style="color:var(--primary);flex-shrink:0"></i>
+    <input type="text" id="searchInput" placeholder="Rechercher un service..." oninput="onSearch()">
+    <button class="search-clear" id="search-clear" onclick="clearSearch()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="setCategory('all',this)" id="cat-all"><i class="fa-solid fa-layer-group"></i> <span>Tous</span></button>
+    <button class="filter-btn" onclick="setCategory('home',this)" id="cat-home"><i class="fa-solid fa-house"></i> <span>Mon Foyer</span></button>
+    <button class="filter-btn" onclick="setCategory('life',this)" id="cat-life"><i class="fa-solid fa-spa"></i> <span>Mon Quotidien</span></button>
+    <button class="filter-btn" onclick="setCategory('rent',this)" id="cat-rent"><i class="fa-solid fa-key"></i> <span>Locations</span></button>
+    <button class="filter-btn" onclick="setCategory('event',this)" id="cat-event"><i class="fa-solid fa-calendar-star"></i> <span>Événements</span></button>
+    <button class="filter-btn" onclick="setCategory('tech',this)" id="cat-tech"><i class="fa-solid fa-laptop-code"></i> <span>Mon Digital</span></button>
+    <button class="filter-btn" onclick="setCategory('pro',this)" id="cat-pro"><i class="fa-solid fa-briefcase"></i> <span id="cat-pro-label">Mes Démarches</span></button>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="result-count"><strong id="result-num">—</strong> <span id="txt-results">services trouvés</span></div>
+  <div class="toolbar-filters" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;width:100%;margin-top:8px;">
+    <label style="font-size:11px;color:var(--text-mute);">Prix min</label>
+    <input type="number" id="filterPriceMin" placeholder="0" min="0" step="1" style="width:70px;background:var(--surface);border:1px solid var(--border);color:white;padding:6px 8px;border-radius:8px;font-size:12px;">
+    <label style="font-size:11px;color:var(--text-mute);">Prix max</label>
+    <input type="number" id="filterPriceMax" placeholder="∞" min="0" step="1" style="width:70px;background:var(--surface);border:1px solid var(--border);color:white;padding:6px 8px;border-radius:8px;font-size:12px;">
+    <label style="font-size:11px;color:var(--text-mute);">Note min</label>
+    <input type="number" id="filterRatingMin" placeholder="0" min="0" max="5" step="0.5" style="width:60px;background:var(--surface);border:1px solid var(--border);color:white;padding:6px 8px;border-radius:8px;font-size:12px;">
+    <button type="button" onclick="render()" class="btn-view" style="padding:6px 12px;font-size:11px;"><i class="fa-solid fa-filter"></i> Filtrer</button>
+  </div>
+  <div class="toolbar-right">
+    <div class="sort-wrapper">
+      <i class="fa-solid fa-sliders" style="font-size:12px;color:var(--primary)"></i>
+      <select class="sort-select" id="sortSelect" onchange="render()">
+        <option value="default" id="opt-def">Recommandé</option>
+        <option value="asc"     id="opt-asc">Prix ↑</option>
+        <option value="desc"    id="opt-desc">Prix ↓</option>
+        <option value="rating"  id="opt-rat">Mieux notés</option>
+        <option value="dist"    id="opt-dist">À proximité</option>
+      </select>
+      <i class="fa-solid fa-chevron-down" style="font-size:10px;opacity:0.4;pointer-events:none"></i>
+    </div>
+    <div class="view-toggle">
+      <button class="btn-view active" id="btn-grid" onclick="setView('grid')" title="Vue grille"><i class="fa-solid fa-grip"></i></button>
+      <button class="btn-view" id="btn-list" onclick="setView('list')" title="Vue liste"><i class="fa-solid fa-list"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- Carte Montréal -->
+<section class="services-map-section map-collapsed" id="mapSection" aria-labelledby="mapSectionTitle">
+  <h2 id="mapSectionTitle" data-i18n="services_map_title">Prestataires près de vous</h2>
+  <button type="button" class="map-toggle-mobile" id="mapToggleMobile" aria-expanded="false" data-i18n="services_map_toggle_show">Voir sur la carte 🗺</button>
+  <div id="needsMap" role="img" aria-label="Carte Montréal"></div>
+</section>
+
+<!-- ZONE SERVICES (affichage en 2 colonnes, cartes avec bordure gauche) -->
+<div class="services-zone">
+  <section class="services-grid" id="servicesGrid">
+    <div class="skeleton"></div><div class="skeleton"></div>
+    <div class="skeleton"></div>
+  </section>
+</div>
+
+<!-- PAGINATION -->
+<div class="pagination" id="pagination"></div>
+
+<!-- RÉCEMMENT CONSULTÉS -->
+<div class="recent-strip" id="recentStrip" style="display:none; max-width: 1400px; margin: 20px auto 0; padding: 0 5%;">
+  <span id="txt-recent" style="font-size: 12px; font-weight: 700; color: var(--text-mute); margin-right: 10px;">Récemment consultés :</span>
+  <div id="recentChips"></div>
+</div>
+
+</main>
+
+<!-- MODAL DÉTAIL -->
+<div class="modal-overlay" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="modal-content">
+    <div class="modal-close" id="modalCloseBtn" onclick="closeModal()" tabindex="0" role="button" aria-label="Fermer"><i class="fa-solid fa-xmark"></i></div>
+    <button type="button" class="modal-nav modal-nav-prev" id="modalPrev" onclick="modalNav(-1)" aria-label="Service précédent"><i class="fa-solid fa-chevron-left"></i></button>
+    <button type="button" class="modal-nav modal-nav-next" id="modalNext" onclick="modalNav(1)" aria-label="Service suivant"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="modal-hero">
+      <img id="m-img" src="" alt="" loading="lazy">
+    </div>
+    <div class="modal-main">
+
+      <!-- GAUCHE -->
+      <div class="modal-info">
+        <div class="badge-row">
+          <div class="info-badge" id="m-cat-badge"><i class="fa-solid fa-tag"></i> Service</div>
+          <div class="info-badge" style="color:var(--gold)" id="m-rating-badge"><i class="fa-solid fa-star"></i> 4.9</div>
+          <div class="info-badge" id="m-dist-badge" style="display:none"><i class="fa-solid fa-location-dot"></i> —</div>
+        </div>
+
+        <h2 id="m-title">—</h2>
+
+        <a href="#" class="provider-card" id="m-provider-link">
+          <div class="provider-avatar" id="m-avatar">N</div>
+          <div>
+            <p style="font-size:11px;color:var(--text-mute)" id="m-partner-tag">Partenaire certifié</p>
+            <p style="font-weight:800;color:white;font-size:15px" id="m-provider">—</p>
+          </div>
+          <div style="margin-left:auto;color:var(--success);font-size:18px"><i class="fa-solid fa-circle-check"></i></div>
+        </a>
+
+        <div class="social-proof" id="m-social-proof">
+          <i class="fa-solid fa-fire-flame-curved"></i>
+          <span id="m-proof-text">Ce service est très demandé cette semaine.</span>
+        </div>
+
+        <h3 style="font-size:15px;font-weight:800;margin-bottom:12px" id="m-about-title">À propos de ce service</h3>
+        <p class="description-text" id="m-desc">—</p>
+
+        <div class="availability-block" id="m-availability-block" style="display:none; margin-top:14px; padding:12px 14px; background:rgba(16,185,129,.08); border:1px solid rgba(16,185,129,.25); border-radius:12px; font-size:13px;">
+          <i class="fa-solid fa-clock" style="color:var(--success); margin-right:8px;"></i>
+          <span id="m-availability-text">—</span>
+        </div>
+
+        <!-- SUGGESTIONS IA : services à enchaîner avant / après -->
+        <div class="suggestions-block" id="m-suggestions-block" style="display:none; margin-top:20px; padding:16px; background:var(--surface); border-radius:14px; border:1px solid var(--border);">
+          <h4 style="font-size:13px; font-weight:800; color:var(--primary); margin-bottom:12px;"><i class="fa-solid fa-wand-magic-sparkles"></i> <span id="m-suggestions-title">Suggestions pour compléter votre projet</span></h4>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; font-size:13px;">
+            <div>
+              <span style="color:var(--text-mute); font-weight:700;">Avant</span>
+              <div id="m-suggest-before" style="margin-top:6px;"></div>
+            </div>
+            <div>
+              <span style="color:var(--text-mute); font-weight:700;">Après</span>
+              <div id="m-suggest-after" style="margin-top:6px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REVIEWS -->
+        <div class="review-section">
+          <h3 id="m-reviews-title">Avis clients</h3>
+          <div id="reviews-container"></div>
+          <div class="add-review">
+            <h4 id="m-add-review-title">Laisser un avis</h4>
+            <input type="text" id="rev-name" placeholder="Votre nom">
+            <textarea id="rev-text" rows="3" placeholder="Partagez votre expérience..."></textarea>
+            <div class="review-meta">
+              <label id="m-rating-label">Note :</label>
+              <select id="rev-rating">
+                <option value="5">5/5</option>
+                <option value="4">4/5</option>
+                <option value="3">3/5</option>
+                <option value="2">2/5</option>
+                <option value="1">1/5</option>
+              </select>
+            </div>
+            <button class="btn-submit-review" id="btn-post-review">Publier mon avis</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DROITE (SIDEBAR) -->
+      <div class="sidebar-booking">
+        <h4 id="m-pricing-section-title" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);margin:0 0 10px;">Tarif</h4>
+        <div class="price-block">
+          <div>
+            <p style="font-size:11px;color:var(--text-mute);text-transform:uppercase;font-weight:800;margin-bottom:4px" id="m-total-label">Tarif Total</p>
+            <div class="price-big" id="m-price">CA$ 0</div>
+            <p id="m-commission-note" style="margin-top:6px;font-size:.76rem;color:var(--text-mute);">Commission Needs : 15%</p>
+          </div>
+          <div class="price-unit" id="m-unit-label">/unité</div>
+        </div>
+
+        <p class="options-title" id="m-options-title">Options supplémentaires</p>
+        <div class="option-item" onclick="toggleOption(this, 15)">
+          <div class="opt-label"><i class="fa-solid fa-shield-halved"></i> Assurance Premium</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <i class="fa-solid fa-check opt-check"></i>
+            <span style="font-weight:800" id="m-opt-insurance-price">+15 CA$</span>
+          </div>
+        </div>
+        <div class="option-item" onclick="toggleOption(this, 5)" style="margin-bottom:20px">
+          <div class="opt-label"><i class="fa-solid fa-headset"></i> Support Prioritaire 24/7</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <i class="fa-solid fa-check opt-check"></i>
+            <span style="font-weight:800" id="m-opt-support-price">+5 CA$</span>
+          </div>
+        </div>
+        <h4 id="m-booking-section-title" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);margin:14px 0 10px;">Réservation</h4>
+        <div class="booking-fields-block" style="margin-bottom:16px;padding:14px;background:var(--surface);border-radius:12px;border:1px solid var(--border);">
+          <p style="font-size:11px;color:var(--text-mute);text-transform:uppercase;font-weight:700;margin-bottom:10px" id="m-booking-block-title">Informations pour le prestataire</p>
+          <label for="m-client-address" style="display:block;font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text);" id="m-label-address">Adresse complète d'intervention</label>
+          <input type="text" id="m-client-address" autocomplete="street-address" maxlength="500" data-i18n-placeholder="booking_address_ph" placeholder="Rue, ville, code postal" style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:inherit;font-size:13px;margin-bottom:12px;">
+          <label style="display:block;font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text);" id="m-label-datetime">Date et heure souhaitées</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+            <input type="date" id="m-booking-date" style="flex:1;min-width:120px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:inherit;font-size:13px;">
+            <input type="time" id="m-booking-time" style="flex:1;min-width:90px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:inherit;font-size:13px;">
+          </div>
+          <div id="m-slot-live-status" class="m-slot-live-status" role="status" aria-live="polite"></div>
+          <div id="m-slot-badges" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;"></div>
+          <label for="m-client-notes" style="display:block;font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text);" id="m-label-notes">Instructions spéciales (optionnel)</label>
+          <textarea id="m-client-notes" rows="2" maxlength="500" data-i18n-placeholder="booking_notes_ph" placeholder="Ex. code porte, sonnette…" style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:inherit;font-size:13px;margin-bottom:12px;resize:vertical;"></textarea>
+          <label for="m-client-phone" style="display:block;font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text);" id="m-label-phone">Téléphone (client)</label>
+          <input type="tel" id="m-client-phone" inputmode="tel" autocomplete="tel" maxlength="40" placeholder="+1 514 123 4567" style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:inherit;font-size:13px;">
+        </div>
+
+        <h4 id="m-payment-section-title" style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);margin:14px 0 10px;">Paiement</h4>
+        <div id="m-pay-reassurance" style="margin-bottom:14px;padding:12px 14px;border-radius:12px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.35);font-size:0.82rem;line-height:1.45;color:var(--text);"></div>
+
+        <div id="m-booking-pay-hint" class="m-booking-pay-hint" role="status" aria-live="polite"></div>
+
+        <button class="btn-pay" id="m-btn-confirm">Confirmer et Payer</button>
+        <button class="btn-chat" onclick="handleChat()">
+          <i class="fa-regular fa-comments"></i> <span id="m-chat-txt">Contacter le prestataire</span>
+        </button>
+        <div class="share-menu-wrap" id="shareMenuWrap">
+          <button type="button" class="btn-chat share-menu-btn" onclick="toggleShareMenu(event)">
+            <i class="fa-solid fa-share-nodes"></i> <span id="shareMenuBtnLabel" data-i18n="share_service_button">Partager ce service</span>
+          </button>
+          <div class="share-menu" id="shareMenu" role="menu" aria-label="Options de partage">
+            <button type="button" onclick="copyServiceLink()" role="menuitem" id="shareCopyLabel" data-i18n="share_copy_link">Copier le lien</button>
+            <button type="button" onclick="shareServiceWhatsApp()" role="menuitem" id="shareWaLabel" data-i18n="share_whatsapp">Partager sur WhatsApp</button>
+            <button type="button" onclick="shareServiceEmail()" role="menuitem" id="shareEmailLabel" data-i18n="share_email">Partager par email</button>
+          </div>
+        </div>
+
+        <div class="feature-list">
+          <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><span id="feat-1">Protection acheteur Needs</span></div>
+          <div class="feature-item"><i class="fa-solid fa-clock-rotate-left"></i><span id="feat-2">Support client prioritaire</span></div>
+          <div class="feature-item"><i class="fa-solid fa-bolt"></i><span id="feat-3">Confirmation instantanée</span></div>
+        </div>
+        <p class="secure-txt" id="m-secure-txt">Paiement 100% sécurisé via Stripe.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon"><i id="toast-icon" class="fa-solid fa-check"></i></div>
+  <span id="toast-msg">—</span>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+<script src="js/conversations.js"></script>
+<script src="js/messages-nav-badge.js"></script>
+<script src="js/nav-provider-cta.js"></script>
+
+<script>
+// ══════════════════════════════════════════════
+//  FIREBASE
+// ══════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU",
+  authDomain: "needs-ae86d.firebaseapp.com",
+  projectId: "needs-ae86d",
+  storageBucket: "needs-ae86d.firebasestorage.app",
+  messagingSenderId: "253900994407",
+  appId: "1:253900994407:web:55168e1b73c878761de1c2"
+};
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let lang = (window.__needs_prefs && __needs_prefs.getLang()) ? __needs_prefs.getLang() : 'fr';
+let servicesData  = [];
+let firestoreReachable = false;
+let firestoreOfflineTimer = null;
+let servicesListUnsubscribe = null;
+
+function formatCadLocal(amount) {
+  if (window.__needs_prefs && window.__needs_prefs.formatPriceCad) {
+    return window.__needs_prefs.formatPriceCad(amount);
+  }
+  var n = amount == null || amount === '' ? 0 : parseFloat(amount);
+  var str = typeof n === 'number' && !isNaN(n) ? (Math.abs(n - Math.round(n)) < 0.01 ? String(Math.round(n)) : n.toFixed(2)) : '0';
+  return 'CA$ ' + str;
+}
+let servicesHydrated = false;
+/** Nominatim : 1 req/s max ; éviter les doublons */
+var _needsGeocodePending = new Set();
+var _needsLastGeocodeMs = 0;
+
+function needsHasValidCoords(s) {
+  if (!s || !s.location) return false;
+  var lat = s.location.lat;
+  var lng = s.location.lng;
+  if (lat == null || lng == null) return false;
+  var la = typeof lat === 'number' ? lat : parseFloat(lat);
+  var ln = typeof lng === 'number' ? lng : parseFloat(lng);
+  if (Number.isNaN(la) || Number.isNaN(ln)) return false;
+  if (la === 0 && ln === 0) return false;
+  return true;
+}
+
+function needsAddressQueryForGeocode(s) {
+  if (!s) return '';
+  if (s.address && String(s.address).trim().length > 3) return String(s.address).trim();
+  if (s.location && s.location.city && String(s.location.city).trim()) return String(s.location.city).trim();
+  if (s.neighborhood && String(s.neighborhood).trim()) return String(s.neighborhood).trim() + ', QC, Canada';
+  return '';
+}
+
+function needsGeocodeServiceDoc(doc) {
+  var id = doc.id;
+  if (!id || String(id).indexOf('demo_') === 0) return;
+  if (_needsGeocodePending.has(id)) return;
+  var d = doc.data();
+  var s = Object.assign({ id: id }, d);
+  if (needsHasValidCoords(s)) return;
+  var q = needsAddressQueryForGeocode(s);
+  if (!q) return;
+  _needsGeocodePending.add(id);
+  var delay = Math.max(0, 1100 - (Date.now() - _needsLastGeocodeMs));
+  _needsLastGeocodeMs = Date.now() + delay;
+  setTimeout(function() {
+    fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(q) + '&format=json&limit=1&countrycodes=ca', {
+      headers: { 'Accept-Language': 'fr', 'User-Agent': 'NeedsMap/1.0 (https://needs-app.com)' }
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (!data || !data.length) return;
+        var lat = parseFloat(data[0].lat);
+        var lng = parseFloat(data[0].lon);
+        if (Number.isNaN(lat) || Number.isNaN(lng)) return;
+        var cityPart = (data[0].display_name || '').split(',')[0];
+        return db.collection('services').doc(id).update({
+          location: { lat: lat, lng: lng, city: cityPart || (d.location && d.location.city) || null },
+          geocodedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .catch(function() {})
+      .finally(function() {
+        _needsGeocodePending.delete(id);
+      });
+  }, delay);
+}
+
+function mergeDemoWithRemote(remoteList) {
+  return remoteList;
+}
+let userFavorites = []; // [{id, addedAt}] ou strings (legacy)
+let currentFilter = 'all';
+let userCoords    = null;
+let currentPage   = 1;
+let viewMode      = 'grid';
+let basePriceModal = 0;
+let currentUser   = null;
+let currentModalId = null;
+/** cache sellerId -> true | false | null (loading) */
+let sellerVerifiedById = {};
+/** Aligné sur la grille 4×3 (desktop) : 12 cartes = page pleine avant la page suivante */
+const ITEMS_PER_PAGE = 12;
+
+// ══════════════════════════════════════════════
+//  I18N
+// ══════════════════════════════════════════════
+const T = {
+  fr: {
+    heroTitle: "Plateforme Multi-Services", heroDesc: "Prestataires vérifiés à Montréal et au Québec — locations, expertise et événements.",
+    acc: "Mon Compte", favs: "Favoris", results: "services trouvés",
+    search: "Rechercher un service...",
+    optDef: "Recommandé", optAsc: "Prix ↑", optDesc: "Prix ↓", optRat: "Mieux notés", optDist: "À proximité",
+    catAll: "Tous", catHome: "Mon Foyer", catLife: "Mon Quotidien", catRent: "Locations", catEvent: "Événements", catTech: "Mon Digital", catPro: "Mes Démarches",
+    details: "Détails", empty: "Aucun service trouvé.", emptyDesc: "Essayez une autre recherche ou catégorie.", recentLabel: "Récemment consultés :",
+    offline: "Mode hors-ligne — certains services peuvent ne pas être à jour",
+    loading: "Redirection vers le paiement sécurisé...",
+    toastFavAdded: "Ajouté aux favoris !", toastFavRemoved: "Retiré des favoris",
+    toastLoginRequired: "Connectez-vous pour ajouter des favoris",
+    toastReviewOk: "Merci pour votre avis !", toastReviewError: "Merci de remplir tous les champs.",
+    typeService: "Service", typeLocation: "Location", typeEvent: "Événement",
+    units: { heure:"/h", jour:"/jour", weekend:"/wk", semaine:"/sem", devis:"", soiree:" / soirée" },
+    partner: "Partenaire certifié", aboutTitle: "À propos de ce service",
+    totalLabel: "Tarif Total", optionsTitle: "Options supplémentaires", slotLabel: "Créneau souhaité (optionnel)",
+    confirm: "Confirmer et Payer", chat: "Contacter le prestataire",
+    feat1: "Protection acheteur Needs", feat2: "Support client prioritaire", feat3: "Confirmation instantanée",
+    secure: "Paiement 100% sécurisé via Stripe.",
+    cardTrustLine: "🔒 Paiement sécurisé · Remboursé si problème",
+    payReassuranceBox: "✅ Votre paiement est sécurisé par Needs. L'argent n'est versé au prestataire qu'une fois votre prestation confirmée. En cas de problème, vous pouvez ouvrir un litige et être remboursé.",
+    badgeVerified: "Identité vérifiée",
+    badgeUnverified: "Non vérifié",
+    reviewsTitle: "Avis clients", addReview: "Laisser un avis",
+    revPlaceholder: "Partagez votre expérience...", revName: "Votre nom",
+    ratingLabel: "Note :", publishReview: "Publier mon avis",
+    noReviews: "Aucun avis pour le moment. Soyez le premier !",
+    proofText: "Ce service est très demandé cette semaine.",
+    bookingBlockTitle: "Informations pour le prestataire",
+    bookingAddressLabel: "Adresse complète d'intervention",
+    bookingDatetimeLabel: "Date et heure souhaitées",
+    bookingNotesLabel: "Instructions spéciales (optionnel)",
+    bookingPhoneLabel: "Téléphone (client)",
+    bookingAddressPh: "Rue, ville, code postal",
+    bookingNotesPh: "Ex. code porte, sonnette…",
+    bookingErrAddress: "Indiquez une adresse complète (au moins 8 caractères).",
+    bookingErrPhone: "Indiquez un numéro valide (ex. +1 514 123 4567).",
+    bookingErrDate: "Choisissez une date et une heure dans le futur (max. 30 jours).",
+    bookingErrDatePast: "La date et l'heure doivent être dans le futur."
+  },
+  en: {
+    heroTitle: "Multi-Service Platform", heroDesc: "Verified providers in Montreal and Quebec — rentals, expertise, and events.",
+    acc: "My Account", favs: "Favorites", propose: "Propose", results: "services found",
+    search: "Search a service...",
+    optDef: "Recommended", optAsc: "Price ↑", optDesc: "Price ↓", optRat: "Top rated", optDist: "Nearby",
+    catAll: "All", catHome: "My Home", catLife: "My Daily", catRent: "Rentals", catEvent: "Events", catTech: "My Digital", catPro: "Legal & Pro",
+    details: "Details", empty: "No services found.", emptyDesc: "Try a different search or category.", recentLabel: "Recently viewed:",
+    offline: "Offline mode — some services may be outdated",
+    loading: "Redirecting to secure payment...",
+    toastFavAdded: "Added to favorites!", toastFavRemoved: "Removed from favorites",
+    toastLoginRequired: "Sign in to add favorites",
+    toastReviewOk: "Thanks for your review!", toastReviewError: "Please fill in all fields.",
+    typeService: "Service", typeLocation: "Rental", typeEvent: "Event",
+    units: { heure:"/hr", jour:"/day", weekend:"/wk", semaine:"/wk", devis:"", soiree:" / evening" },
+    partner: "Certified Partner", aboutTitle: "About this service",
+    totalLabel: "Total Price", optionsTitle: "Additional options", slotLabel: "Requested slot (optional)",
+    confirm: "Confirm and Pay", chat: "Contact provider",
+    feat1: "Needs Buyer Protection", feat2: "Priority Customer Support", feat3: "Instant Confirmation",
+    secure: "100% secure payment via Stripe.",
+    cardTrustLine: "🔒 Secure payment · Refunded if there’s a problem",
+    payReassuranceBox: "✅ Your payment is protected by Needs. Funds are released to the provider only after you confirm the service. If something goes wrong, you can open a dispute and get a refund.",
+    badgeVerified: "Identity verified",
+    badgeUnverified: "Not verified",
+    reviewsTitle: "Customer reviews", addReview: "Leave a review",
+    revPlaceholder: "Share your experience...", revName: "Your name",
+    ratingLabel: "Rating:", publishReview: "Post my review",
+    noReviews: "No reviews yet. Be the first!",
+    proofText: "This service is very popular this week.",
+    bookingBlockTitle: "Information for the provider",
+    bookingAddressLabel: "Full service address",
+    bookingDatetimeLabel: "Preferred date and time",
+    bookingNotesLabel: "Special instructions (optional)",
+    bookingPhoneLabel: "Your phone number",
+    bookingAddressPh: "Street, city, postal code",
+    bookingNotesPh: "e.g. door code, ring twice…",
+    bookingErrAddress: "Enter a full address (at least 8 characters).",
+    bookingErrPhone: "Enter a valid number (e.g. +1 514 123 4567).",
+    bookingErrDate: "Pick a future date and time (max. 30 days).",
+    bookingErrDatePast: "Date and time must be in the future."
+  }
+};
+const tx = () => T[lang];
+
+var NEEDS_SLOT_BUFFER_MS = 2 * 3600 * 1000;
+
+function normalizeBookedEntryClient(raw) {
+  if (!raw) return null;
+  if (raw.at && raw.at.toMillis) return { ms: raw.at.toMillis() };
+  if (raw.toMillis) return { ms: raw.toMillis() };
+  return null;
+}
+
+function getOccupiedMsFromService(s) {
+  var out = [];
+  if (!s) return out;
+  var arr = Array.isArray(s.bookedSlots) ? s.bookedSlots : [];
+  arr.forEach(function (raw) {
+    var n = normalizeBookedEntryClient(raw);
+    if (n) out.push(n.ms);
+  });
+  var leg = Array.isArray(s.blockedSlots) ? s.blockedSlots : [];
+  leg.forEach(function (b) {
+    if (!b || !b.date) return;
+    var t = (b.time && String(b.time).trim()) ? String(b.time).trim() : '12:00';
+    var tv = t.length === 5 ? t + ':00' : t;
+    var d = new Date(String(b.date).substring(0, 10) + 'T' + tv);
+    if (!isNaN(d.getTime())) out.push(d.getTime());
+  });
+  return out;
+}
+
+function slotConflictsClient(selMs, occupied) {
+  for (var i = 0; i < occupied.length; i++) {
+    if (Math.abs(occupied[i] - selMs) < NEEDS_SLOT_BUFFER_MS) return true;
+  }
+  return false;
+}
+
+function isDayFullyBookedClient(ymd, s, occupied) {
+  var days = Array.isArray(s.availableDays) ? s.availableDays : [0, 1, 2, 3, 4, 5, 6];
+  var parts = ymd.split('-');
+  if (parts.length !== 3) return false;
+  var dt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10), 12, 0, 0);
+  if (isNaN(dt.getTime())) return false;
+  if (days.indexOf(dt.getDay()) < 0) return false;
+  var from = (s.availableFrom || '08:00').substring(0, 5);
+  var to = (s.availableTo || '18:00').substring(0, 5);
+  var sh = parseInt(from.split(':')[0], 10); var sm = parseInt(from.split(':')[1], 10) || 0;
+  var eh = parseInt(to.split(':')[0], 10); var em = parseInt(to.split(':')[1], 10) || 0;
+  var y = parseInt(parts[0], 10); var mo = parseInt(parts[1], 10) - 1; var da = parseInt(parts[2], 10);
+  var startMs = new Date(y, mo, da, sh, sm, 0).getTime();
+  var endMs = new Date(y, mo, da, eh, em, 0).getTime();
+  if (endMs <= startMs) return false;
+  for (var t = startMs; t <= endMs; t += 30 * 60000) {
+    if (!slotConflictsClient(t, occupied)) return false;
+  }
+  return true;
+}
+
+function findNextFreeSlotMs(s, occupied) {
+  var now = Date.now();
+  for (var dayOffset = 0; dayOffset <= 7; dayOffset++) {
+    var d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() + dayOffset);
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var da = String(d.getDate()).padStart(2, '0');
+    var ymd = y + '-' + m + '-' + da;
+    if (isDayFullyBookedClient(ymd, s, occupied)) continue;
+    var days = Array.isArray(s.availableDays) ? s.availableDays : [0, 1, 2, 3, 4, 5, 6];
+    var dtMid = new Date(y, parseInt(m, 10) - 1, parseInt(da, 10), 12, 0, 0);
+    if (days.indexOf(dtMid.getDay()) < 0) continue;
+    var from = (s.availableFrom || '08:00').substring(0, 5);
+    var to = (s.availableTo || '18:00').substring(0, 5);
+    var sh = parseInt(from.split(':')[0], 10); var sm = parseInt(from.split(':')[1], 10) || 0;
+    var eh = parseInt(to.split(':')[0], 10); var em = parseInt(to.split(':')[1], 10) || 0;
+    var mo0 = parseInt(m, 10) - 1;
+    var da0 = parseInt(da, 10);
+    var startMs = new Date(y, mo0, da0, sh, sm, 0).getTime();
+    var endMs = new Date(y, mo0, da0, eh, em, 0).getTime();
+    for (var t = startMs; t <= endMs; t += 30 * 60000) {
+      if (t < now - 60000) continue;
+      if (!slotConflictsClient(t, occupied)) return t;
+    }
+  }
+  return null;
+}
+
+function attachModalServiceBookedListener(sid) {
+  if (window._modalSvcUnsub) {
+    try { window._modalSvcUnsub(); } catch (e) {}
+    window._modalSvcUnsub = null;
+  }
+  if (!sid || typeof db === 'undefined' || !db) return;
+  window._modalSvcUnsub = db.collection('services').doc(sid).onSnapshot(function (doc) {
+    if (!doc.exists) return;
+    var v = window._modalServiceRef || {};
+    Object.assign(v, doc.data());
+    v.id = sid;
+    window._modalServiceRef = v;
+    updateModalSlotAvailability();
+    updateServiceSlotBadges();
+  });
+}
+
+function updateModalSlotAvailability() {
+  var statusEl = document.getElementById('m-slot-live-status');
+  var dateEl = document.getElementById('m-booking-date');
+  var btn = document.getElementById('m-btn-confirm');
+  var s = window._modalServiceRef;
+  if (!statusEl || !btn) return;
+  var NI = window.NeedsI18n;
+  var occ = getOccupiedMsFromService(s);
+  if (dateEl && dateEl.value) {
+    dateEl.classList.toggle('day-fully-booked', !!(s && isDayFullyBookedClient(dateEl.value, s, occ)));
+    if (dateEl.classList.contains('day-fully-booked')) {
+      dateEl.title = NI ? NI.t('slot_day_full') : '';
+    } else {
+      dateEl.title = '';
+    }
+  }
+  var ms = getModalScheduledAtMs();
+  if (ms == null) {
+    statusEl.style.display = 'none';
+    statusEl.textContent = '';
+    btn.disabled = false;
+    return;
+  }
+  statusEl.style.display = 'block';
+  var taken = slotConflictsClient(ms, occ);
+  if (taken) {
+    statusEl.className = 'm-slot-live-status m-slot-live-status--bad';
+    statusEl.textContent = NI ? NI.t('slot_taken_inline') : 'Créneau indisponible.';
+    btn.disabled = true;
+  } else {
+    statusEl.className = 'm-slot-live-status m-slot-live-status--ok';
+    statusEl.textContent = NI ? NI.t('slot_free_inline') : 'OK';
+    btn.disabled = false;
+  }
+}
+
+function updateServiceSlotBadges() {
+  var wrap = document.getElementById('m-slot-badges');
+  var s = window._modalServiceRef;
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  if (!s) return;
+  var NI = window.NeedsI18n;
+  var occ = getOccupiedMsFromService(s);
+  var next = findNextFreeSlotMs(s, occ);
+  var p1 = document.createElement('span');
+  p1.className = 'm-slot-badge-pill';
+  if (next) {
+    var loc = lang === 'fr' ? 'fr-CA' : 'en-CA';
+    p1.textContent = (NI ? NI.t('svc_next_slot') : 'Next:') + ' ' + new Date(next).toLocaleString(loc, { dateStyle: 'medium', timeStyle: 'short' });
+  } else {
+    p1.textContent = (NI ? NI.t('svc_next_slot') : 'Next:') + ' —';
+    p1.classList.add('m-slot-badge-pill--warn');
+  }
+  wrap.appendChild(p1);
+  if (!next && occ.length > 0) {
+    var p2 = document.createElement('span');
+    p2.className = 'm-slot-badge-pill m-slot-badge-pill--warn';
+    p2.textContent = NI ? NI.t('svc_demand_high') : 'High demand';
+    wrap.appendChild(p2);
+  } else if (occ.length === 0) {
+    var p3 = document.createElement('span');
+    p3.className = 'm-slot-badge-pill m-slot-badge-pill--ok';
+    p3.textContent = NI ? NI.t('svc_available_fast') : 'Available';
+    wrap.appendChild(p3);
+  }
+}
+
+function initModalBookingDates() {
+  const dEl = document.getElementById('m-booking-date');
+  const tEl = document.getElementById('m-booking-time');
+  if (!dEl || !tEl) return;
+  const now = new Date();
+  const pad = function (n) { return String(n).padStart(2, '0'); };
+  const yyyy = now.getFullYear();
+  const mm = pad(now.getMonth() + 1);
+  const dd = pad(now.getDate());
+  dEl.min = yyyy + '-' + mm + '-' + dd;
+  const max = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
+  dEl.max = max.getFullYear() + '-' + pad(max.getMonth() + 1) + '-' + pad(max.getDate());
+  dEl.value = dEl.min;
+  tEl.value = pad(now.getHours()) + ':' + pad(now.getMinutes());
+  if (!initModalBookingDates._payHintWired) {
+    initModalBookingDates._payHintWired = true;
+    ['change', 'input'].forEach(function (ev) {
+      dEl.addEventListener(ev, updateBookingPayHint);
+      tEl.addEventListener(ev, updateBookingPayHint);
+      dEl.addEventListener(ev, updateModalSlotAvailability);
+      tEl.addEventListener(ev, updateModalSlotAvailability);
+    });
+  }
+  updateBookingPayHint();
+  updateModalSlotAvailability();
+}
+
+var MS_24H_BOOK = 24 * 60 * 60 * 1000;
+
+function getModalScheduledAtMs() {
+  var dEl = document.getElementById('m-booking-date');
+  var tEl = document.getElementById('m-booking-time');
+  if (!dEl || !tEl || !dEl.value || !tEl.value) return null;
+  var tv = tEl.value.trim();
+  if (tv.length === 5) tv = tv + ':00';
+  var d = new Date(dEl.value + 'T' + tv);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.getTime();
+}
+
+function updateBookingPayHint() {
+  var el = document.getElementById('m-booking-pay-hint');
+  if (!el) return;
+  var ms = getModalScheduledAtMs();
+  if (ms == null) {
+    el.style.display = 'none';
+    el.textContent = '';
+    return;
+  }
+  var now = Date.now();
+  var NI = window.NeedsI18n;
+  if (ms - now > MS_24H_BOOK) {
+    el.className = 'm-booking-pay-hint m-booking-pay-hint--12';
+    el.textContent = NI ? NI.t('booking_pay_deadline_12h') : '⏱ Vous aurez 12h pour finaliser le paiement après confirmation';
+  } else {
+    el.className = 'm-booking-pay-hint m-booking-pay-hint--1h';
+    el.textContent = NI ? NI.t('booking_pay_deadline_1h') : "🚨 Service aujourd'hui — vous aurez 1h pour payer après confirmation";
+  }
+  el.style.display = 'block';
+}
+
+function refreshSellerVerifiedFlags(data) {
+  const ids = [...new Set(data.map(s => s.sellerId).filter(Boolean))];
+  ids.forEach(function (id) {
+    if (id in sellerVerifiedById) return;
+    sellerVerifiedById[id] = null;
+    db.collection("users").doc(id).get().then(function (doc) {
+      var u = doc.exists ? doc.data() : {};
+      sellerVerifiedById[id] = !!(u.verified === true || u.isVerified === true);
+      render();
+    }).catch(function () {
+      sellerVerifiedById[id] = false;
+      render();
+    });
+  });
+}
+
+function cardTitle(s) {
+  if (!s) return '';
+  if (lang === 'en' && s.titleEn) return s.titleEn;
+  return s.title || '';
+}
+function cardDesc(s) {
+  if (!s) return '';
+  if (lang === 'en' && s.descriptionEn) return s.descriptionEn;
+  return (s.description || '').replace(/&amp;/g, '&');
+}
+function formatCardPriceDisplay(s) {
+  if (s.priceCurrency === 'cad' && s.priceCad != null && window.__needs_prefs && window.__needs_prefs.formatPriceCad) {
+    return window.__needs_prefs.formatPriceCad(s.priceCad);
+  }
+  var priceVal = s.price != null && s.price !== '' ? parseFloat(s.price) : NaN;
+  if (!isNaN(priceVal) && priceVal > 0 && window.__needs_prefs && window.__needs_prefs.formatPrice) {
+    return window.__needs_prefs.formatPrice(s.price);
+  }
+  return '';
+}
+
+/** Unsplash (libre de droit) — visuels premium + fallbacks si pas d’image Firestore */
+var IMG = {
+  snow: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=85&auto=format&fit=crop',
+  cleaning: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=1200&q=85&auto=format&fit=crop',
+  plumber: 'https://images.unsplash.com/photo-1585704032915-c3400ca195b4?w=1200&q=85&auto=format&fit=crop',
+  books: 'https://images.unsplash.com/photo-1524990024040-21c072f3d0d9?w=1200&q=85&auto=format&fit=crop',
+  electric: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85&auto=format&fit=crop',
+  moving: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1200&q=85&auto=format&fit=crop',
+  camera: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1200&q=85&auto=format&fit=crop',
+  laptop: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&q=85&auto=format&fit=crop',
+  code: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=85&auto=format&fit=crop',
+  chef: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1200&q=85&auto=format&fit=crop',
+  study: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200&q=85&auto=format&fit=crop',
+  paint: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1200&q=85&auto=format&fit=crop',
+  pets: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=85&auto=format&fit=crop',
+  rent: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=85&auto=format&fit=crop',
+  event: 'https://images.unsplash.com/photo-1519167758481-83f29da1c1b4?w=1200&q=85&auto=format&fit=crop',
+  pro: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1200&q=85&auto=format&fit=crop',
+  default: 'https://images.unsplash.com/photo-1581578017424-3dc73814715d?w=1200&q=85&auto=format&fit=crop'
+};
+
+function resolveServiceImageUrl(s) {
+  if (!s) return IMG.default;
+  var raw = (s.imageUrl && String(s.imageUrl).trim()) ? String(s.imageUrl).trim() : '';
+  if (!raw && s.image) raw = String(s.image).trim();
+  var bad = !raw || /placeholder|picsum\.photos|via\.placeholder|placehold\.it|^data:/i.test(raw);
+  if (!bad && /^https?:\/\//i.test(raw)) return raw;
+  var t = ((s.title || '') + ' ' + (s.titleEn || '')).toLowerCase();
+  if (/neige|snow|déneig|shovel/.test(t)) return IMG.snow;
+  if (/plomb|plumb|fuite|drain|débouch|pipe/.test(t)) return IMG.plumber;
+  if (/ménage|nettoy|cleaning|clean|housekeep/.test(t)) return IMG.cleaning;
+  if (/électr|electric|wiring|panneau|lighting/.test(t)) return IMG.electric;
+  if (/déménag|moving|movers|camion|boxes/.test(t)) return IMG.moving;
+  if (/photo|photograp|wedding|mariage|événement|event\s*photo/.test(t)) return IMG.camera;
+  if (/dévelop|develop|web|code|freelance|react|site\s*web/.test(t)) return IMG.code;
+  if (/chef|cuisin|cook|gastron|dinner/.test(t)) return IMG.chef;
+  if (/devoir|homework|tutor|étud|cours\s*d|anglais|français/.test(t)) return IMG.study;
+  if (/peint|paint|renovat|rénov/.test(t)) return IMG.paint;
+  if (/animal|pet|chien|chat|dog|garde\s*d/.test(t)) return IMG.pets;
+  if (/location|rent|louer|véhicul|van/.test(t)) return IMG.rent;
+  if (/événement|event|séminaire|gala/.test(t)) return IMG.event;
+  var cat = String(s.cat || 'home').split('-')[0];
+  if (cat === 'tech') return IMG.laptop;
+  if (cat === 'pro') return IMG.pro;
+  if (cat === 'life') return IMG.study;
+  if (cat === 'event') return IMG.event;
+  if (cat === 'rent') return IMG.rent;
+  return IMG.default;
+}
+
+// Suggestions logiques : services à enchaîner avant / après (par catégorie et mots-clés)
+var SUGGESTIONS_MAP = {
+  home: { before: ['Débouchage', 'Détartrage', 'Dépannage urgent'], after: ['Carrelage', 'Peinture', 'Nettoyage fin de chantier'] },
+  life: { before: ['Coaching', 'Préparation'], after: ['Massage', 'Soin à domicile', 'Suivi bien-être'] },
+  tech: { before: ['Dépannage réseau', 'Sauvegarde'], after: ['Formation', 'Maintenance', 'Sécurité informatique'] },
+  rent: { before: ['Nettoyage véhicule', 'État des lieux'], after: ['Contrôle technique', 'Révision'] },
+  event: { before: ['Traiteur', 'Location matériel'], after: ['Animation', 'Décoration', 'Nettoyage après événement'] },
+  pro: { before: ['Audit besoins', 'Brief créatif'], after: ['Livraison fichiers', 'Formation outils', 'Support post-lancement'] }
+};
+function getSuggestionsForService(cat, title) {
+  var t = (title || '').toLowerCase();
+  var out = { before: [], after: [] };
+  var base = SUGGESTIONS_MAP[cat] || SUGGESTIONS_MAP.home;
+  out.before = (base.before || []).slice(0, 3);
+  out.after = (base.after || []).slice(0, 3);
+  if (/plomb|plomberie|fuite|évier|chauffage/.test(t)) {
+    out.before = ['Débouchage', 'Détartrage', 'Diagnostic'];
+    out.after = ['Carrelage', 'Peinture', 'Isolation'];
+  } else if (/ménage|nettoyage|cleaning/.test(t)) {
+    out.before = ['Tri / rangement', 'Désencombrement'];
+    out.after = ['Repassage', 'Vitres', 'Entretien régulier'];
+  } else if (/jardin|jardinage|terrasse/.test(t)) {
+    out.before = ['Taille', 'Désherbage'];
+    out.after = ['Arrosage', 'Entretien saisonnier'];
+  } else if (/déménagement|déménager/.test(t)) {
+    out.before = ['Tri', 'Cartons', 'Assurance'];
+    out.after = ['Nettoyage ancien logement', 'Montage meubles'];
+  }
+  return out;
+}
+
+function formatServiceAvailability(s) {
+  if (!s || (!s.availableFrom && !s.availableTo)) return null;
+  var from = (s.availableFrom || '08:00').replace(/^0?(\d{1,2}):(\d{2})$/, function(_, h, m) { return (parseInt(h, 10) + 'h' + (m === '00' ? '' : m)); });
+  var to = (s.availableTo || '23:59').replace(/^0?(\d{1,2}):(\d{2})$/, function(_, h, m) { return (parseInt(h, 10) + 'h' + (m === '00' ? '' : m)); });
+  if (to === '23h59') to = lang === 'fr' ? 'minuit' : 'midnight';
+  var days = Array.isArray(s.availableDays) && s.availableDays.length ? s.availableDays : [0, 1, 2, 3, 4, 5, 6];
+  var dayNames = lang === 'fr' ? ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var dayStr = '';
+  if (days.length === 7) {
+    dayStr = lang === 'fr' ? 'Tous les jours' : 'Every day';
+  } else if (days.length === 5 && [1, 2, 3, 4, 5].every(function(d) { return days.indexOf(d) >= 0; })) {
+    dayStr = lang === 'fr' ? 'Lun–Ven' : 'Mon–Fri';
+  } else if (days.length === 2 && days.indexOf(6) >= 0 && days.indexOf(0) >= 0) {
+    dayStr = lang === 'fr' ? 'Sam–Dim' : 'Sat–Sun';
+  } else {
+    days.sort(function(a, b) { return a - b; });
+    dayStr = days.map(function(d) { return dayNames[d]; }).join(', ');
+  }
+  return (lang === 'fr' ? 'Disponible ' : 'Available ') + dayStr + ' ' + from + '–' + to;
+}
+
+// ══════════════════════════════════════════════
+//  APPLY TRANSLATIONS
+// ══════════════════════════════════════════════
+function applyTexts() {
+  const t = tx();
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+
+  set('txt-hero-title', t.heroTitle);
+  document.getElementById('txt-hero-title').innerHTML = t.heroTitle.replace('Multi-Services', '<span>Multi-Services</span>').replace('Multi-Service', '<span>Multi-Service</span>');
+  set('txt-hero-desc', t.heroDesc);
+  set('txt-acc', t.acc);
+  var nml = document.getElementById('navMsgLbl');
+  if (nml) nml.textContent = lang === 'en' ? 'Messages' : 'Messages';
+  set('txt-favs', t.favs);
+  set('txt-results', t.results);
+  set('txt-recent', t.recentLabel);
+  set('txt-offline', t.offline);
+  var retryLbl = document.getElementById('offline-retry-label');
+  if (retryLbl) retryLbl.textContent = lang === 'fr' ? 'Réessayer' : 'Retry';
+  set('loadingText', t.loading);
+  document.getElementById('searchInput').placeholder = t.search;
+  set('opt-def', t.optDef); set('opt-asc', t.optAsc); set('opt-desc', t.optDesc);
+  set('opt-rat', t.optRat); set('opt-dist', t.optDist);
+
+  // Catégories
+  document.querySelectorAll('#cat-all span').forEach(e => e.textContent = t.catAll);
+  document.querySelectorAll('#cat-home span').forEach(e => e.textContent = t.catHome);
+  document.querySelectorAll('#cat-life span').forEach(e => e.textContent = t.catLife);
+  document.querySelectorAll('#cat-rent span').forEach(e => e.textContent = t.catRent);
+  document.querySelectorAll('#cat-event span').forEach(e => e.textContent = t.catEvent);
+  document.querySelectorAll('#cat-tech span').forEach(e => e.textContent = t.catTech);
+  var cpl = document.getElementById('cat-pro-label');
+  if (cpl) cpl.textContent = t.catPro;
+
+  // Modal
+  set('m-partner-tag', t.partner); set('m-about-title', t.aboutTitle);
+  set('m-total-label', t.totalLabel); set('m-options-title', t.optionsTitle);
+  set('m-booking-block-title', t.bookingBlockTitle);
+  set('m-label-address', t.bookingAddressLabel);
+  set('m-label-datetime', t.bookingDatetimeLabel);
+  set('m-label-notes', t.bookingNotesLabel);
+  set('m-label-phone', t.bookingPhoneLabel);
+  var ca = document.getElementById('m-client-address');
+  if (ca) ca.placeholder = t.bookingAddressPh;
+  var cn = document.getElementById('m-client-notes');
+  if (cn) cn.placeholder = t.bookingNotesPh;
+  set('m-btn-confirm', t.confirm); set('m-chat-txt', t.chat);
+  set('feat-1', t.feat1); set('feat-2', t.feat2); set('feat-3', t.feat3);
+  set('m-secure-txt', t.secure);
+  var pr = document.getElementById('m-pay-reassurance');
+  if (pr) pr.textContent = t.payReassuranceBox;
+  set('m-reviews-title', t.reviewsTitle); set('m-add-review-title', t.addReview);
+  set('m-rating-label', t.ratingLabel);
+  set('btn-post-review', t.publishReview);
+  set('m-proof-text', t.proofText);
+  document.getElementById('rev-text').placeholder = t.revPlaceholder;
+  document.getElementById('rev-name').placeholder = t.revName;
+  updateBookingPayHint();
+}
+
+function toggleLang() {
+  lang = lang === 'fr' ? 'en' : 'fr';
+  if (window.__needs_prefs) __needs_prefs.setLang(lang);
+  document.documentElement.lang = lang === 'fr' ? 'fr' : 'en';
+  document.getElementById('langBtn').textContent = lang.toUpperCase();
+  document.title = lang === 'en' ? 'All our services | Needs' : 'Tous nos services | Needs';
+  var md = document.querySelector('meta[name="description"]');
+  if (md) md.setAttribute('content', lang === 'en'
+    ? 'Browse premium Needs services: home, wellness, digital, events. Certified partners, ratings and clear pricing.'
+    : 'Découvrez les services premium Needs : ménage, plomberie, digital, événements. Prestataires certifiés, avis et tarifs transparents.');
+  applyTexts();
+  if (window.NeedsI18n) window.NeedsI18n.applyDOM(lang);
+  render();
+}
+
+function toggleTheme() {
+  var isLight = document.documentElement.classList.toggle('needs-light');
+  if (document.body) {
+    document.body.classList.toggle('light-mode', isLight);
+    if (isLight) document.body.classList.remove('dark-mode');
+    else document.body.classList.add('dark-mode');
+  }
+  if (window.__needs_prefs) __needs_prefs.setTheme(isLight ? 'light' : 'dark');
+  var btn = document.getElementById('themeBtn');
+  if (btn) btn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+}
+
+// ══════════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════════
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function getIcon(cat) {
+  const map = { home:'fa-house-chimney', life:'fa-spa', rent:'fa-key', event:'fa-calendar-star', tech:'fa-laptop-code' };
+  return map[cat] || 'fa-briefcase';
+}
+
+function getCatLabel(cat) {
+  const t = tx();
+  if (cat?.startsWith('rent')) return t.typeLocation;
+  if (cat?.startsWith('event')) return t.typeEvent;
+  return t.typeService;
+}
+
+function getCatColor(cat) {
+  if (cat?.startsWith('rent'))  return '#10B981';
+  if (cat?.startsWith('event')) return '#F59E0B';
+  return 'var(--primary)';
+}
+
+function getDistance(lat1, lon1, lat2, lon2) {
+  if (!lat1||!lon1||!lat2||!lon2) return Infinity;
+  const R = 6371, dLat = (lat2-lat1)*Math.PI/180, dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function isFav(id) {
+  return userFavorites.some(f => (typeof f === 'string' ? f : f.id) === id);
+}
+
+function getUnitLabel(unit) {
+  return tx().units[unit] || '';
+}
+
+var needsMapInstance = null;
+var needsMapMarkersLayer = null;
+function scrollToServiceCard(sid) {
+  var el = document.getElementById('service-card-' + sid) || document.querySelector('[data-service-id="' + sid + '"]');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function buildNeedsMapMarkers() {
+  if (typeof L === 'undefined' || !needsMapInstance || !needsMapMarkersLayer) return;
+  needsMapMarkersLayer.clearLayers();
+  var goldIcon = L.divIcon({
+    className: 'needs-marker-wrap',
+    html: '<div style="width:16px;height:16px;border-radius:50%;background:#C9A84C;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.45);"></div>',
+    iconSize: [16, 16],
+    iconAnchor: [8, 8]
+  });
+  (servicesData || []).forEach(function(s) {
+    if (!serviceIsPublicListing(s)) return;
+    if (!s.location || s.location.lat == null || s.location.lng == null) return;
+    var lat = typeof s.location.lat === 'number' ? s.location.lat : parseFloat(s.location.lat);
+    var lng = typeof s.location.lng === 'number' ? s.location.lng : parseFloat(s.location.lng);
+    if (Number.isNaN(lat) || Number.isNaN(lng)) return;
+    var sid = String(s.id).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    var pText = formatCardPriceDisplay(s) || '—';
+    var cta = (window.NeedsI18n && NeedsI18n.t('services_popup_cta')) || (lang === 'fr' ? 'Voir ce service' : 'View');
+    var fn = (s.firstName || ((s.sellerName || '').split(' ')[0]) || '');
+    var popupHtml = '<strong>' + escapeHTML(cardTitle(s)) + '</strong><br/>' + escapeHTML(fn) + ' · ★ ' + (s.rating || '') + '<br/>' + escapeHTML(pText) + '<br/><button type="button" class="map-popup-btn" style="margin-top:8px;padding:6px 12px;border-radius:8px;border:none;background:#C9A84C;color:#111;font-weight:700;cursor:pointer;" onclick="scrollToServiceCard(\'' + sid + '\')">' + escapeHTML(cta) + '</button>';
+    L.marker([lat, lng], { icon: goldIcon }).addTo(needsMapMarkersLayer).bindPopup(popupHtml);
+  });
+}
+function initNeedsMap() {
+  if (typeof L === 'undefined' || !document.getElementById('needsMap')) return;
+  if (needsMapInstance) {
+    buildNeedsMapMarkers();
+    return;
+  }
+  needsMapInstance = L.map('needsMap', { scrollWheelZoom: false }).setView([45.5017, -73.5673], 12);
+  /* Voyager : rues, parcs et eau en couleur (vs dark_all noir & blanc) */
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20
+  }).addTo(needsMapInstance);
+  needsMapMarkersLayer = L.layerGroup().addTo(needsMapInstance);
+  buildNeedsMapMarkers();
+  var btn = document.getElementById('mapToggleMobile');
+  var sec = document.getElementById('mapSection');
+  if (btn && sec && !btn._needsMapBound) {
+    btn._needsMapBound = true;
+    btn.addEventListener('click', function() {
+      sec.classList.toggle('map-collapsed');
+      var hidden = sec.classList.contains('map-collapsed');
+      btn.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+      if (window.NeedsI18n) {
+        btn.textContent = NeedsI18n.t(hidden ? 'services_map_toggle_show' : 'services_map_toggle_hide');
+      }
+      setTimeout(function() { if (needsMapInstance) needsMapInstance.invalidateSize(); }, 350);
+    });
+  }
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+window.onload = () => {
+  // Langue et thème persistés (toutes les pages)
+  if (window.__needs_prefs) {
+    lang = __needs_prefs.getLang();
+    document.documentElement.lang = lang === 'fr' ? 'fr' : 'en';
+    __needs_prefs.applyTheme(__needs_prefs.getTheme());
+    var themeBtn = document.getElementById('themeBtn');
+    if (themeBtn) themeBtn.innerHTML = __needs_prefs.getTheme() === 'light' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+  }
+  applyTexts();
+  if (window.NeedsI18n) window.NeedsI18n.applyDOM(lang);
+  if (typeof initNeedsMap === 'function') initNeedsMap();
+
+  const params  = new URLSearchParams(window.location.search);
+  const catUrl  = params.get('cat');
+  if (catUrl) {
+    currentFilter = catUrl;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.getElementById('cat-' + catUrl);
+    if (btn) btn.classList.add('active');
+  }
+  const sortUrl = params.get('sort');
+  const sortSel = document.getElementById('sortSelect');
+  if (sortUrl && sortSel) {
+    for (let i = 0; i < sortSel.options.length; i++) {
+      if (sortSel.options[i].value === sortUrl) { sortSel.value = sortUrl; break; }
+    }
+  }
+  const qUrl = params.get('q');
+  const searchInp = document.getElementById('searchInput');
+  if (qUrl && searchInp) {
+    try { searchInp.value = decodeURIComponent(qUrl); } catch (e) { searchInp.value = qUrl; }
+  }
+
+  // Auth
+  if (typeof initMessagesNavBadge === 'function') initMessagesNavBadge();
+  firebase.auth().onAuthStateChanged(user => {
+    currentUser = user || null;
+    if (user) {
+      db.collection("users").doc(user.uid).onSnapshot(doc => {
+        userFavorites = doc.data()?.favorites || [];
+        render();
+      });
+    }
+  });
+
+  // Géoloc
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      render();
+    }, () => {});
+  }
+
+  armFirestoreOfflineBanner();
+  subscribeServicesList();
+
+  applyTexts();
+  updateModalOptionPrices();
+};
+
+function armFirestoreOfflineBanner() {
+  clearTimeout(firestoreOfflineTimer);
+  firestoreOfflineTimer = setTimeout(function () {
+    if (!firestoreReachable) {
+      var banner = document.getElementById('offline-banner');
+      if (banner) banner.classList.add('show');
+    }
+  }, 10000);
+}
+
+function hideFirestoreOfflineBanner() {
+  clearTimeout(firestoreOfflineTimer);
+  var banner = document.getElementById('offline-banner');
+  if (banner) banner.classList.remove('show');
+}
+
+function subscribeServicesList() {
+  if (servicesListUnsubscribe) {
+    try { servicesListUnsubscribe(); } catch (e) {}
+    servicesListUnsubscribe = null;
+  }
+  firestoreReachable = false;
+  armFirestoreOfflineBanner();
+  servicesListUnsubscribe = db.collection("services").orderBy("createdAt", "desc").limit(100).onSnapshot(function (snap) {
+    firestoreReachable = true;
+    hideFirestoreOfflineBanner();
+    servicesData = mergeDemoWithRemote(snap.docs.map(function (d) { return { id: d.id, ...d.data() }; }));
+    servicesHydrated = true;
+    refreshSellerVerifiedFlags(servicesData);
+    snap.docs.forEach(function (d) { needsGeocodeServiceDoc(d); });
+    render();
+    if (!window._deepLinkOpened) {
+      var serviceId = new URLSearchParams(window.location.search).get('service');
+      if (serviceId && servicesData.some(function (s) { return s.id === serviceId; })) {
+        window._deepLinkOpened = true;
+        openDetails(serviceId);
+      }
+    }
+  }, function (err) {
+    console.warn("Snapshot error:", err && err.code);
+    firestoreReachable = false;
+    servicesData = mergeDemoWithRemote([]);
+    servicesHydrated = true;
+    render();
+  });
+}
+
+function retryLoadServices() {
+  hideFirestoreOfflineBanner();
+  subscribeServicesList();
+}
+
+// ══════════════════════════════════════════════
+//  SEARCH / FILTER / VIEW
+// ══════════════════════════════════════════════
+let searchDebounceTimer = null;
+function onSearch() {
+  const val = document.getElementById('searchInput').value;
+  document.getElementById('search-clear').classList.toggle('show', val.length > 0);
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(() => {
+    var q = (document.getElementById('searchInput').value || '').trim();
+    if (q.length >= 1) {
+      try {
+        if (window.NeedsGA && typeof NeedsGA.event === 'function') {
+          NeedsGA.event('search_service', { search_term: q, page: 'services' });
+        }
+      } catch (e) {}
+    }
+    currentPage = 1;
+    render();
+  }, 200);
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('search-clear').classList.remove('show');
+  render();
+}
+
+function setCategory(c, btn) {
+  currentFilter = c; currentPage = 1;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  render();
+}
+
+function setView(mode) {
+  viewMode = mode;
+  document.getElementById('servicesGrid').classList.toggle('list-view', mode === 'list');
+  document.getElementById('btn-grid').classList.toggle('active', mode === 'grid');
+  document.getElementById('btn-list').classList.toggle('active', mode === 'list');
+}
+
+// ══════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════
+function needsBoostActive(s) {
+  if (!s || s.boosted !== true) return false;
+  var u = s.boostedUntil;
+  if (u && u.toMillis && u.toMillis() < Date.now()) return false;
+  return true;
+}
+/** Prestataire vérifié OU service actuellement boosté (payant) → visible boutique + carte. */
+function servicePassesSellerTrust(s) {
+  var sid = s.sellerId || '';
+  if (!sid) return false;
+  if (needsBoostActive(s)) return true;
+  return sellerVerifiedById[sid] === true;
+}
+function serviceIsPublicListing(s) {
+  if (!s || s.isActive === false || s.available === false) return false;
+  return servicePassesSellerTrust(s);
+}
+function needsMonetizationTier(s) {
+  if (needsBoostActive(s)) return 3;
+  var p = String(s.sellerPlan || "free").toLowerCase();
+  if (p === "business") return 2;
+  if (p === "pro") return 1;
+  return 0;
+}
+function getServiceScore(service, sellerPlan) {
+  var s = service || {};
+  var plan = String(sellerPlan || s.sellerPlan || "free").toLowerCase();
+  var boosted = needsBoostActive(s);
+  if (plan === "business" && boosted) return 100;
+  if (plan === "pro" && boosted) return 80;
+  if (plan === "business") return 60;
+  if (plan === "pro") return 40;
+  if (boosted) return 20;
+  return parseFloat(s.avgRating != null ? s.avgRating : s.rating) || 0;
+}
+function buildCardBadgesHtml(s) {
+  var parts = [];
+  var isHot = s.popular === true || (s.rating && s.rating >= 4.95);
+  var showCert = s.partnerCertified === true || s.verified === true;
+  var pl = String(s.sellerPlan || "free").toLowerCase();
+  var t = function (k, fr, en) {
+    try {
+      if (window.NeedsI18n && typeof NeedsI18n.t === "function") return NeedsI18n.t(k);
+    } catch (e) {}
+    return (typeof lang !== "undefined" && lang === "en") ? en : fr;
+  };
+  if (needsBoostActive(s)) {
+    parts.push('<span class="card-badge svc-badge-featured">' + escapeHTML(t("badge_featured", "EN VEDETTE", "FEATURED")) + "</span>");
+  }
+  if (isHot) {
+    parts.push('<span class="card-badge svc-badge-top-rated">' + escapeHTML(t("badge_top_rated", "TOP RATED", "TOP RATED")) + "</span>");
+  }
+  if (pl === "business") {
+    parts.push('<span class="card-badge svc-badge-plan-business">' + escapeHTML(t("badge_plan_business", "BUSINESS", "BUSINESS")) + "</span>");
+  } else if (pl === "pro") {
+    parts.push('<span class="card-badge svc-badge-plan-pro">' + escapeHTML(t("badge_plan_pro", "PRO", "PRO")) + "</span>");
+  }
+  if (showCert) {
+    parts.push('<span class="card-badge svc-badge-partner">' + escapeHTML(t("badge_partner", "Partenaire certifié", "Certified partner")) + "</span>");
+  }
+  if (!parts.length) return "";
+  return '<div class="card-badges">' + parts.join("") + "</div>";
+}
+function needsMonetizationBadgesHtml(s) { return buildCardBadgesHtml(s); }
+
+function getRankedFilteredServices() {
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  const sort   = document.getElementById('sortSelect').value;
+  const priceMin = parseFloat(document.getElementById('filterPriceMin')?.value) || 0;
+  const priceMaxRaw = document.getElementById('filterPriceMax')?.value;
+  const priceMax = priceMaxRaw === '' || priceMaxRaw === null ? Infinity : parseFloat(priceMaxRaw) || Infinity;
+  const ratingMin = parseFloat(document.getElementById('filterRatingMin')?.value) || 0;
+  let filtered = servicesData.map(s => {
+    const copy = { ...s };
+    copy.dist = (userCoords && s.location)
+      ? getDistance(userCoords.lat, userCoords.lng, s.location.lat, s.location.lng)
+      : Infinity;
+    copy._score = getServiceScore(copy, copy.sellerPlan);
+    return copy;
+  }).filter(s => {
+    const sellerId = s.sellerId || '';
+    if (!sellerId) return false;
+    if (!serviceIsPublicListing(s)) return false;
+    const matchSearch = (cardTitle(s)||'').toLowerCase().includes(search) || (cardDesc(s)||'').toLowerCase().includes(search);
+    const matchCat = currentFilter === 'all' || String(s.cat || s.category || '').startsWith(currentFilter);
+    const price = s.price != null ? parseFloat(s.price) : 0;
+    const rating = parseFloat(s.avgRating != null ? s.avgRating : s.rating) || 0;
+    const matchPrice = price >= priceMin && price <= priceMax;
+    const matchRating = rating >= ratingMin;
+    return matchSearch && matchCat && matchPrice && matchRating;
+  });
+  function secondaryCmp(a, b) {
+    if (sort === "asc") return (a.price || 0) - (b.price || 0);
+    if (sort === "desc") return (b.price || 0) - (a.price || 0);
+    if (sort === "dist") return a.dist - b.dist;
+    if (sort === "rating") {
+      var ar = parseFloat(a.avgRating != null ? a.avgRating : a.rating) || 0;
+      var br = parseFloat(b.avgRating != null ? b.avgRating : b.rating) || 0;
+      return br - ar;
+    }
+    return 0;
+  }
+  filtered.sort(function (a, b) {
+    if (b._score !== a._score) return b._score - a._score;
+    return secondaryCmp(a, b);
+  });
+  return filtered;
+}
+
+function render() {
+  const t      = tx();
+  const grid   = document.getElementById('servicesGrid');
+  const rn0    = document.getElementById('result-num');
+  if (!servicesHydrated) {
+    if (rn0) rn0.textContent = '';
+    var trEmpty = document.getElementById('txt-results');
+    if (trEmpty) trEmpty.textContent = '';
+    if (grid) {
+      grid.innerHTML = Array.from({ length: 6 }).map(function () {
+        return '<div class="skeleton" aria-hidden="true"></div>';
+      }).join('');
+    }
+    return;
+  }
+  let filtered = getRankedFilteredServices();
+
+  var totalPagesFiltered = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  if (currentPage > totalPagesFiltered) currentPage = totalPagesFiltered;
+
+  document.getElementById('result-num').textContent = filtered.length;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div>
+        <h3>${t.empty}</h3>
+        <p>${t.emptyDesc}</p>
+      </div>`;
+    document.getElementById('pagination').innerHTML = '';
+    if (typeof buildNeedsMapMarkers === 'function') buildNeedsMapMarkers();
+    return;
+  }
+
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const page  = filtered.slice(start, start + ITEMS_PER_PAGE);
+
+  grid.innerHTML = page.map((s, i) => {
+    const favActive  = isFav(s.id);
+    const catLabel   = getCatLabel(s.cat || s.category);
+    const catColor   = getCatColor(s.cat || s.category);
+    const unitLabel  = getUnitLabel(s.unit);
+    const ratingCount = parseInt(s.reviewCount, 10) || 0;
+    const ratingAvg = parseFloat(s.avgRating != null ? s.avgRating : s.rating) || 0;
+    const ratingLabel = ratingCount > 0
+      ? ('⭐ ' + ratingAvg.toFixed(1) + ' (' + ratingCount + ' ' + (lang === 'fr' ? 'avis' : 'reviews') + ')')
+      : (lang === 'fr' ? 'Nouveau' : 'New');
+    const isHot      = s.popular === true || (s.rating && s.rating >= 4.95);
+    const showCert   = s.partnerCertified === true || s.verified === true;
+    const distStr    = s.dist !== Infinity ? `<div class="distance-tag"><i class="fa-solid fa-location-dot"></i> ${s.dist.toFixed(1)} km</div>` : '';
+    const priceVal   = s.price != null && s.price !== '' ? parseFloat(s.price) : NaN;
+    const priceDisp  = formatCardPriceDisplay(s);
+    const priceHtml  = priceDisp
+      ? priceDisp
+      : (lang === 'fr' ? 'Sur devis' : 'Quote');
+
+    return `
+    <article class="service-card" tabindex="0" role="button" data-service-id="${s.id}" id="service-card-${s.id}" style="animation-delay:${i*0.04}s"
+      onclick="openDetails('${s.id}')"
+      onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openDetails('${s.id}'); }">
+      <div class="btn-fav ${favActive?'active':''}" onclick="event.stopPropagation();toggleFavorite('${s.id}')" role="button" tabindex="0" aria-label="${favActive ? (lang==='fr' ? 'Retirer des favoris' : 'Remove from favorites') : (lang==='fr' ? 'Ajouter aux favoris' : 'Add to favorites')}">
+        <i class="fa-${favActive?'solid':'regular'} fa-heart"></i>
+      </div>
+      ${buildCardBadgesHtml(s)}
+      <div class="type-badge" style="background:${catColor}">${catLabel}</div>
+      <div class="card-image-wrap">
+        <img class="card-image" src="${String(resolveServiceImageUrl(s)).replace(/"/g, '&quot;')}" alt="${escapeHTML(cardTitle(s))}" loading="lazy"
+          onerror="this.onerror=null;this.src='${String(IMG.default).replace(/"/g, '&quot;')}';">
+      </div>
+      <div class="card-content">
+        <div class="card-top">
+          <div class="rating">${ratingLabel}</div>
+          ${distStr}
+        </div>
+        ${s.neighborhood ? `<div class="neighborhood-tag"><i class="fa-solid fa-location-dot"></i> ${escapeHTML(s.neighborhood)}</div>` : ''}
+        <h3>${escapeHTML(cardTitle(s))}</h3>
+        ${(() => {
+          const sid = s.sellerId || "";
+          const v = sellerVerifiedById[sid];
+          if (v === true) return '<div class="svc-badge-verified" style="display:inline-flex;align-items:center;gap:6px;font-size:0.7rem;color:#16a34a;font-weight:700;margin-top:4px;padding:2px 8px;border-radius:999px;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.32);"><i class="fa-solid fa-circle-check"></i> ✓ Vérifié</div>';
+          if (v === false) return '<div class="svc-badge-unverified" style="font-size:0.68rem;color:var(--text-mute);margin-top:6px;opacity:0.85;">' + escapeHTML(t.badgeUnverified) + "</div>";
+          return "";
+        })()}
+        <p class="card-desc">${escapeHTML(cardDesc(s))}</p>
+        <div class="card-footer">
+          <div class="price-tag">${priceHtml}<span>${unitLabel}</span></div>
+          <button class="btn-details">${t.details} <i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <p class="trust-line" style="font-size:0.72rem;color:var(--text-mute);margin:10px 0 0;padding:0 2px;line-height:1.35;">${escapeHTML(t.cardTrustLine)}</p>
+      </div>
+    </article>`;
+  }).join('');
+
+  renderPagination(filtered.length);
+  updateRecentStrip();
+  if (typeof buildNeedsMapMarkers === 'function') buildNeedsMapMarkers();
+}
+function updateRecentStrip() {
+  try {
+    const raw = localStorage.getItem('needs_recent_services');
+    const ids = raw ? JSON.parse(raw) : [];
+    const strip = document.getElementById('recentStrip');
+    const chips = document.getElementById('recentChips');
+    if (!strip || !chips) return;
+    const found = ids.slice(0, 8).map(id => servicesData.find(s => s.id === id)).filter(Boolean);
+    if (found.length === 0) { strip.style.display = 'none'; return; }
+    strip.style.display = 'flex';
+    strip.style.alignItems = 'center';
+    strip.style.flexWrap = 'wrap';
+    strip.style.gap = '8px';
+    chips.innerHTML = found.map(s => `<button type="button" class="suggest-chip" onclick="openDetails('${s.id}')">${escapeHTML(cardTitle(s) || s.id)}</button>`).join('');
+  } catch (e) { document.getElementById('recentStrip') && (document.getElementById('recentStrip').style.display = 'none'); }
+}
+
+function renderPagination(total) {
+  var el = document.getElementById('pagination');
+  if (!el) return;
+  if (total === 0) { el.innerHTML = ''; return; }
+  var totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
+  var html = '';
+  var prevL = lang === 'fr' ? 'Page précédente' : 'Previous page';
+  var nextL = lang === 'fr' ? 'Page suivante' : 'Next page';
+  if (totalPages > 1 && currentPage > 1) {
+    html += '<button type="button" class="page-btn page-btn--nav" onclick="goPage(' + (currentPage - 1) + ')" aria-label="' + prevL + '"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>';
+  }
+  if (totalPages <= 7) {
+    for (var i = 1; i <= totalPages; i++) {
+      html += '<button type="button" class="page-btn' + (i === currentPage ? ' active' : '') + '" onclick="goPage(' + i + ')"' + (i === currentPage ? ' aria-current="page"' : '') + '>' + i + '</button>';
+    }
+  } else {
+    var pStart = Math.max(1, currentPage - 2);
+    var pEnd = Math.min(totalPages, currentPage + 2);
+    if (pEnd - pStart < 4) {
+      if (pStart === 1) pEnd = Math.min(totalPages, pStart + 4);
+      else pStart = Math.max(1, pEnd - 4);
+    }
+    if (pStart > 1) {
+      html += '<button type="button" class="page-btn' + (1 === currentPage ? ' active' : '') + '" onclick="goPage(1)"' + (1 === currentPage ? ' aria-current="page"' : '') + '>1</button>';
+      if (pStart > 2) html += '<span class="page-ellipsis" aria-hidden="true">…</span>';
+    }
+    for (var j = pStart; j <= pEnd; j++) {
+      html += '<button type="button" class="page-btn' + (j === currentPage ? ' active' : '') + '" onclick="goPage(' + j + ')"' + (j === currentPage ? ' aria-current="page"' : '') + '>' + j + '</button>';
+    }
+    if (pEnd < totalPages) {
+      if (pEnd < totalPages - 1) html += '<span class="page-ellipsis" aria-hidden="true">…</span>';
+      html += '<button type="button" class="page-btn' + (totalPages === currentPage ? ' active' : '') + '" onclick="goPage(' + totalPages + ')"' + (totalPages === currentPage ? ' aria-current="page"' : '') + '>' + totalPages + '</button>';
+    }
+  }
+  if (totalPages > 1 && currentPage < totalPages) {
+    html += '<button type="button" class="page-btn page-btn--nav" onclick="goPage(' + (currentPage + 1) + ')" aria-label="' + nextL + '"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>';
+  }
+  el.innerHTML = html;
+}
+
+function goPage(n) {
+  currentPage = n;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════════
+//  FAVORIS — sécurisé avec arrayUnion/arrayRemove + timestamp
+// ══════════════════════════════════════════════
+function toggleFavorite(id) {
+  if (!currentUser) {
+    showToast(tx().toastLoginRequired, 'info');
+    return;
+  }
+  const ref = db.collection("users").doc(currentUser.uid);
+  const already = isFav(id);
+
+  if (already) {
+    // Retirer : supporter les deux formats (string legacy + objet)
+    const favObj = userFavorites.find(f => (typeof f === 'string' ? f : f.id) === id);
+    const updates = [];
+    if (favObj && typeof favObj === 'object') updates.push(ref.update({ favorites: firebase.firestore.FieldValue.arrayRemove(favObj) }));
+    updates.push(ref.update({ favorites: firebase.firestore.FieldValue.arrayRemove(id) }).catch(()=>{}));
+    Promise.all(updates).then(() => showToast(tx().toastFavRemoved, 'danger')).catch(console.error);
+  } else {
+    // Ajouter avec timestamp pour la page favoris
+    const newFav = { id, addedAt: firebase.firestore.Timestamp.now() };
+    ref.update({ favorites: firebase.firestore.FieldValue.arrayUnion(newFav) })
+      .then(() => showToast(tx().toastFavAdded, 'success'))
+      .catch(err => {
+        // Si le document n'existe pas encore, le créer
+        ref.set({ favorites: [newFav] }, { merge: true })
+          .then(() => showToast(tx().toastFavAdded, 'success'))
+          .catch(console.error);
+      });
+  }
+}
+
+// ══════════════════════════════════════════════
+//  MODAL OPTIONS
+// ══════════════════════════════════════════════
+function toggleOption(el, val) {
+  el.classList.toggle('selected');
+  const isAdding = el.classList.contains('selected');
+  basePriceModal = basePriceModal + (isAdding ? val : -val);
+  const priceEl  = document.getElementById('m-price');
+  var svc = window._modalServiceRef;
+  priceEl.textContent = formatCadLocal(basePriceModal);
+}
+
+function updateModalOptionPrices() {
+  var o1 = document.getElementById('m-opt-insurance-price');
+  var o2 = document.getElementById('m-opt-support-price');
+  if (o1) o1.textContent = '+15 CA$';
+  if (o2) o2.textContent = '+5 CA$';
+}
+
+// ══════════════════════════════════════════════
+//  MODAL DÉTAIL
+// ══════════════════════════════════════════════
+function openDetails(id) {
+  const s = servicesData.find(x => x.id === id);
+  if (!s) return;
+
+  try {
+    if (window.NeedsGA && typeof NeedsGA.event === 'function') {
+      NeedsGA.event('view_service', { service_id: id });
+    }
+  } catch (e) {}
+
+  window._modalServiceRef = s;
+
+  // Incrémenter les vues (pour le graphique du compte prestataire)
+  try {
+    var fns = firebase.app().functions("us-central1");
+    if (fns && fns.httpsCallable) fns.httpsCallable('incrementView')({ serviceId: id }).catch(function() {});
+  } catch (e) {}
+
+  const t = tx();
+  var mbt = document.getElementById('m-booking-block-title');
+  if (mbt) mbt.textContent = t.bookingBlockTitle;
+  var la = document.getElementById('m-label-address');
+  if (la) la.textContent = t.bookingAddressLabel;
+  var ld = document.getElementById('m-label-datetime');
+  if (ld) ld.textContent = t.bookingDatetimeLabel;
+  var ln = document.getElementById('m-label-notes');
+  if (ln) ln.textContent = t.bookingNotesLabel;
+  var lp = document.getElementById('m-label-phone');
+  if (lp) lp.textContent = t.bookingPhoneLabel;
+  var ia = document.getElementById('m-client-address');
+  if (ia) ia.placeholder = t.bookingAddressPh;
+  var ino = document.getElementById('m-client-notes');
+  if (ino) ino.placeholder = t.bookingNotesPh;
+  initModalBookingDates();
+  updateBookingPayHint();
+
+  currentModalId = id;
+  var _pNum = s.price != null && s.price !== '' ? parseFloat(s.price) : NaN;
+  if (s.priceCurrency === 'cad' && s.priceCad != null) {
+    basePriceModal = parseFloat(s.priceCad) || 0;
+  } else {
+    basePriceModal = (!isNaN(_pNum) && _pNum > 0) ? _pNum : 0;
+  }
+
+  // Reset options
+  document.querySelectorAll('.option-item').forEach(o => o.classList.remove('selected'));
+
+  // Remplir
+  var modalImg = document.getElementById('m-img');
+  if (modalImg) {
+    modalImg.style.display = '';
+    modalImg.src = resolveServiceImageUrl(s);
+    modalImg.onerror = function() { this.onerror = null; this.src = IMG.default; };
+  }
+  var modalHero = document.querySelector('.modal-hero');
+  if (modalHero) {
+    var prevBadges = modalHero.querySelector('.card-badges');
+    if (prevBadges) prevBadges.remove();
+    var badgesModal = buildCardBadgesHtml(s);
+    if (badgesModal) modalHero.insertAdjacentHTML('afterbegin', badgesModal);
+  }
+  document.getElementById('m-title').textContent       = cardTitle(s);
+  var rc = parseInt(s.reviewCount, 10) || 0;
+  var ar = parseFloat(s.avgRating != null ? s.avgRating : s.rating) || 0;
+  var rb = document.getElementById('m-rating-badge');
+  if (rb) {
+    rb.innerHTML = '<i class="fa-solid fa-star"></i> ' + (rc > 0 ? (ar.toFixed(1) + ' (' + rc + ' ' + (lang === 'fr' ? 'avis' : 'reviews') + ')') : (lang === 'fr' ? 'Nouveau' : 'New'));
+  }
+  document.getElementById('m-desc').textContent        = cardDesc(s);
+  var availBlock = document.getElementById('m-availability-block');
+  var availText = document.getElementById('m-availability-text');
+  if (availBlock && availText) {
+    var availStr = formatServiceAvailability(s);
+    if (availStr) {
+      availBlock.style.display = 'block';
+      availText.textContent = availStr;
+    } else {
+      availBlock.style.display = 'none';
+    }
+  }
+  document.getElementById('m-price').textContent       = (s.priceCurrency === 'cad' && s.priceCad != null)
+    ? formatCadLocal(s.priceCad)
+    : ((!isNaN(_pNum) && _pNum > 0)
+    ? formatCadLocal(_pNum)
+    : (lang === 'fr' ? 'Sur devis' : 'On quote'));
+  updateModalOptionPrices();
+  document.getElementById('m-unit-label').textContent  = getUnitLabel(s.unit);
+  document.getElementById('m-provider').textContent    = s.sellerName || s.providerName || 'Needs Partner';
+  document.getElementById('m-partner-tag').textContent = t.partner;
+  document.getElementById('m-about-title').textContent = t.aboutTitle;
+  document.getElementById('m-total-label').textContent = t.totalLabel;
+  var comm = document.getElementById('m-commission-note');
+  if (comm) comm.textContent = lang === 'fr' ? 'Commission Needs : 15%' : 'Needs commission: 15%';
+  var psec = document.getElementById('m-pricing-section-title');
+  if (psec) psec.textContent = lang === 'fr' ? 'Tarif' : 'Pricing';
+  var bsec = document.getElementById('m-booking-section-title');
+  if (bsec) bsec.textContent = lang === 'fr' ? 'Réservation' : 'Booking';
+  var paysec = document.getElementById('m-payment-section-title');
+  if (paysec) paysec.textContent = lang === 'fr' ? 'Paiement' : 'Payment';
+  document.getElementById('m-options-title').textContent = t.optionsTitle;
+  document.getElementById('m-btn-confirm').textContent = t.confirm;
+  document.getElementById('m-chat-txt').textContent    = t.chat;
+  document.getElementById('feat-1').textContent        = t.feat1;
+  document.getElementById('feat-2').textContent        = t.feat2;
+  document.getElementById('feat-3').textContent        = t.feat3;
+  document.getElementById('m-secure-txt').textContent  = t.secure;
+  document.getElementById('m-reviews-title').textContent = t.reviewsTitle;
+  document.getElementById('m-add-review-title').textContent = t.addReview;
+  document.getElementById('m-proof-text').textContent  = t.proofText;
+  document.getElementById('btn-post-review').textContent = t.publishReview;
+
+  // Avatar
+  const avatar = document.getElementById('m-avatar');
+  if (s.sellerPhoto) {
+    avatar.innerHTML = `<img src="${s.sellerPhoto}" alt="" loading="lazy">`;
+  } else {
+    avatar.innerHTML = '';
+    avatar.textContent = (s.sellerName || s.providerName || 'N').charAt(0).toUpperCase();
+  }
+  document.getElementById('m-provider-link').href = `profile-public.html?id=${s.sellerId || s.providerId || 'anonymous'}`;
+
+  // Badge catégorie
+  document.getElementById('m-cat-badge').innerHTML = `<i class="fa-solid ${getIcon(s.cat || s.category)}"></i> ${escapeHTML(s.cat || s.category || 'Service')}`;
+
+  // Distance
+  const distBadge = document.getElementById('m-dist-badge');
+  if (userCoords && s.location) {
+    distBadge.style.display = 'flex';
+    distBadge.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${getDistance(userCoords.lat, userCoords.lng, s.location.lat, s.location.lng).toFixed(1)} km`;
+  } else {
+    distBadge.style.display = 'none';
+  }
+
+  // Social proof dynamique depuis Firestore (nombre de réservations réelles)
+  loadSocialProof(id);
+
+  attachModalServiceBookedListener(id);
+  updateServiceSlotBadges();
+
+  // Avis
+  loadReviews(id);
+  document.getElementById('btn-post-review').onclick = () => postReview(id);
+
+  // Bouton paiement (prix en EUR pour le backend)
+  document.getElementById('m-btn-confirm').onclick = () => {
+    try {
+      if (window.NeedsGA && typeof NeedsGA.event === 'function') {
+        NeedsGA.event('begin_checkout', { service_id: id, item_name: cardTitle(s) || 'Service Needs' });
+      }
+    } catch (e) {}
+    reserve(id, basePriceModal, cardTitle(s) || 'Service Needs');
+  };
+
+  // Suggestions IA : services à enchaîner avant / après
+  var sugg = getSuggestionsForService(s.cat || s.category || 'home', cardTitle(s));
+  var block = document.getElementById('m-suggestions-block');
+  var titleSugg = document.getElementById('m-suggestions-title');
+  if (titleSugg) titleSugg.textContent = lang === 'fr' ? 'Suggestions pour compléter votre projet' : 'Suggestions to complete your project';
+  var beforeEl = document.getElementById('m-suggest-before');
+  var afterEl = document.getElementById('m-suggest-after');
+  if (block && beforeEl && afterEl) {
+    block.style.display = (sugg.before.length || sugg.after.length) ? 'block' : 'none';
+    beforeEl.innerHTML = sugg.before.map(function(label) {
+      return '<a href="#" class="suggest-chip" onclick="event.preventDefault();searchAndClose(\'' + label.replace(/'/g, "\\'") + '\')">' + escapeHTML(label) + '</a>';
+    }).join('');
+    afterEl.innerHTML = sugg.after.map(function(label) {
+      return '<a href="#" class="suggest-chip" onclick="event.preventDefault();searchAndClose(\'' + label.replace(/'/g, "\\'") + '\')">' + escapeHTML(label) + '</a>';
+    }).join('');
+  }
+
+  document.getElementById('detailModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Deep link : mettre ?service=ID dans l'URL
+  const params = new URLSearchParams(window.location.search);
+  params.set('service', id);
+  history.replaceState(null, '', window.location.pathname + '?' + params.toString());
+  // Récemment consultés
+  try {
+    let recent = JSON.parse(localStorage.getItem('needs_recent_services') || '[]');
+    recent = recent.filter(x => x !== id);
+    recent.unshift(id);
+    localStorage.setItem('needs_recent_services', JSON.stringify(recent.slice(0, 20)));
+  } catch (e) {}
+  document.getElementById('modalCloseBtn') && document.getElementById('modalCloseBtn').focus();
+  if (!window._modalFocusTrapDone) {
+    window._modalFocusTrapDone = true;
+    const modal = document.getElementById('detailModal');
+    modal.addEventListener('keydown', function(e) {
+      if (e.key !== 'Tab' || !modal.classList.contains('open')) return;
+      const focusables = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
+      else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
+    });
+  }
+}
+function getFilteredServices() {
+  return getRankedFilteredServices();
+}
+function modalNav(delta) {
+  const list = getFilteredServices();
+  const idx = list.findIndex(s => s.id === currentModalId);
+  if (idx < 0) return;
+  const nextIdx = idx + delta;
+  if (nextIdx >= 0 && nextIdx < list.length) openDetails(list[nextIdx].id);
+}
+function initModalFocusTrap() {
+  const modal = document.getElementById('detailModal');
+  const focusables = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  const first = focusables[0], last = focusables[focusables.length - 1];
+  modal.addEventListener('keydown', function trap(e) {
+    if (e.key !== 'Tab' || !modal.classList.contains('open')) return;
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+}
+function searchAndClose(query) {
+  closeModal();
+  document.getElementById('searchInput').value = query;
+  document.getElementById('search-clear').classList.add('show');
+  onSearch();
+}
+
+function loadSocialProof(serviceId) {
+  // Compter les réservations réelles des 24h dans checkout_sessions (ou utiliser un compteur dédié)
+  const yesterday = new Date(Date.now() - 86400000);
+  db.collection("orders")
+    .where("serviceId", "==", serviceId)
+    .where("createdAt", ">=", firebase.firestore.Timestamp.fromDate(yesterday))
+    .get().then(snap => {
+      const count = snap.size;
+      const el = document.getElementById('m-proof-text');
+      if (count > 0) {
+        el.textContent = lang === 'fr'
+          ? `Ce service a été réservé ${count} fois ces dernières 24 heures.`
+          : `This service was booked ${count} times in the last 24 hours.`;
+      } else {
+        el.textContent = tx().proofText;
+      }
+    }).catch(() => {
+      document.getElementById('m-proof-text').textContent = tx().proofText;
+    });
+}
+
+function closeModal() {
+  if (window._modalSvcUnsub) {
+    try { window._modalSvcUnsub(); } catch (e) {}
+    window._modalSvcUnsub = null;
+  }
+  document.getElementById('detailModal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentModalId = null;
+  const params = new URLSearchParams(window.location.search);
+  params.delete('service');
+  const qs = params.toString();
+  history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : ''));
+}
+
+// ══════════════════════════════════════════════
+//  REVIEWS
+// ══════════════════════════════════════════════
+let reviewsUnsubscribe = null;
+function loadReviews(serviceId) {
+  if (reviewsUnsubscribe) reviewsUnsubscribe();
+  const container = document.getElementById('reviews-container');
+  container.innerHTML = `<p style="font-size:12px;color:var(--text-mute);padding:10px 0">${lang==='fr'?'Chargement...':'Loading...'}</p>`;
+
+  reviewsUnsubscribe = db.collection("reviews")
+    .where("serviceId", "==", serviceId)
+    .orderBy("createdAt", "desc")
+    .limit(5)
+    .onSnapshot(snap => {
+      const t = tx();
+      if (snap.empty) {
+        container.innerHTML = `<p style="font-size:13px;color:var(--text-mute);padding:10px 0">${t.noReviews}</p>`;
+        return;
+      }
+      container.innerHTML = snap.docs.map(doc => {
+        const r = doc.data();
+        const stars = '⭐'.repeat(Math.min(5, Math.max(1, r.rating || 5)));
+        const name = r.buyerName || r.reviewerName || (lang === 'fr' ? 'Client' : 'Client');
+        const dt = r.createdAt && r.createdAt.toDate
+          ? r.createdAt.toDate().toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA', { day: 'numeric', month: 'short', year: 'numeric' })
+          : '';
+        return `
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-name">${escapeHTML(name)}</span>
+            <span class="review-stars">${stars} ${r.rating || 5}/5</span>
+          </div>
+          <p class="review-body">${escapeHTML(r.comment || '')}</p>
+          ${dt ? '<p style="font-size:11px;color:var(--text-mute);margin-top:6px;">' + escapeHTML(dt) + '</p>' : ''}
+        </div>`;
+      }).join('');
+    }, function () {
+      container.innerHTML = `<p style="font-size:13px;color:var(--text-mute);padding:10px 0">${lang==='fr'?'Avis indisponibles.':'Reviews unavailable.'}</p>`;
+    });
+}
+
+function postReview(serviceId) {
+  const t       = tx();
+  const name    = document.getElementById('rev-name').value.trim();
+  const comment = document.getElementById('rev-text').value.trim();
+  const rating  = parseInt(document.getElementById('rev-rating').value);
+
+  if (!name || !comment) { showToast(t.toastReviewError, 'danger'); return; }
+
+  const btn = document.getElementById('btn-post-review');
+  btn.disabled = true; btn.textContent = '...';
+
+  if (!currentUser) {
+    showToast(lang === 'fr' ? 'Connectez-vous pour publier un avis.' : 'Sign in to post a review.', 'danger');
+    btn.disabled = false; btn.textContent = t.publishReview;
+    return;
+  }
+  var svc = servicesData.find(function (x) { return x.id === serviceId; }) || window._modalServiceRef || {};
+  db.collection("orders")
+    .where("buyerId", "==", currentUser.uid)
+    .where("serviceId", "==", serviceId)
+    .orderBy("createdAt", "desc")
+    .limit(20)
+    .get()
+    .then(function (ordersSnap) {
+      var orderDoc = ordersSnap.docs.find(function (d) {
+        var o = d.data() || {};
+        var st = String(o.status || '');
+        var okStatus = st === 'confirmed' || st === 'auto_confirmed' || st === 'completed';
+        var noReviewYet = !o.reviewSubmittedAt;
+        return okStatus && noReviewYet;
+      });
+      if (!orderDoc) {
+        throw new Error(lang === 'fr'
+          ? 'Aucune commande confirmée disponible pour cet avis.'
+          : 'No confirmed order available for this review.');
+      }
+      var fns = firebase.app().functions("us-central1");
+      var submit = fns.httpsCallable('submitReview');
+      return submit({
+        serviceId: serviceId,
+        sellerId: svc.sellerId || svc.providerId || '',
+        orderId: orderDoc.id,
+        rating: rating,
+        comment: comment,
+        reviewerName: name
+      });
+    })
+    .then(function () {
+    document.getElementById('rev-name').value  = '';
+    document.getElementById('rev-text').value  = '';
+    btn.disabled = false; btn.textContent = t.publishReview;
+    showToast(t.toastReviewOk, 'success');
+    loadReviews(serviceId);
+    var idx = servicesData.findIndex(function (x) { return x.id === serviceId; });
+    if (idx >= 0) {
+      var nextCount = (parseInt(servicesData[idx].reviewCount, 10) || 0) + 1;
+      var curAvg = parseFloat(servicesData[idx].avgRating != null ? servicesData[idx].avgRating : servicesData[idx].rating) || 0;
+      var nextAvg = ((curAvg * (nextCount - 1)) + rating) / nextCount;
+      servicesData[idx].reviewCount = nextCount;
+      servicesData[idx].avgRating = Math.round(nextAvg * 10) / 10;
+      servicesData[idx].rating = servicesData[idx].avgRating;
+      render();
+    }
+  }).catch(err => {
+    console.error(err);
+    showToast((err && err.message) ? err.message : (lang === 'fr' ? 'Impossible de publier cet avis.' : 'Could not submit this review.'), 'danger');
+    btn.disabled = false; btn.textContent = t.publishReview;
+  });
+}
+
+// ══════════════════════════════════════════════
+//  CHAT
+// ══════════════════════════════════════════════
+function handleChat() {
+  var svc = window._modalServiceRef;
+  var sellerId = svc && (svc.sellerId || svc.providerId);
+  if (!sellerId) {
+    showToast(lang === 'fr' ? 'Prestataire introuvable pour ce service.' : 'Provider not found for this service.', 'danger');
+    return;
+  }
+  if (!currentUser) {
+    var ret = encodeURIComponent(window.location.pathname + window.location.search);
+    var info = encodeURIComponent('Connectez-vous pour contacter ce prestataire');
+    window.location.href = 'auth.html?redirect=' + ret + '&info=' + info;
+    return;
+  }
+  if (currentUser.uid === sellerId) {
+    showToast(lang === 'fr' ? 'Il s\'agit de votre propre annonce.' : 'This is your own listing.', 'info');
+    return;
+  }
+  if (!window.needsConversations) {
+    showToast(lang === 'fr' ? 'Messagerie indisponible.' : 'Messaging unavailable.', 'danger');
+    return;
+  }
+  window.needsConversations.getOrCreateConversationId(currentUser.uid, sellerId).then(function (convId) {
+    try {
+      if (window.NeedsGA && typeof NeedsGA.event === 'function') {
+        NeedsGA.event('contact_provider', {
+          provider_id: sellerId,
+          service_id: svc && svc.id ? svc.id : undefined
+        });
+      }
+    } catch (e) {}
+    window.location.href = 'messages.html?conv=' + encodeURIComponent(convId);
+  }).catch(function (e) {
+    console.error(e);
+    showToast(lang === 'fr' ? 'Impossible d\'ouvrir la conversation.' : 'Could not open conversation.', 'danger');
+  });
+}
+
+function getSharePayload() {
+  const id = currentModalId;
+  const title = document.getElementById('m-title');
+  const name = (title && title.textContent) ? title.textContent : 'Service Needs';
+  const url = window.location.origin + window.location.pathname + (id ? '?service=' + encodeURIComponent(id) : '');
+  return { name: name, url: url };
+}
+function copyShareLink(url) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function() { showToast(lang === 'fr' ? 'Lien copié !' : 'Link copied!', 'var(--green)'); });
+  } else { showToast(url, 'info'); }
+}
+function toggleShareMenu(event) {
+  if (event) event.stopPropagation();
+  var menu = document.getElementById('shareMenu');
+  if (!menu) return;
+  menu.classList.toggle('open');
+}
+function closeShareMenu() {
+  var menu = document.getElementById('shareMenu');
+  if (menu) menu.classList.remove('open');
+}
+function copyServiceLink() {
+  var payload = getSharePayload();
+  copyShareLink(payload.url);
+  closeShareMenu();
+}
+function shareServiceWhatsApp() {
+  var payload = getSharePayload();
+  var text = encodeURIComponent((lang === 'fr' ? 'Découvre ce service sur Needs : ' : 'Check this service on Needs: ') + payload.name + ' ' + payload.url);
+  window.open('https://wa.me/?text=' + text, '_blank', 'noopener');
+  closeShareMenu();
+}
+function shareServiceEmail() {
+  var payload = getSharePayload();
+  var subject = encodeURIComponent((lang === 'fr' ? 'Service recommandé sur Needs' : 'Recommended service on Needs') + ' — ' + payload.name);
+  var body = encodeURIComponent((lang === 'fr' ? 'Voici un service intéressant : ' : 'Here is a useful service: ') + payload.name + '\n' + payload.url);
+  window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+  closeShareMenu();
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('#shareMenuWrap')) closeShareMenu();
+});
+
+// ══════════════════════════════════════════════
+//  PAIEMENT STRIPE
+// ══════════════════════════════════════════════
+async function reserve(id, price, title) {
+  if (!currentUser) {
+    showToast(tx().toastLoginRequired, 'info');
+    return;
+  }
+
+  const t = tx();
+  const addrEl = document.getElementById('m-client-address');
+  const phoneEl = document.getElementById('m-client-phone');
+  const notesEl = document.getElementById('m-client-notes');
+  const dateEl = document.getElementById('m-booking-date');
+  const timeEl = document.getElementById('m-booking-time');
+  const addr = (addrEl && addrEl.value) ? addrEl.value.trim() : '';
+  const phone = (phoneEl && phoneEl.value) ? phoneEl.value.trim() : '';
+  const notes = (notesEl && notesEl.value) ? notesEl.value.trim() : '';
+  const d = dateEl && dateEl.value;
+  const tm = timeEl && timeEl.value;
+  if (addr.length < 8) {
+    showToast(t.bookingErrAddress, 'danger');
+    return;
+  }
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length < 10) {
+    showToast(t.bookingErrPhone, 'danger');
+    return;
+  }
+  if (!d || !tm) {
+    showToast(t.bookingErrDate, 'danger');
+    return;
+  }
+  const combined = new Date(d + 'T' + tm + ':00');
+  if (Number.isNaN(combined.getTime())) {
+    showToast(t.bookingErrDate, 'danger');
+    return;
+  }
+  const maxDt = new Date(Date.now() + 30 * 24 * 3600 * 1000);
+  if (combined.getTime() > maxDt.getTime()) {
+    showToast(t.bookingErrDate, 'danger');
+    return;
+  }
+  if (combined.getTime() < Date.now() - 90 * 1000) {
+    showToast(t.bookingErrDatePast, 'danger');
+    return;
+  }
+  var sRef = window._modalServiceRef;
+  if (sRef && slotConflictsClient(combined.getTime(), getOccupiedMsFromService(sRef))) {
+    showToast(window.NeedsI18n ? window.NeedsI18n.t('slot_taken_inline') : t.bookingErrDate, 'danger');
+    return;
+  }
+
+  const loader = document.getElementById('loadingOverlay');
+  const loaderText = document.getElementById('loadingText');
+  loader.style.display = 'flex';
+  loaderText.textContent = lang === 'fr' ? "Initialisation du paiement sécurisé..." : "Initializing secure payment...";
+
+  try {
+    const fns = firebase.app().functions("us-central1");
+    const createSession = fns.httpsCallable('createCheckoutSession');
+    const base = window.location.origin;
+    var payload = {
+      amount: price,
+      title: title || 'Service Needs',
+      serviceId: id,
+      successUrl: base + '/success.html',
+      cancelUrl: base + '/services.html',
+      clientAddress: addr,
+      clientPhone: phone,
+      clientNotes: notes,
+      scheduledAt: combined.toISOString()
+    };
+    payload.requestedDate = d;
+    payload.requestedTime = tm.length >= 5 ? tm.substring(0, 5) : tm;
+    const result = await createSession(payload);
+    if (result.data && result.data.url) {
+      window.location.href = result.data.url;
+    } else {
+      loader.style.display = 'none';
+      showToast(lang === 'fr' ? "Aucun lien de paiement reçu." : "No payment link received.", 'danger');
+    }
+  } catch (err) {
+    console.error(err);
+    loader.style.display = 'none';
+    // Firebase callable renvoie err.code (ex: "functions/internal") et err.message (détail serveur)
+    var msg = (err.details || err.message || '').toString();
+    if (msg === 'slot_unavailable' || msg.indexOf('slot_unavailable') >= 0) {
+      msg = window.NeedsI18n ? window.NeedsI18n.t('slot_race_lost') : msg;
+      showToast(msg, 'danger');
+      updateModalSlotAvailability();
+      return;
+    }
+    if (msg === 'Internal' || msg === 'internal' || msg.indexOf('internal') === 0) {
+      msg = lang === 'fr' ? 'Erreur serveur de paiement. Vérifiez que Stripe est configuré (Functions + secret STRIPE_SECRET_KEY) ou réessayez plus tard.' : 'Payment server error. Check Stripe config (Functions + STRIPE_SECRET_KEY) or try again later.';
+    }
+    if (!msg) msg = lang === 'fr' ? 'Erreur de connexion. Vérifiez votre réseau.' : 'Connection error. Check your network.';
+    showToast(msg, 'danger');
+  }
+}
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  const icons = { success:'fa-check', danger:'fa-xmark', info:'fa-info' };
+  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast-icon').className  = `fa-solid ${icons[type]||'fa-check'}`;
+  toast.className = `toast t-${type}`;
+  void toast.offsetWidth;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+}
+
+// ══════════════════════════════════════════════
+//  KEYBOARD SHORTCUTS
+// ══════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('detailModal').classList.contains('open')) closeModal();
+  }
+  if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    e.preventDefault(); document.getElementById('searchInput').focus();
+  }
+});
+
+// Transition de page (fade) vers compte / favoris
+(function() {
+  document.body.style.transition = 'opacity 0.25s ease';
+  ['compte.html', 'favoris.html'].forEach(function(href) {
+    document.querySelectorAll('a[href="' + href + '"]').forEach(function(a) {
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.body.style.opacity = '0';
+        setTimeout(function() { window.location.href = href; }, 250);
+      });
+    });
+  });
+})();
+</script>
+<button type="button" class="scroll-top" id="scrollTopBtn" aria-label="Retour en haut"><i class="fa-solid fa-chevron-up"></i></button>
+<div id="needs-unified-footer"></div>
+<script defer src="js/inject-unified-footer.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="cursor.js" defer></script>
+<script>
+(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});b.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});})();
+</script>
+</body>
+</html>

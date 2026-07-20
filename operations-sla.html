@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/operations-sla.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — SLA & support Pro</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="entreprise-grands-comptes.html" class="subpage-back">← Pro &amp; Grands comptes</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang()" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <article class="doc-page">
+    <h1>Support et niveaux de service (SLA)</h1>
+    <p class="doc-lead">Needs propose plusieurs niveaux d’accompagnement. Les engagements ci-dessous sont des <strong>cibles</strong> pour l’offre <strong>Pro / Entreprise</strong> ; un <strong>accord cadre signé</strong> peut les préciser ou les renforcer.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Niveau</th>
+          <th>Public</th>
+          <th>Canal</th>
+          <th>Temps de première réponse (ouvrés)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Standard</strong></td>
+          <td>Tous les comptes</td>
+          <td><a href="help.html">Centre d’aide</a>, <a href="contact.html">formulaire</a></td>
+          <td>48 h</td>
+        </tr>
+        <tr>
+          <td><strong>Pro</strong></td>
+          <td>Contrat Pro souscrit</td>
+          <td>E-mail prioritaire, suivi ticket</td>
+          <td><strong>24 h</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Entreprise</strong></td>
+          <td>Compte avec volume ou contrat-cadre</td>
+          <td>Interlocuteur dédié, escalade technique</td>
+          <td><strong>4 h</strong> (9h–18h CET, jours ouvrés) pour incidents P1*</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.9rem;opacity:0.9;">* <strong>P1</strong> : indisponibilité majeure de la Plateforme ou fuite de données suspectée — classification selon grille jointe au contrat Entreprise.</p>
+
+    <h2>Gestion de compte dédiée</h2>
+    <p>Pour les Clients à <strong>fort volume</strong> ou multi-sites, Needs désigne un <strong>Customer Success</strong> ou un chargé de compte pour le suivi trimestriel, la formation des équipes et la coordination avec le support technique.</p>
+
+    <h2>Hors périmètre</h2>
+    <p>Les litiges directs entre Client et Prestataire relèvent d’abord de la <strong>médiation</strong> et des conditions de la prestation ; le support Needs aide à tracer les échanges et à appliquer les règles de la Plateforme.</p>
+
+    <p><a href="entreprise-grands-comptes.html" class="btn btn-main no-print">Parler à l’équipe Entreprise</a></p>
+  </article>
+  <script src="subpage-common.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { needsSubpage.updateChromeButtons(); });</script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

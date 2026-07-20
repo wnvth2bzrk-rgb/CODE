@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/sous-traitants.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Liste des sous-traitants</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="conformite.html" class="subpage-back">← Espace conformité</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang()" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <article class="doc-page">
+    <h1>Sous-traitants et prestataires techniques</h1>
+    <p class="doc-lead">Liste indicative des principaux sous-traitants impliqués dans l’hébergement, le traitement des paiements, la messagerie transactionnelle et les fonctionnalités d’IA. Elle est mise à jour lors de l’intégration de nouveaux prestataires substantiels. <strong>Dernière mise à jour :</strong> 13 mars 2026.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Prestataire</th>
+          <th>Rôle</th>
+          <th>Région / transfert</th>
+          <th>Documentation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Google Cloud / Firebase</strong> (Google LLC)</td>
+          <td>Hébergement des données, authentification, base de données, fonctions serverless</td>
+          <td>UE (régions configurées) / clauses SCC pour certains services</td>
+          <td><a href="https://cloud.google.com/terms/data-processing-addendum" target="_blank" rel="noopener">DPA Google Cloud</a></td>
+        </tr>
+        <tr>
+          <td><strong>Stripe</strong> (Stripe Payments Europe Ltd ou entité locale)</td>
+          <td>Traitement des paiements par carte et virements selon configuration</td>
+          <td>UE / USA avec garanties contractuelles</td>
+          <td><a href="https://stripe.com/legal/dpa" target="_blank" rel="noopener">DPA Stripe</a></td>
+        </tr>
+        <tr>
+          <td><strong>OpenAI</strong> (ou équivalent)</td>
+          <td>Fonctionnalités d’assistance (Needs Core IA) — requêtes utilisateur traitées selon paramètres produit</td>
+          <td>USA — selon offre souscrite (API, rétention, opt-out)</td>
+          <td>Politique de l’API et <a href="securite.html">page Sécurité</a></td>
+        </tr>
+        <tr>
+          <td><strong>Fournisseur e-mail transactionnel</strong></td>
+          <td>Envoi de notifications (compte, commandes, support)</td>
+          <td>UE ou USA (SCC)</td>
+          <td>Indiqué sur demande pour votre conformité interne</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Modalités de changement</h2>
+    <p>Needs informe les Clients disposant d’un <strong>contrat Entreprise</strong> ou d’un DPA signé en cas d’ajout ou de remplacement d’un sous-traitant ayant un impact substantiel, dans un délai permettant une objection motivée conformément au RGPD.</p>
+
+    <p><a href="dpa.html" class="btn btn-main no-print">Voir le DPA</a> <a href="entreprise-grands-comptes.html" class="btn btn-secondary no-print">Contacter Entreprise</a></p>
+  </article>
+  <script src="subpage-common.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { needsSubpage.updateChromeButtons(); });</script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="https://needs-ae86d.web.app/mes-commandes.html">
+  <meta name="description" content="Historique de vos commandes Needs — achats et ventes, filtres et export CSV.">
+  <title>Needs — Mes commandes</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <script src="subpage-common.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="/manifest.json">
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="js/nav-provider-cta.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <style>
+    :root { --bg:#0a0a0f; --card:#12121a; --border:rgba(255,255,255,.12); --gold:#c9a84c; --cream:#f0ede8; --muted:rgba(240,237,232,.65); }
+    body.light-mode, html.needs-light {
+      --bg:#faf8f5; --card:#ffffff; --border:rgba(10,10,15,.12); --cream:#0a0a0f; --muted:rgba(10,10,15,.65);
+    }
+    body { margin:0; font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--cream); min-height:100vh; }
+    .mc-wrap { max-width:1100px; margin:0 auto; padding:24px 18px 80px; }
+    .mc-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:22px; }
+    .mc-header a { color:var(--gold); text-decoration:none; font-weight:700; }
+    h1 { font-size:1.45rem; margin:0; }
+    .mc-tabs { display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
+    .mc-tab { padding:10px 18px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--cream); cursor:pointer; font-weight:700; font-size:.88rem; }
+    .mc-tab.active { background:var(--gold); color:var(--bg); border-color:var(--gold); }
+    .mc-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px; align-items:center; }
+    .mc-filters select { padding:8px 12px; border-radius:8px; border:1px solid var(--border); background:var(--card); color:var(--cream); font-size:.82rem; }
+    .mc-actions { margin-left:auto; display:flex; gap:10px; flex-wrap:wrap; }
+    .btn-gold { background:var(--gold); color:var(--bg); border:none; padding:10px 16px; border-radius:10px; font-weight:800; cursor:pointer; font-size:.85rem; }
+    .mc-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:14px; }
+    table.mc-table { width:100%; border-collapse:collapse; font-size:.82rem; }
+    .mc-table th, .mc-table td { padding:12px 14px; text-align:left; border-bottom:1px solid var(--border); }
+    .mc-table th { color:var(--muted); font-weight:700; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }
+    .mc-table tr:hover td { background:rgba(201,168,76,.06); }
+    .badge-st { display:inline-block; padding:3px 8px; border-radius:6px; font-size:.68rem; font-weight:800; }
+    .st-pending { background:rgba(245,158,11,.2); color:#b45309; border:1px solid rgba(245,158,11,.35); }
+    .st-paid { background:rgba(59,130,246,.18); color:#1d4ed8; border:1px solid rgba(59,130,246,.35); }
+    .st-done { background:rgba(34,197,94,.18); color:#15803d; border:1px solid rgba(34,197,94,.35); }
+    .st-cancel { background:rgba(239,68,68,.15); color:#b91c1c; border:1px solid rgba(239,68,68,.3); }
+    body:not(.light-mode) .st-pending { color:#fbbf24; }
+    body:not(.light-mode) .st-paid { color:#93c5fd; }
+    body:not(.light-mode) .st-done { color:#86efac; }
+    body:not(.light-mode) .st-cancel { color:#fca5a5; }
+    .mc-pagination { display:flex; gap:8px; align-items:center; justify-content:center; margin-top:18px; flex-wrap:wrap; }
+    .mc-pagination button { min-width:36px; padding:8px 12px; border-radius:8px; border:1px solid var(--border); background:var(--card); color:var(--cream); cursor:pointer; font-weight:700; }
+    .mc-pagination button.active { border-color:var(--gold); color:var(--gold); }
+    #mcLoader { text-align:center; padding:40px; color:var(--muted); }
+  </style>
+</head>
+<body data-no-inject-footer="true">
+  <script>try{if(window.__needs_prefs&&__needs_prefs.getTheme()==='light'){document.documentElement.classList.add('needs-light');document.body.classList.add('light-mode');}}catch(e){}</script>
+  <main role="main" class="mc-wrap">
+    <div class="mc-header">
+      <h1 id="mcTitle">Mes commandes</h1>
+      <a href="compte.html" id="mcBack">← Mon compte</a>
+    </div>
+    <div class="mc-tabs" id="mcTabs">
+      <button type="button" class="mc-tab active" data-tab="buy" id="tabBuy">Mes achats</button>
+      <button type="button" class="mc-tab" data-tab="sell" id="tabSell" style="display:none;">Mes ventes</button>
+    </div>
+    <div class="mc-filters">
+      <input type="search" id="mcSearch" data-i18n-placeholder="mc_search_placeholder" placeholder="Rechercher…" style="flex:1;min-width:200px;max-width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--cream);font-size:.88rem;box-sizing:border-box;" />
+      <select id="mcFilterPeriod">
+        <option value="all" data-i18n="mc_filter_all">Toutes</option>
+        <option value="week" data-i18n="mc_filter_week">Cette semaine</option>
+        <option value="month" data-i18n="mc_filter_month">Ce mois</option>
+      </select>
+      <select id="mcFilterStatus">
+        <option value="all" data-i18n="mc_filter_status_all">Tous statuts</option>
+        <option value="pending">pending</option>
+        <option value="paid">paid</option>
+        <option value="accepted">accepted</option>
+        <option value="in_progress">in_progress</option>
+        <option value="delivered">delivered</option>
+        <option value="confirmed">confirmed</option>
+        <option value="auto_confirmed">auto_confirmed</option>
+        <option value="completed">completed</option>
+        <option value="cancelled">cancelled</option>
+        <option value="refunded">refunded</option>
+      </select>
+      <div class="mc-actions">
+        <button type="button" class="btn-gold" id="mcExportCsv"><i class="fa-solid fa-file-csv"></i> <span id="mcExportLabel">Exporter en CSV</span></button>
+      </div>
+    </div>
+    <div id="mcLoader">…</div>
+    <div class="mc-table-wrap" id="mcTableWrap" style="display:none;" role="region" aria-label="Commandes">
+      <table class="mc-table">
+        <thead>
+          <tr>
+            <th id="thDate">Date</th>
+            <th id="thService">Service</th>
+            <th id="thParty">Contrepartie</th>
+            <th id="thAmount">Montant</th>
+            <th id="thStatus">Statut</th>
+            <th id="thAction"></th>
+          </tr>
+        </thead>
+        <tbody id="mcTbody"></tbody>
+      </table>
+    </div>
+    <div class="mc-pagination" id="mcPagination"></div>
+  <button type="button" class="scroll-top" id="scrollTopBtn" aria-label="Retour en haut"><i class="fa-solid fa-chevron-up"></i></button>
+  </main>
+<script>
+var fbCfg={apiKey:"AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU",authDomain:"needs-ae86d.firebaseapp.com",projectId:"needs-ae86d",storageBucket:"needs-ae86d.firebasestorage.app",messagingSenderId:"253900994407",appId:"1:253900994407:web:55168e1b73c878761de1c2"};
+if(!firebase.apps.length) firebase.initializeApp(fbCfg);
+var db=firebase.firestore();
+var auth=firebase.auth();
+var lang=(window.__needs_prefs&&__needs_prefs.getLang())?__needs_prefs.getLang():'fr';
+var MC_PAGE=10;
+var mcMode='buy';
+var mcAllBuy=[];
+var mcAllSell=[];
+var mcFiltered=[];
+var mcPage=1;
+
+function t(key){
+  return (window.NeedsI18n && window.NeedsI18n.t) ? window.NeedsI18n.t(key) : key;
+}
+function formatCad(n){
+  if(window.__needs_prefs&&window.__needs_prefs.formatPriceCad) return window.__needs_prefs.formatPriceCad(n);
+  return 'CA$ '+(Number(n)||0).toFixed(2);
+}
+function statusClass(st){
+  if(/cancel|refund|dispute/.test(st)) return 'st-cancel';
+  if(/confirm|complete|auto/.test(st)) return 'st-done';
+  if(/deliver|progress|accept|paid/.test(st)) return 'st-paid';
+  return 'st-pending';
+}
+function applyFilter(list){
+  var per=document.getElementById('mcFilterPeriod').value;
+  var st=document.getElementById('mcFilterStatus').value;
+  var q=(document.getElementById('mcSearch')&&document.getElementById('mcSearch').value||'').toLowerCase().trim();
+  var now=Date.now();
+  var weekMs=7*24*3600*1000;
+  var monthMs=30*24*3600*1000;
+  return list.filter(function(o){
+    var c=o.createdAt&&o.createdAt.toMillis?o.createdAt.toMillis():0;
+    if(per==='week'&&(now-c)>weekMs) return false;
+    if(per==='month'&&(now-c)>monthMs) return false;
+    if(st!=='all'&&(o.status||'')!==st) return false;
+    if(q){
+      var title=(o.title||'').toLowerCase();
+      var party=mcMode==='buy'?(o.sellerName||o.sellerId||''):(o.buyerDisplayName||o.buyerId||'');
+      party=String(party).toLowerCase();
+      var amt=String(o.amount!=null?o.amount:'');
+      if(title.indexOf(q)<0&&party.indexOf(q)<0&&amt.indexOf(q)<0) return false;
+    }
+    return true;
+  });
+}
+function renderTable(){
+  var tbody=document.getElementById('mcTbody');
+  var wrap=document.getElementById('mcTableWrap');
+  var load=document.getElementById('mcLoader');
+  mcFiltered=applyFilter(mcMode==='buy'?mcAllBuy:mcAllSell);
+  if(mcFiltered.length===0){
+    load.style.display='block';
+    load.textContent=lang==='fr'?'Aucune commande.':'No orders.';
+    wrap.style.display='none';
+    document.getElementById('mcPagination').innerHTML='';
+    return;
+  }
+  load.style.display='none';
+  wrap.style.display='block';
+  var totalPages=Math.max(1,Math.ceil(mcFiltered.length/MC_PAGE));
+  if(mcPage>totalPages) mcPage=totalPages;
+  var start=(mcPage-1)*MC_PAGE;
+  var slice=mcFiltered.slice(start,start+MC_PAGE);
+  tbody.innerHTML=slice.map(function(o){
+    var date=o.createdAt&&o.createdAt.toDate?o.createdAt.toDate().toLocaleDateString(lang==='fr'?'fr-CA':'en-CA'):'—';
+    var title=(o.title||'—').replace(/</g,'&lt;');
+    var party=mcMode==='buy'?(o.sellerName||o.sellerId||'—'):(o.buyerDisplayName||o.buyerId||'—');
+    var st=o.status||'paid';
+    var badge='<span class="badge-st '+statusClass(st)+'">'+st+'</span>';
+    return '<tr><td>'+date+'</td><td>'+title+'</td><td>'+String(party).replace(/</g,'&lt;')+'</td><td>'+formatCad(o.amount)+'</td><td>'+badge+'</td><td><a href="compte.html#orders" style="color:#C9A84C;font-weight:700;text-decoration:none;">'+t('mc_view_details')+'</a></td></tr>';
+  }).join('');
+  var pag=document.getElementById('mcPagination');
+  if(totalPages<=1){ pag.innerHTML=''; return; }
+  var html='';
+  for(var i=1;i<=totalPages;i++){
+    html+='<button type="button" class="'+(i===mcPage?'active':'')+'" onclick="mcGoPage('+i+')">'+i+'</button>';
+  }
+  pag.innerHTML=html;
+}
+window.mcGoPage=function(n){ mcPage=n; renderTable(); };
+document.getElementById('mcFilterPeriod').onchange=function(){ mcPage=1; renderTable(); };
+document.getElementById('mcFilterStatus').onchange=function(){ mcPage=1; renderTable(); };
+var mcSearchEl=document.getElementById('mcSearch');
+if(mcSearchEl){ mcSearchEl.oninput=function(){ mcPage=1; renderTable(); }; }
+document.getElementById('tabBuy').onclick=function(){
+  mcMode='buy'; document.getElementById('tabBuy').classList.add('active'); document.getElementById('tabSell').classList.remove('active'); mcPage=1; renderTable();
+};
+document.getElementById('tabSell').onclick=function(){
+  mcMode='sell'; document.getElementById('tabSell').classList.add('active'); document.getElementById('tabBuy').classList.remove('active'); mcPage=1; renderTable();
+};
+document.getElementById('mcExportCsv').onclick=function(){
+  var list=applyFilter(mcMode==='buy'?mcAllBuy:mcAllSell);
+  var rows=[['Date','Service','Statut','Montant','Id']];
+  list.forEach(function(o){
+    var date=o.createdAt&&o.createdAt.toDate?o.createdAt.toDate().toISOString().slice(0,10):'';
+    rows.push([date,o.title||'',o.status||'',o.amount||0,o.id||'']);
+  });
+  var csv=rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent('\uFEFF'+csv);
+  a.download='needs-commandes-'+(new Date().toISOString().slice(0,10))+'.csv';
+  a.click();
+};
+
+auth.onAuthStateChanged(function(user){
+  if(!user){ location.href='auth.html'; return; }
+  var uid=user.uid;
+  db.collection('orders').where('buyerId','==',uid).orderBy('createdAt','desc').limit(500).get().then(function(snap){
+    mcAllBuy=snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+    return db.collection('orders').where('sellerId','==',uid).orderBy('createdAt','desc').limit(500).get();
+  }).then(function(snap2){
+    mcAllSell=snap2.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+    if(mcAllSell.length>0) document.getElementById('tabSell').style.display='inline-block';
+    document.getElementById('mcLoader').style.display='none';
+    renderTable();
+  }).catch(function(e){
+    document.getElementById('mcLoader').textContent=e.message||'Erreur';
+  });
+});
+
+function mcApplyLabels(){
+  document.getElementById('mcTitle').textContent=t('mc_page_title');
+  document.getElementById('thDate').textContent=t('mc_col_date');
+  document.getElementById('thService').textContent=t('mc_col_service');
+  document.getElementById('thParty').textContent=t('mc_col_party');
+  document.getElementById('thAmount').textContent=t('mc_col_amount');
+  document.getElementById('thStatus').textContent=t('mc_col_status');
+  document.getElementById('thAction').textContent=t('mc_col_action');
+  document.getElementById('mcExportLabel').textContent=t('mc_export_csv');
+  document.getElementById('tabBuy').textContent=t('mc_tab_buy');
+  document.getElementById('tabSell').textContent=t('mc_tab_sell');
+  document.getElementById('mcBack').textContent=t('mc_back_account');
+  var opts=document.getElementById('mcFilterPeriod').options;
+  opts[0].text=t('mc_filter_all'); opts[1].text=t('mc_filter_week'); opts[2].text=t('mc_filter_month');
+  document.getElementById('mcFilterStatus').options[0].text=t('mc_filter_status_all');
+  if(document.getElementById('mcSearch')) document.getElementById('mcSearch').placeholder=t('mc_search_placeholder');
+}
+mcApplyLabels();
+(function(){var b=document.getElementById('scrollTopBtn');if(!b)return;window.addEventListener('scroll',function(){b.classList.toggle('visible',window.scrollY>300);},{passive:true});b.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});})();
+</script>
+
+<footer class="needs-footer-minimal" role="contentinfo" data-i18n-html="footer_minimal_line" style="padding:20px 16px;background:var(--bg);color:var(--muted);text-align:center;font-size:0.82rem;line-height:1.65;border-top:1px solid var(--border);"></footer>
+<script>(function(){if(window.NeedsI18n&&NeedsI18n.applyDOM){try{NeedsI18n.applyDOM(NeedsI18n.getLang());}catch(e){}}})();</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/conformite.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Espace conformité</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="entreprise-grands-comptes.html" class="subpage-back">← Pro &amp; Grands comptes</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang()" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+  <header class="hub-hero" style="padding-top:40px;">
+    <h1>Espace conformité</h1>
+    <p>Documents et informations utiles aux services juridiques, achats, DPO et RSSI — Needs s’inscrit dans une démarche de transparence. Les modèles ci-dessous sont à adapter avec votre conseil.</p>
+  </header>
+  <section class="hub-grid">
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-file-contract"></i> CGV / conditions B2B</h3>
+      <p>Conditions générales applicables aux relations contractuelles avec les clients professionnels.</p>
+      <a href="cgv-b2b.html">Ouvrir →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-handshake"></i> DPA / traitement des données</h3>
+      <p>Accord de traitement des données (RGPD) entre le responsable de traitement et Needs en tant que sous-traitant.</p>
+      <a href="dpa.html">Ouvrir →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-network-wired"></i> Sous-traitants</h3>
+      <p>Liste des sous-traitants techniques et organisationnels (hébergement, paiement, e-mail, IA).</p>
+      <a href="sous-traitants.html">Ouvrir →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-shield-halved"></i> Sécurité</h3>
+      <p>Mesures techniques et organisationnelles, incidents, feuille de route certification.</p>
+      <a href="securite.html">Ouvrir →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-list-check"></i> Checklist achat B2B</h3>
+      <p>Liste de contrôle pour vos équipes achats (imprimable / PDF).</p>
+      <a href="checklist-achat-b2b.html">Ouvrir →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-user-shield"></i> Confidentialité (grand public)</h3>
+      <p>Politique de confidentialité générale.</p>
+      <a href="privacy.html">Ouvrir →</a>
+    </article>
+  </section>
+  <p class="doc-page doc-lead" style="text-align:center;padding-bottom:48px;">
+    <a href="entreprise-grands-comptes.html" class="btn btn-main">Demande de démo</a>
+  </p>
+  <script src="subpage-common.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { needsSubpage.updateChromeButtons(); });</script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

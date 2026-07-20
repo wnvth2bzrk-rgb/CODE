@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/contact.html">
+    <meta name="theme-color" content="#000000" id="meta-theme-color">
+    <title>Needs — Contact</title>
+    <meta name="description" content="Contactez l’équipe Needs : questions, partenariats et support. Réponse en général sous 2 h ouvrées.">
+    <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cursor.css">
+    <style>
+        .contact-page { min-height: 100vh; display: flex; flex-direction: column; }
+        .contact-inner { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px 16px 48px; }
+        .contact-box { width: 100%; max-width: 500px; background: #0a0a0a; padding: 36px; border-radius: 24px; border: 1px solid #171717; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .contact-box h2 { color: #f0f9ff; margin-top: 0; }
+        .contact-sub { font-size: 0.9rem; margin-bottom: 26px; color: rgba(240,249,255,0.85); }
+        .input-group { margin-bottom: 18px; }
+        .contact-box label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: rgba(240,249,255,0.9); }
+        .contact-box input, .contact-box textarea { width: 100%; background: #000; border: 1px solid #171717; padding: 12px; border-radius: 10px; color: #f0f9ff; outline: none; box-sizing: border-box; font-family: inherit; }
+        .contact-box input::placeholder, .contact-box textarea::placeholder { color: rgba(240,249,255,0.45); }
+        .contact-box input:focus, .contact-box textarea:focus { border-color: #06b6d4; }
+        .btn-send { width: 100%; background: #2563eb; color: #fff !important; padding: 14px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; font-size: 1rem; }
+        .btn-send:hover { filter: brightness(1.06); }
+        .contact-links { text-align: center; margin-top: 18px; font-size: 0.88rem; }
+        .contact-links a, .contact-links span[onclick] { color: rgba(240,249,255,0.85); text-decoration: none; cursor: pointer; font-weight: 600; }
+        html.needs-light .contact-box, body.light-mode .contact-box { background: #fff !important; border-color: #e5e7eb !important; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        html.needs-light .contact-box h2, body.light-mode .contact-box h2 { color: #111827 !important; }
+        html.needs-light .contact-box label, body.light-mode .contact-box label { color: #374151 !important; }
+        html.needs-light .contact-box input, html.needs-light .contact-box textarea,
+        body.light-mode .contact-box input, body.light-mode .contact-box textarea { background: #f9fafb !important; color: #111827 !important; border-color: #e5e7eb !important; }
+        html.needs-light .contact-box input::placeholder, html.needs-light .contact-box textarea::placeholder,
+        body.light-mode .contact-box input::placeholder, body.light-mode .contact-box textarea::placeholder { color: #9ca3af !important; }
+        html.needs-light .contact-links a, html.needs-light .contact-links span[onclick],
+        body.light-mode .contact-links a, body.light-mode .contact-links span[onclick] { color: #4b5563 !important; }
+        html.needs-light .contact-sub, body.light-mode .contact-sub { color: #6b7280 !important; }
+        /* Honeypot anti-spam : champ réservé aux bots uniquement */
+        input[name="website"] { display: none !important; }
+    </style>
+</head>
+<body class="contact-page">
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+    <nav class="subpage-topbar">
+        <a href="index.html" class="subpage-back" id="ct_back">← Accueil</a>
+        <div class="subpage-actions">
+            <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+            <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(renderContact)" aria-label="Langue">EN</button>
+        </div>
+    </nav>
+
+    <div class="contact-inner">
+    <div class="contact-box">
+        <h2 id="c_title">Écrire à Needs</h2>
+        <p id="c_desc" class="contact-sub">Votre message est adressé à l'équipe Needs (comme un e-mail à contact@needs-app.com). Réponse sur l'adresse e-mail que vous indiquez ci-dessous — en général sous 2 h.</p>
+
+        <form id="contactForm">
+            <div class="input-group">
+                <label id="l_name" for="contactName">Nom complet</label>
+                <input type="text" id="contactName" data-ph="ph_name" placeholder="Jean Dupont" required>
+            </div>
+            <div class="input-group">
+                <label id="l_email" for="contactEmail">Email</label>
+                <input type="email" id="contactEmail" data-ph="ph_email" placeholder="vous@exemple.com" required>
+            </div>
+            <div class="input-group">
+                <label id="l_msg" for="contactMsg">Message</label>
+                <textarea rows="4" id="contactMsg" data-ph="ph_msg" placeholder="Comment pouvons-nous vous aider ?" required></textarea>
+            </div>
+            <div class="input-group" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+                <label for="contactWebsite">Ne pas remplir</label>
+                <input type="text" id="contactWebsite" name="website" tabindex="-1" autocomplete="off">
+            </div>
+            <p id="contactFeedback" style="margin-bottom:14px;font-size:0.9rem;display:none;"></p>
+            <button type="submit" class="btn-send" id="btn_submit">Envoyer le message</button>
+        </form>
+        <div class="contact-links">
+            <a href="help.html" id="ct_help">Centre d'aide</a>
+            <span style="margin: 0 10px; opacity: 0.45;">|</span>
+            <span onclick="needsSubpage.toggleLang(renderContact)" id="ct_lang_hint" style="cursor:pointer;">EN</span>
+        </div>
+    </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+    <script src="subpage-common.js"></script>
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU", authDomain: "needs-ae86d.firebaseapp.com", projectId: "needs-ae86d", storageBucket: "needs-ae86d.firebasestorage.app", messagingSenderId: "253900994407", appId: "1:253900994407:web:55168e1b73c878761de1c2" };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        var functions = firebase.app().functions("us-central1");
+        var submitContactMessage = functions.httpsCallable("submitContactMessage");
+
+        const dict = {
+            fr: {
+                ct_back: "← Accueil",
+                c_title: "Écrire à Needs",
+                c_desc: "Votre message est adressé à l'équipe Needs (comme un e-mail à contact@needs-app.com). Nous vous répondons sur l'adresse indiquée ci-dessous — en général sous 2 h.",
+                l_name: "Nom complet",
+                l_email: "E-mail",
+                l_msg: "Message",
+                btn_submit: "Envoyer le message",
+                success: "Message envoyé ! L'équipe Needs a bien reçu votre demande — vous pouvez aussi vérifier votre boîte pour notre réponse.",
+                success_no_mail: "Message enregistré, mais l'e-mail n'a pas pu être envoyé automatiquement (réglage serveur). Vos données sont sauvegardées — écrivez-nous à contact@needs-app.com en attendant.",
+                error: "Erreur. Réessayez ou écrivez à contact@needs-app.com",
+                ph_name: "Jean Dupont",
+                ph_email: "vous@exemple.com",
+                ph_msg: "Comment pouvons-nous vous aider ?",
+                ct_help: "Centre d'aide"
+            },
+            en: {
+                ct_back: "← Home",
+                c_title: "Message Needs",
+                c_desc: "Your message goes to the Needs team (like emailing contact@needs-app.com). We reply to the address you enter below — usually within 2 hours.",
+                l_name: "Full name",
+                l_email: "Email",
+                l_msg: "Message",
+                btn_submit: "Send message",
+                success: "Sent! The Needs team has received your message — we'll reply to the email you provided.",
+                success_no_mail: "Your message was saved, but the automatic email could not be sent (server config). Please email contact@needs-app.com.",
+                error: "Something went wrong. Try again or email contact@needs-app.com",
+                ph_name: "Jane Doe",
+                ph_email: "you@example.com",
+                ph_msg: "How can we help?",
+                ct_help: "Help Center"
+            }
+        };
+
+        function langKey() { return needsSubpage.getLang(); }
+
+        function renderContact() {
+            var lang = langKey();
+            var t = dict[lang] || dict.fr;
+            document.getElementById("ct_back").textContent = t.ct_back;
+            document.getElementById("c_title").textContent = t.c_title;
+            document.getElementById("c_desc").textContent = t.c_desc;
+            document.getElementById("l_name").textContent = t.l_name;
+            document.getElementById("l_email").textContent = t.l_email;
+            document.getElementById("l_msg").textContent = t.l_msg;
+            document.getElementById("btn_submit").textContent = t.btn_submit;
+            document.getElementById("contactName").placeholder = t.ph_name;
+            document.getElementById("contactEmail").placeholder = t.ph_email;
+            document.getElementById("contactMsg").placeholder = t.ph_msg;
+            document.getElementById("ct_help").textContent = t.ct_help;
+            document.getElementById("ct_lang_hint").textContent = lang === "fr" ? "EN" : "FR";
+            document.title = lang === "en" ? "Needs — Contact" : "Needs — Contact";
+            needsSubpage.updateChromeButtons();
+            var meta = document.getElementById("meta-theme-color");
+            if (meta && window.__needs_prefs) meta.setAttribute("content", __needs_prefs.getTheme() === "light" ? "#ffffff" : "#000000");
+        }
+
+        document.getElementById("contactForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            var btn = document.getElementById("btn_submit");
+            var fb = document.getElementById("contactFeedback");
+            var t = dict[langKey()] || dict.fr;
+            btn.disabled = true;
+            btn.textContent = "...";
+            try {
+                var res = await submitContactMessage({
+                    name: document.getElementById("contactName").value.trim(),
+                    email: document.getElementById("contactEmail").value.trim(),
+                    message: document.getElementById("contactMsg").value.trim(),
+                    website: document.getElementById("contactWebsite").value.trim(),
+                    locale: langKey()
+                });
+                if (!res.data || !res.data.success) throw new Error("no success");
+                fb.style.display = "block";
+                if (res.data.mailSent === false) {
+                    fb.style.color = "#d97706";
+                    fb.textContent = t.success_no_mail;
+                } else {
+                    fb.style.color = "#10B981";
+                    fb.textContent = t.success;
+                }
+                document.getElementById("contactForm").reset();
+            } catch (err) {
+                fb.style.display = "block";
+                fb.style.color = "#EF4444";
+                fb.textContent = t.error;
+            }
+            btn.disabled = false;
+            btn.textContent = t.btn_submit;
+        });
+
+        document.addEventListener("DOMContentLoaded", renderContact);
+    </script>
+    <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/how-it-works.html">
+    <meta name="theme-color" content="#000000" id="meta-theme-color">
+    <title>Needs — Comment ça marche</title>
+    <meta name="description" content="Découvrez les 3 étapes Needs : décrire votre besoin, choisir un expert vérifié, payer en toute sécurité avec séquestre.">
+    <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme-needs.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cursor.css">
+    <style>
+        .hiw-wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px 80px; }
+        .hiw-hero { padding: 48px 5% 32px; text-align: center; border-bottom: 1px solid var(--color-border); background: var(--color-bg-secondary); }
+        .hiw-hero h1 { color: var(--text); font-size: clamp(1.75rem, 4vw, 2.25rem); margin: 0; }
+        .step-box { display: flex; gap: 30px; margin-bottom: 48px; align-items: flex-start; opacity: 0; transform: translateY(16px); transition: opacity 0.55s ease, transform 0.55s ease; }
+        .step-box.hiw-visible { opacity: 1; transform: translateY(0); }
+        .step-icon-wrap { flex-shrink: 0; width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; background: var(--color-card); border: 1px solid var(--color-border); border-radius: 16px; }
+        .step-icon-wrap svg { width: 40px; height: 40px; stroke: var(--color-accent); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+        .step-num { display: none; }
+        .step-content h3 { font-size: 1.35rem; margin-bottom: 12px; color: var(--text); }
+        .step-content p { color: var(--text-mute); font-size: 1.05rem; line-height: 1.65; margin: 0; }
+        html.needs-light .hiw-hero, body.light-mode .hiw-hero { background: var(--color-bg-secondary) !important; }
+        html.needs-light .hiw-hero h1, body.light-mode .hiw-hero h1 { color: var(--text) !important; }
+        html.needs-light .step-content h3, body.light-mode .step-content h3 { color: var(--text) !important; }
+        html.needs-light .step-content p, body.light-mode .step-content p { color: var(--text-mute) !important; }
+    </style>
+</head>
+<body>
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+    <nav class="subpage-topbar">
+        <a href="index.html" class="subpage-back" id="back_link">← Retour</a>
+        <div class="subpage-actions">
+            <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+            <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(render)" aria-label="Langue">EN</button>
+        </div>
+    </nav>
+    <header class="hiw-hero"><h1 id="h_title">Simple. Rapide. Sécurisé.</h1></header>
+    <main class="hiw-wrap">
+        <div class="step-box hiw-reveal">
+            <div class="step-icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+            </div>
+            <div class="step-content"><h3 id="s1_t">Publiez votre besoin</h3><p id="s1_d">Décrivez ce dont vous avez besoin en quelques secondes. Notre algorithme vous propose les meilleurs experts disponibles immédiatement.</p></div>
+        </div>
+        <div class="step-box hiw-reveal">
+            <div class="step-icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            </div>
+            <div class="step-content"><h3 id="s2_t">Choisissez votre expert</h3><p id="s2_d">Comparez les profils, consultez les avis vérifiés et discutez en direct via notre messagerie sécurisée.</p></div>
+        </div>
+        <div class="step-box hiw-reveal">
+            <div class="step-icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/><path d="M9 16l2 2 4-4"/></svg>
+            </div>
+            <div class="step-content"><h3 id="s3_t">Payez en toute confiance</h3><p id="s3_d">Le paiement est bloqué sur un compte tiers. Il n'est versé au prestataire que lorsque vous confirmez que le travail est bien fait.</p></div>
+        </div>
+    </main>
+    <script src="subpage-common.js"></script>
+    <script>
+        const texts = {
+            fr: {
+                back_link: "← Retour",
+                h_title: "Simple. Rapide. Sécurisé.",
+                s1_t: "Publiez votre besoin",
+                s1_d: "Décrivez ce dont vous avez besoin en quelques secondes. Notre algorithme vous propose les meilleurs experts disponibles.",
+                s2_t: "Choisissez votre expert",
+                s2_d: "Comparez les profils, consultez les avis vérifiés et discutez en direct via notre messagerie sécurisée.",
+                s3_t: "Payez en toute confiance",
+                s3_d: "Le paiement est bloqué sur un compte tiers. Il n'est versé au prestataire que lorsque vous confirmez que le travail est bien fait."
+            },
+            en: {
+                back_link: "← Back",
+                h_title: "Simple. Fast. Secure.",
+                s1_t: "Post your need",
+                s1_d: "Describe what you need in seconds. Our algorithm suggests the best available experts.",
+                s2_t: "Choose your expert",
+                s2_d: "Compare profiles, read verified reviews, and chat securely via our messaging.",
+                s3_t: "Pay with confidence",
+                s3_d: "Payment is held in escrow and only released to the provider when you confirm the work is done."
+            }
+        };
+        function render() {
+            const l = needsSubpage.getLang();
+            const pack = texts[l] || texts.fr;
+            Object.keys(pack).forEach(function (id) {
+                const el = document.getElementById(id);
+                if (el) el.innerText = pack[id];
+            });
+            document.title = l === "en" ? "How it works | Needs" : "Comment ça marche | Needs";
+            var md = document.querySelector('meta[name="description"]');
+            if (md) md.setAttribute("content", l === "en"
+              ? "Three simple steps: post your need, pick a vetted expert, pay securely with escrow."
+              : "Trois étapes : décrire votre besoin, choisir un expert vérifié, payer en sécurité avec séquestre.");
+            needsSubpage.updateChromeButtons();
+            var meta = document.getElementById("meta-theme-color");
+            if (meta && window.__needs_prefs) meta.setAttribute("content", __needs_prefs.getTheme() === "light" ? "#ffffff" : "#000000");
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            render();
+            document.querySelectorAll(".hiw-reveal").forEach(function (el, i) {
+                el.style.transitionDelay = (i * 0.12) + "s";
+            });
+            if ("IntersectionObserver" in window) {
+                var obs = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) {
+                        if (e.isIntersecting) {
+                            e.target.classList.add("hiw-visible");
+                            obs.unobserve(e.target);
+                        }
+                    });
+                }, { rootMargin: "0px 0px -8% 0px", threshold: 0.15 });
+                document.querySelectorAll(".hiw-reveal").forEach(function (el) { obs.observe(el); });
+            } else {
+                document.querySelectorAll(".hiw-reveal").forEach(function (el) { el.classList.add("hiw-visible"); });
+            }
+        });
+    </script>
+    <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

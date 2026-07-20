@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/entreprise-grands-comptes.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <meta name="description" content="Needs Pro & Entreprise — conformité, facturation B2B, SLA, intégrations. Demande de démo pour les grands comptes.">
+  <title>Needs — Pro & Grands comptes</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+  <nav class="subpage-topbar">
+    <a href="index.html" class="subpage-back" id="nav_back">← Accueil</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(applyEnt)" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <header class="hub-hero">
+    <h1 id="hero_title">Needs <span style="color:#38bdf8;">Pro</span> &amp; Grands comptes</h1>
+    <p id="hero_sub">Une offre structurée pour l’achat, la conformité et l’exploitation : pas seulement une marketplace, un partenariat opérable par vos équipes Finance, IT et Achats.</p>
+    <p style="margin-top:20px;">
+      <a href="entreprise.html" class="btn btn-secondary no-print" id="hero_checklist" style="margin-right:10px;"><i class="fa-solid fa-list-check"></i> Checklist achat B2B</a>
+      <a href="help.html" class="btn btn-main no-print" id="hero_conf"><i class="fa-solid fa-scale-balanced"></i> Espace conformité</a>
+    </p>
+  </header>
+
+  <section class="hub-grid" aria-label="Piliers">
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-scale-balanced"></i> <span id="c1_t">Confiance légale</span></h3>
+      <p id="c1_d">CGV/CGU B2B, DPA (RGPD), liste des sous-traitants, responsabilité et sous-traitance encadrées.</p>
+      <a href="contact.html" id="c1_l">CGV &amp; conditions B2B →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-shield-halved"></i> <span id="c2_t">Sécurité &amp; conformité</span></h3>
+      <p id="c2_d">Chiffrement, accès, sauvegardes, gestion des incidents ; feuille de route vers certifications (ISO 27001, SOC 2).</p>
+      <a href="help.html" id="c2_l">Notre approche sécurité →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-file-invoice-dollar"></i> <span id="c3_t">Achat &amp; finance</span></h3>
+      <p id="c3_d">Devis, bon de commande, facturation avec TVA et mentions légales, conditions de paiement au-delà de la carte.</p>
+      <a href="contact.html" id="c3_l">Facturation entreprise →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-headset"></i> <span id="c4_t">Opérations &amp; SLA</span></h3>
+      <p id="c4_d">Niveaux de support, délais de réponse, interlocuteur dédié pour les volumes importants.</p>
+      <a href="help.html" id="c4_l">SLA &amp; support Pro →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-key"></i> <span id="c5_t">Identité &amp; accès</span></h3>
+      <p id="c5_d">Feuille de route SSO (SAML / OIDC), rôles (acheteur, valideur, lecture seule), provisionnement.</p>
+      <a href="contact.html" id="c5_l">SSO &amp; rôles →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-building-columns"></i> <span id="c6_t">Preuve &amp; références</span></h3>
+      <p id="c6_d">Logos clients, études de cas et témoignages — documents téléchargeables sur demande.</p>
+      <a href="entreprise.html" id="c6_l">Références &amp; cas clients →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-umbrella"></i> <span id="c7_t">Assurance</span></h3>
+      <p id="c7_d">Cadre RC / séquestre / vérifications ; demande d’attestation pour vos services juridiques.</p>
+      <a href="help.html" id="c7_l">Protection &amp; attestations →</a>
+    </article>
+    <article class="hub-card">
+      <h3><i class="fa-solid fa-server"></i> <span id="c8_t">Fiabilité produit</span></h3>
+      <p id="c8_d">Statut des services, changelog public, transparence sur les évolutions.</p>
+      <a href="help.html" id="c8_l">Statut →</a> &nbsp;
+      <a href="contact.html" id="c8_l2">Changelog →</a>
+    </article>
+  </section>
+
+  <div class="doc-page" style="padding-top:0;">
+    <h2 id="form_sec_title" style="border:none;margin-top:0;">Demande de démo &amp; contact commercial</h2>
+    <p class="doc-lead" id="form_sec_sub">Décrivez votre contexte (secteur, taille, exigences achats / IT). Nous revenons vers vous sous 2 jours ouvrés avec une proposition adaptée — sans engagement.</p>
+  </div>
+
+  <div class="enterprise-form">
+    <form class="form-card" id="demoForm">
+      <div class="form-row">
+        <div>
+          <label for="company" id="lab_company">Société *</label>
+          <input type="text" id="company" name="company" required maxlength="200" autocomplete="organization">
+        </div>
+        <div>
+          <label for="companySize" id="lab_size">Taille (approx.)</label>
+          <select id="companySize" name="companySize">
+            <option value="" id="opt_size_0">—</option>
+            <option value="1-50">1–50</option>
+            <option value="51-250">51–250</option>
+            <option value="251-1000">251–1000</option>
+            <option value="1000+">1000+</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="fullName" id="lab_name">Nom &amp; prénom *</label>
+          <input type="text" id="fullName" name="fullName" required maxlength="120" autocomplete="name">
+        </div>
+        <div>
+          <label for="jobTitle" id="lab_job">Fonction</label>
+          <input type="text" id="jobTitle" name="jobTitle" maxlength="120" autocomplete="organization-title">
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="email" id="lab_email">E-mail professionnel *</label>
+          <input type="email" id="email" name="email" required maxlength="320" autocomplete="email">
+        </div>
+        <div>
+          <label for="phone" id="lab_phone">Téléphone</label>
+          <input type="tel" id="phone" name="phone" maxlength="40" autocomplete="tel">
+        </div>
+      </div>
+      <label for="message" id="lab_msg">Besoins (achats, IT, conformité, volume prévu…)</label>
+      <textarea id="message" name="message" rows="5" maxlength="8000" placeholder=""></textarea>
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+        <label for="websiteTrap">Ne pas remplir</label>
+        <input type="text" id="websiteTrap" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="check-row">
+        <input type="checkbox" id="acceptPrivacy" required>
+        <label for="acceptPrivacy" id="lab_privacy" style="margin:0;font-weight:400;">J’ai lu la <a href="privacy.html">politique de confidentialité</a> et j’accepte d’être recontacté(e) dans ce cadre.</label>
+      </div>
+
+      <p id="formFeedback" style="display:none;margin-bottom:12px;font-size:0.92rem;"></p>
+      <button type="submit" class="btn btn-main" style="width:100%;justify-content:center;" id="btn_submit">Envoyer la demande</button>
+    </form>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="subpage-common.js"></script>
+  <script>
+    var firebaseConfig = { apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU", authDomain: "needs-ae86d.firebaseapp.com", projectId: "needs-ae86d", storageBucket: "needs-ae86d.firebasestorage.app", messagingSenderId: "253900994407", appId: "1:253900994407:web:55168e1b73c878761de1c2" };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+
+    var T = {
+      fr: {
+        nav_back: "← Accueil",
+        hero_title: "Needs Pro & Grands comptes",
+        hero_sub: "Une offre structurée pour l’achat, la conformité et l’exploitation : pas seulement une marketplace, un partenariat opérable par vos équipes Finance, IT et Achats.",
+        hero_checklist: " Checklist achat B2B",
+        hero_conf: " Espace conformité",
+        c1_t: "Confiance légale", c1_d: "CGV/CGU B2B, DPA (RGPD), liste des sous-traitants, responsabilité et sous-traitance encadrées.", c1_l: "CGV & conditions B2B →",
+        c2_t: "Sécurité & conformité", c2_d: "Chiffrement, accès, sauvegardes, gestion des incidents ; feuille de route vers certifications (ISO 27001, SOC 2).", c2_l: "Notre approche sécurité →",
+        c3_t: "Achat & finance", c3_d: "Devis, bon de commande, facturation avec TVA et mentions légales, conditions de paiement au-delà de la carte.", c3_l: "Facturation entreprise →",
+        c4_t: "Opérations & SLA", c4_d: "Niveaux de support, délais de réponse, interlocuteur dédié pour les volumes importants.", c4_l: "SLA & support Pro →",
+        c5_t: "Identité & accès", c5_d: "Feuille de route SSO (SAML / OIDC), rôles (acheteur, valideur, lecture seule), provisionnement.", c5_l: "SSO & rôles →",
+        c6_t: "Preuve & références", c6_d: "Logos clients, études de cas et témoignages — documents téléchargeables sur demande.", c6_l: "Références & cas clients →",
+        c7_t: "Assurance", c7_d: "Cadre RC / séquestre / vérifications ; demande d’attestation pour vos services juridiques.", c7_l: "Protection & attestations →",
+        c8_t: "Fiabilité produit", c8_d: "Statut des services, changelog public, transparence sur les évolutions.", c8_l: "Statut →", c8_l2: "Changelog →",
+        form_sec_title: "Demande de démo & contact commercial",
+        form_sec_sub: "Décrivez votre contexte (secteur, taille, exigences achats / IT). Nous revenons vers vous sous 2 jours ouvrés avec une proposition adaptée — sans engagement.",
+        lab_company: "Société *", lab_size: "Taille (approx.)", opt_size_0: "—",
+        lab_name: "Nom & prénom *", lab_job: "Fonction", lab_email: "E-mail professionnel *", lab_phone: "Téléphone",
+        lab_msg: "Besoins (achats, IT, conformité, volume prévu…)",
+        lab_privacy: "J’ai lu la politique de confidentialité et j’accepte d’être recontacté(e) dans ce cadre.",
+        btn_submit: "Envoyer la demande",
+        ok: "Demande enregistrée. Notre équipe vous contacte sous 2 jours ouvrés.",
+        err: "Envoi impossible pour le moment. Écrivez-nous à contact@needs-app.com ou via la page Contact.",
+        f_ent: "Needs entreprises (vue courte)", f_contact: "Contact", f_dpa: "DPA",
+        ph_msg: "Ex. : besoin de facturation sur PO, intégration SSO prévue en 2026, volume estimé…"
+      },
+      en: {
+        nav_back: "← Home",
+        hero_title: "Needs Pro & Enterprise",
+        hero_sub: "Structured procurement, compliance and operations — not only a marketplace, but a partnership your Finance, IT and Procurement teams can run.",
+        hero_checklist: " B2B procurement checklist",
+        hero_conf: " Compliance hub",
+        c1_t: "Legal trust", c1_d: "B2B terms, DPA (GDPR), sub-processors list, liability and subcontracting framework.", c1_l: "B2B terms →",
+        c2_t: "Security & compliance", c2_d: "Encryption, access, backups, incident handling; roadmap toward ISO 27001, SOC 2.", c2_l: "Security approach →",
+        c3_t: "Procurement & finance", c3_d: "Quotes, purchase orders, VAT-compliant invoicing, payment terms beyond card-only.", c3_l: "Enterprise billing →",
+        c4_t: "Operations & SLA", c4_d: "Support tiers, response times, dedicated contact for high volumes.", c4_l: "SLA & Pro support →",
+        c5_t: "Identity & access", c5_d: "Roadmap: SSO (SAML/OIDC), roles (buyer, approver, read-only), provisioning.", c5_l: "SSO & roles →",
+        c6_t: "Proof & references", c6_d: "Customer logos, case studies, testimonials — documents available on request.", c6_l: "References →",
+        c7_t: "Insurance", c7_d: "Liability, escrow, verification framework; certificate requests for your legal team.", c7_l: "Protection & certificates →",
+        c8_t: "Product reliability", c8_d: "Service status, public changelog, transparent releases.", c8_l: "Status →", c8_l2: "Changelog →",
+        form_sec_title: "Demo request & sales contact",
+        form_sec_sub: "Tell us about your sector, size, and procurement/IT requirements. We reply within 2 business days — no obligation.",
+        lab_company: "Company *", lab_size: "Size (approx.)", opt_size_0: "—",
+        lab_name: "Full name *", lab_job: "Job title", lab_email: "Work email *", lab_phone: "Phone",
+        lab_msg: "Needs (procurement, IT, compliance, expected volume…)",
+        lab_privacy: "I have read the privacy policy and agree to be contacted in this context.",
+        btn_submit: "Submit request",
+        ok: "Request received. Our team will contact you within 2 business days.",
+        err: "Could not send right now. Email contact@needs-app.com or use the Contact page.",
+        f_ent: "Needs for business (short)", f_contact: "Contact", f_dpa: "DPA",
+        ph_msg: "E.g. PO-based invoicing, SSO planned for 2026, estimated volume…"
+      }
+    };
+
+    function applyEnt() {
+      var lang = needsSubpage.getLang();
+      var t = T[lang] || T.fr;
+      document.getElementById("nav_back").textContent = t.nav_back;
+      document.getElementById("hero_title").innerHTML = lang === "en" ? "Needs <span style=\"color:#38bdf8;\">Pro</span> &amp; Enterprise" : "Needs <span style=\"color:#38bdf8;\">Pro</span> &amp; Grands comptes";
+      document.getElementById("hero_sub").textContent = t.hero_sub;
+      document.getElementById("hero_checklist").innerHTML = '<i class="fa-solid fa-list-check"></i>' + t.hero_checklist;
+      document.getElementById("hero_conf").innerHTML = '<i class="fa-solid fa-scale-balanced"></i>' + t.hero_conf;
+      for (var i = 1; i <= 8; i++) {
+        document.getElementById("c" + i + "_t").textContent = t["c" + i + "_t"];
+        document.getElementById("c" + i + "_d").textContent = t["c" + i + "_d"];
+        if (i < 8) document.getElementById("c" + i + "_l").textContent = t["c" + i + "_l"];
+      }
+      document.getElementById("c8_l").textContent = t.c8_l;
+      document.getElementById("c8_l2").textContent = t.c8_l2;
+      document.getElementById("form_sec_title").textContent = t.form_sec_title;
+      document.getElementById("form_sec_sub").textContent = t.form_sec_sub;
+      document.getElementById("lab_company").textContent = t.lab_company;
+      document.getElementById("lab_size").textContent = t.lab_size;
+      document.getElementById("opt_size_0").textContent = t.opt_size_0;
+      document.getElementById("lab_name").textContent = t.lab_name;
+      document.getElementById("lab_job").textContent = t.lab_job;
+      document.getElementById("lab_email").textContent = t.lab_email;
+      document.getElementById("lab_phone").textContent = t.lab_phone;
+      document.getElementById("lab_msg").textContent = t.lab_msg;
+      document.getElementById("message").placeholder = t.ph_msg;
+      document.getElementById("lab_privacy").innerHTML = lang === "en"
+        ? 'I have read the <a href="privacy.html">privacy policy</a> and agree to be contacted in this context.'
+        : 'J’ai lu la <a href="privacy.html">politique de confidentialité</a> et j’accepte d’être recontacté(e) dans ce cadre.';
+      document.getElementById("btn_submit").textContent = t.btn_submit;
+      document.getElementById("f_ent").textContent = t.f_ent;
+      document.getElementById("f_contact").textContent = t.f_contact;
+      document.getElementById("f_dpa").textContent = t.f_dpa;
+      document.title = lang === "en" ? "Needs — Pro & Enterprise" : "Needs — Pro & Grands comptes";
+      needsSubpage.updateChromeButtons();
+      var meta = document.getElementById("meta-theme-color");
+      if (meta && window.__needs_prefs) meta.setAttribute("content", __needs_prefs.getTheme() === "light" ? "#ffffff" : "#000000");
+    }
+
+    document.getElementById("demoForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var trap = (document.getElementById("websiteTrap").value || "").trim();
+      if (trap) return;
+      var lang = needsSubpage.getLang();
+      var t = T[lang] || T.fr;
+      var btn = document.getElementById("btn_submit");
+      var fb = document.getElementById("formFeedback");
+      btn.disabled = true;
+      btn.textContent = "…";
+      db.collection("enterprise_demo_requests").add({
+        company: document.getElementById("company").value.trim(),
+        companySize: document.getElementById("companySize").value,
+        fullName: document.getElementById("fullName").value.trim(),
+        jobTitle: document.getElementById("jobTitle").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        message: document.getElementById("message").value.trim(),
+        acceptPrivacy: document.getElementById("acceptPrivacy").checked,
+        locale: lang,
+        source: "entreprise_grands_comptes",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function () {
+        fb.style.display = "block";
+        fb.style.color = "#10b981";
+        fb.textContent = t.ok;
+        document.getElementById("demoForm").reset();
+      }).catch(function () {
+        fb.style.display = "block";
+        fb.style.color = "#ef4444";
+        fb.textContent = t.err;
+      }).finally(function () {
+        btn.disabled = false;
+        btn.textContent = t.btn_submit;
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", applyEnt);
+  </script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

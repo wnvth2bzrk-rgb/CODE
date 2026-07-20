@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/facturation-b2b.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Facturation & achats B2B</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <nav class="subpage-topbar">
+    <a href="entreprise-grands-comptes.html" class="subpage-back">← Pro &amp; Grands comptes</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang()" aria-label="Langue">EN</button>
+    </div>
+  </nav>
+
+  <article class="doc-page">
+    <h1>Facturation, devis et bons de commande</h1>
+    <p class="doc-lead">Needs permet aujourd’hui un parcours d’achat principalement <strong>en ligne</strong> (panier, paiement sécurisé). Pour les organisations, nous déployons des <strong>modalités étendues</strong> selon l’offre Entreprise souscrite.</p>
+
+    <h2>Ce qui est disponible sur la Plateforme (standard)</h2>
+    <ul>
+      <li>Paiement par carte via prestataire certifié (Stripe).</li>
+      <li>Reçus et historique de transactions dans le compte.</li>
+      <li>Factures ou justificatifs conformes aux flux électroniques gérés par Needs et le prestataire de paiement.</li>
+    </ul>
+
+    <h2>Offre Entreprise (sur devis)</h2>
+    <p>Selon votre taille et vos processus achats, Needs peut activer ou prévoir :</p>
+    <ul>
+      <li><strong>Devis formalisés</strong> validés par votre référent avant exécution.</li>
+      <li>Référence à un <strong>bon de commande (PO)</strong> : numéro, service, centre de coût.</li>
+      <li><strong>Facturation</strong> avec mentions légales obligatoires (TVA, SIREN, TVA intracommunautaire si applicable).</li>
+      <li><strong>Conditions de paiement</strong> : virement à J+30 / J+45 selon accord (sous réserve d’acceptation risque et d’un cadre contractuel).</li>
+      <li>Export des données de dépenses pour intégration comptable (CSV / API — feuille de route).</li>
+    </ul>
+
+    <h2>TVA et mentions légales</h2>
+    <p>Les factures sont établies selon la réglementation en vigueur. Le Client professionnel est responsable de l’exactitude des informations communiquées (adresse de facturation, numéro de TVA). Pour toute exigence spécifique (reverse charge, autoliquidation), indiquez-le dans votre <a href="entreprise-grands-comptes.html">demande de démo</a>.</p>
+
+    <h2>Coordination avec vos achats</h2>
+    <p>Nous recommandons de compléter la <a href="checklist-achat-b2b.html">checklist achat B2B</a> avec vos équipes avant signature d’un contrat-cadre.</p>
+  </article>
+  <script src="subpage-common.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { needsSubpage.updateChromeButtons(); });</script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

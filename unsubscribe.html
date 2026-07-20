@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Needs — Désabonnement</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0A0A0F; color: #F0EDE8; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .box { max-width: 420px; text-align: center; }
+    h1 { font-size: 1.25rem; color: #C9A84C; }
+    p { line-height: 1.6; opacity: 0.9; }
+    .err { color: #f87171; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1 id="h">Needs</h1>
+    <p id="msg">Traitement…</p>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+  <script>
+    var cfg = {
+      apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU",
+      authDomain: "needs-ae86d.firebaseapp.com",
+      projectId: "needs-ae86d"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(cfg);
+    var fns = firebase.app().functions("us-central1");
+    var id = new URLSearchParams(location.search).get("id");
+    var msg = document.getElementById("msg");
+    var h = document.getElementById("h");
+    var fr = (navigator.language || "").toLowerCase().startsWith("fr");
+    if (!id) {
+      msg.textContent = fr ? "Lien invalide." : "Invalid link.";
+      msg.className = "err";
+    } else {
+      fns.httpsCallable("unsubscribeEmailLead")({ leadId: id })
+        .then(function () {
+          h.textContent = fr ? "Désabonnement confirmé" : "You’re unsubscribed";
+          msg.textContent = fr
+            ? "Vous ne recevrez plus ces messages. Merci de votre intérêt pour Needs."
+            : "You won’t receive these emails anymore. Thanks for your interest in Needs.";
+        })
+        .catch(function (e) {
+          msg.textContent = (e && e.message) || (fr ? "Erreur. Réessayez plus tard." : "Error. Try again later.");
+          msg.className = "err";
+        });
+    }
+  </script>
+</body>
+</html>

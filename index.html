@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0f" id="meta-theme-color">
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/needs-analytics.js"></script>
+  <meta name="description" content="Needs — Services premium à domicile et prestataires vérifiés. Plomberie, ménage, jardinage, digital et B2B. Paiement sécurisé.">
+  <meta property="og:title" content="Needs – Services Premium à domicile | Prestataires vérifiés">
+  <meta property="og:description" content="Services premium à domicile et prestataires vérifiés. Qualité, sécurité et rapidité.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://needs-ae86d.web.app/">
+  <meta property="og:image" content="https://needs-ae86d.web.app/favicon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Needs – Services Premium à domicile | Prestataires vérifiés</title>
+  
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="canonical" href="https://needs-ae86d.web.app/index.html">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="cursor.css">
+  <style>
+    .home-featured-services { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(201, 168, 76, 0.2); }
+    .home-featured-services.is-empty { display: none; }
+    .home-featured-head { margin-bottom: 16px; }
+    .home-featured-title { font-size: clamp(1.1rem, 2.5vw, 1.35rem); font-weight: 800; color: var(--text-primary); margin: 0 0 6px; letter-spacing: -0.02em; }
+    .home-featured-sub { margin: 0; font-size: 0.9rem; color: #0A0A0F !important; opacity: 1; max-width: 640px; line-height: 1.45; }
+    html:not(.needs-light) body:not(.light-mode) .home-featured-sub,
+    html.needs-light body .home-featured-sub,
+    body.light-mode .home-featured-sub {
+      color: #0A0A0F !important;
+      opacity: 1 !important;
+    }
+    .home-featured-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 900px) { .home-featured-grid { grid-template-columns: 1fr; } }
+    .home-featured-card {
+      display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; background: rgba(20, 20, 28, 0.85);
+      border: 1px solid rgba(42, 42, 56, 0.9); text-decoration: none; color: inherit; transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .home-featured-card:hover { transform: translateY(-3px); border-color: rgba(201, 168, 76, 0.45); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35); }
+    html.needs-light .home-featured-card, body.light-mode .home-featured-card { background: #fff; border-color: #e7e2dc; }
+    .home-featured-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
+    .home-featured-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .home-featured-card h3 { margin: 0; font-size: 1rem; font-weight: 800; line-height: 1.3; color: var(--text-primary); }
+    .home-featured-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.82rem; color: #C9A84C; font-weight: 700; }
+    .home-featured-pill {
+      font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 4px 8px; border-radius: 999px; background: rgba(234, 88, 12, 0.2); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.35);
+    }
+    html.needs-light .home-featured-title, body.light-mode .home-featured-title { color: #1c1917; }
+    html.needs-light .home-featured-sub, body.light-mode .home-featured-sub { color: #44403c; }
+    /* Mode nuit : couleurs dans styles.css (.home-featured-title / .home-featured-sub) */
+    html.needs-light .home-featured-card h3, body.light-mode .home-featured-card h3 { color: #000000; }
+    html.needs-light .home-featured-card .home-featured-meta, body.light-mode .home-featured-card .home-featured-meta { color: #000000; }
+  </style>
+</head>
+<body>
+  <div id="needsSplash" class="needs-splash" aria-hidden="true">
+    <div class="needs-splash__inner">
+      <div class="needs-splash__logo"><span class="needs-splash__mark">N</span> NEEDS</div>
+      <div class="needs-splash__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="needs-splash__fill"></span></div>
+    </div>
+  </div>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <a href="#main-content" class="skip-link" data-i18n="skip_link">Aller au contenu</a>
+
+<div class="modal-overlay" id="iaServiceModal" onclick="if(event.target===this)closeIAModal()" role="dialog" aria-modal="true" aria-labelledby="modalTitleIA">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h3 id="modalTitleIA" class="modal-title" style="margin-bottom: 15px;">Détails du Service</h3>
+        
+        <label class="modal-label" style="font-size: 0.8rem;" data-tr="ia_label_desc">Description du besoin :</label>
+        <textarea id="iaDesc" class="modal-input" rows="3" placeholder="Ex: Réparer fuite sous évier..."></textarea>
+        
+        <label class="modal-label" style="font-size: 0.8rem;" data-tr="ia_label_addr">Adresse d'intervention :</label>
+        <input type="text" id="iaAddr" class="modal-input" placeholder="Rue, Ville, CP">
+        
+        <label class="modal-label" style="font-size: 0.8rem;" data-tr="ia_label_time">Heure souhaitée :</label>
+        <input type="time" id="iaTime" class="modal-input">
+
+        <button class="geo-btn" id="geoBtn" onclick="getPreciseLocation()">
+            <i class="fa-solid fa-location-dot"></i> <span data-tr="ia_geo_btn">Géolocalisation précise</span>
+        </button>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-main" style="flex: 1; justify-content: center;" onclick="confirmAddWithIA()" data-tr="ia_confirm">Ajouter</button>
+            <button class="btn btn-secondary" style="flex: 1; justify-content: center;" onclick="closeIAModal()" data-tr="ia_cancel">Annuler</button>
+        </div>
+    </div>
+</div>
+
+<header>
+  <a href="index.html" class="brand">
+    <div class="logo-3d">N</div>
+    <span style="font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px;">NEEDS</span>
+  </a>
+  <button type="button" class="burger-btn" onclick="toggleNavDrawer()" aria-label="Ouvrir le menu" aria-expanded="false" id="burgerBtn">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <div class="nav-overlay" id="navOverlay" onclick="toggleNavDrawer()" aria-hidden="true"></div>
+  <nav class="nav-group">
+    <a href="services.html" class="nav-link" data-tr="nav_services">Services</a>
+    <a href="become-provider.html" class="nav-link" id="navBecomeProviderLink" style="display:none;">Devenir prestataire</a>
+    <a href="messages.html" class="nav-link needs-nav-messages-link" id="navMessagesLink" style="display:none;position:relative;">Messages<span class="needs-unread-msg-badge" id="navUnreadBadge" style="position:absolute;top:-8px;right:-14px;min-width:16px;height:16px;padding:0 4px;background:#dc2626;color:#fff;font-size:10px;font-weight:800;border-radius:999px;display:none;align-items:center;justify-content:center;"></span></a>
+    <a href="javascript:void(0)" onclick="handleAccountClick()" class="nav-link" style="cursor: pointer;" role="button" aria-label="Mon Compte" data-tr="nav_account">Mon Compte</a>
+    
+    <button class="lang-btn" onclick="toggleMode()" id="modeBtn" aria-label="Changer le thème">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+    
+    <button class="lang-btn" onclick="switchLang()" id="langBtn">EN</button>
+    
+    <a href="services.html" class="btn btn-main" style="padding: 10px 20px; font-size: 0.9rem;" data-tr="btn_start">Démarrer</a>
+  </nav>
+  <div class="nav-drawer" id="navDrawer" aria-label="Menu de navigation">
+    <a href="services.html" class="nav-link" data-tr="nav_services">Services</a>
+    <a href="become-provider.html" class="nav-link" id="navBecomeProviderLinkDrawer" style="display:none;">Devenir prestataire</a>
+    <a href="messages.html" class="nav-link needs-nav-messages-link" id="navMessagesLinkDrawer" style="display:none;">Messages</a>
+    <a href="javascript:void(0)" onclick="handleAccountClick()" class="nav-link" role="button" data-tr="nav_account">Mon Compte</a>
+    <a href="services.html" class="btn btn-main" style="width: 100%; justify-content: center;" data-tr="btn_start">Démarrer</a>
+  </div>
+</header>
+
+<main id="main-content" role="main" tabindex="-1">
+  <div class="page-block page-block--hero">
+    <div class="page-block__inner">
+  <section class="hero-grid">
+    <div class="card-relief reveal">
+      <h1 id="hero-title"><span data-i18n="hero_h1_line1">La référence des</span><br><span class="text-gradient-gold" data-i18n="hero_h1_grad">services premium</span></h1>
+      <p id="hero-desc" style="color: var(--text); font-size: 1.2rem; max-width: 600px; opacity: 0.9;" data-tr="hero_p">Connectez-vous avec les meilleurs prestataires vérifiés. Qualité, sécurité et rapidité garanties.</p>
+      
+      <div class="search-wrapper">
+        <div class="search-container">
+          <input type="text" id="searchInput" onkeypress="if(event.key==='Enter')executeSearch()" oninput="onSearchInput()" placeholder="Que recherchez-vous ? (ex: Plombier, Graphiste...)" data-tr-ph="search_ph" autocomplete="off">
+          <button class="btn btn-main" onclick="executeSearch()" data-tr="search_btn">Chercher</button>
+        </div>
+        <div class="search-ia-hint" id="searchIAHint" aria-live="polite" data-tr="search_ia_hint">Recherche en cours…</div>
+        <div class="search-suggestions search-suggestions--rich" id="searchSuggestions" role="listbox" aria-label="Suggestions"></div>
+      </div>
+
+      <div class="cat-row reveal-stagger">
+  <a href="services.html?cat=home" class="cat-card">
+    <i class="fa-solid fa-house"></i><h4 data-tr="cat_home">Mon Foyer</h4>
+  </a>
+  <a href="services.html?cat=life" class="cat-card">
+    <i class="fa-solid fa-car"></i><h4 data-tr="cat_life">Mon Quotidien</h4>
+  </a>
+  <a href="services.html?cat=tech" class="cat-card">
+    <i class="fa-solid fa-laptop-code"></i><h4 data-tr="cat_tech">Mon Digital</h4>
+  </a>
+  <a href="services.html?cat=pro" class="cat-card">
+    <i class="fa-solid fa-briefcase"></i><h4 data-tr="cat_pro">Mes Démarches</h4>
+  </a>
+</div>
+      <p class="hero-reassurance" id="heroReassurance" data-i18n="hero_reassurance">200+ prestataires vérifiés · Disponibles à Montréal · Paiement sécurisé</p>
+      <p class="hero-cta-provider"><a href="become-provider.html" data-i18n="hero_provider_cta">Vous êtes professionnel ? Rejoignez Needs →</a></p>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;" class="reveal-right">
+      <div class="card-relief ia-widget-card" style="min-height: 140px; border: 1px solid var(--border-color);">
+        <span class="badge-new">Nouveau</span>
+        <h3 style="color: var(--text); margin-bottom: 12px;"><i class="fa-solid fa-microchip"></i> <span data-tr="ia_widget_title">Needs Core IA</span></h3>
+        <p id="iaTextContent" class="fade-text" style="font-size: 0.95rem; color: var(--text); opacity: 0.9;">Synchronisation neuronale...</p>
+      </div>
+      <div class="card-relief live-stats-card" id="liveActivityBlock">
+        <h3 data-tr="stats_title" style="margin-bottom: 15px; color: var(--text);">Activité Live</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span id="visitorCount" style="font-size: 2.5rem; font-weight: 800; color: var(--text);">—</span>
+          <span id="liveVisitorBadge" style="color: var(--success); font-weight: bold; background: rgba(76, 175, 130, 0.15); padding: 4px 8px; border-radius: 6px; font-size: 0.85rem;" data-tr="stats_visitors_label">visiteurs</span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text); margin-top: 5px; opacity: 0.9;" data-tr="stats_desc">Personnes venues sur le site au moins une fois</p>
+      </div>
+    </div>
+  </section>
+  <section class="home-featured-services reveal is-empty" id="homeFeaturedSection" aria-labelledby="homeFeaturedTitle">
+    <div class="home-featured-head">
+      <h2 class="home-featured-title" id="homeFeaturedTitle" data-i18n="home_featured_title">Services à la une</h2>
+      <p class="home-featured-sub" data-i18n="home_featured_sub">Boostés en ce moment ou mieux notés sur Needs.</p>
+    </div>
+    <div class="home-featured-grid" id="homeFeaturedGrid"></div>
+  </section>
+    </div>
+  </div>
+
+  <!-- Pourquoi nous choisir + Needs Core IA -->
+  <div class="page-block page-block--dark">
+    <div class="page-block__inner">
+      <div class="section-header reveal">
+        <h2 class="section-heading-gradient" data-tr="why_title">Pourquoi nous choisir ?</h2>
+        <p style="color: var(--text); opacity: 0.9;" data-tr="why_subtitle">L'excellence des services et la puissance de l'IA au service de votre quotidien.</p>
+      </div>
+      <section class="why-us-grid reveal-stagger">
+        <div class="why-us-card">
+          <i class="fa-solid fa-microchip" aria-hidden="true"></i>
+          <h3 data-tr="why_ia_title">Needs Core IA</h3>
+          <p data-tr="why_ia_p">Décrivez votre besoin en langage naturel → l'IA vous trouve automatiquement le meilleur prestataire. Recherche, recommandations et planification en une phrase.</p>
+        </div>
+        <div class="why-us-card">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          <h3 data-tr="why_verified_title">Prestataires vérifiés</h3>
+          <p data-tr="why_verified_p">Qualité et sécurité garanties. Chaque professionnel est contrôlé pour vous offrir une expérience premium.</p>
+        </div>
+        <div class="why-us-card">
+          <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+          <h3 data-tr="why_fast_title">Rapidité</h3>
+          <p data-tr="why_fast_p">Réservez en quelques clics. L'IA optimise votre emploi du temps et vous propose les meilleurs créneaux.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="page-block page-block--darker">
+    <div class="page-block__inner">
+  <div class="section-header reveal">
+    <h2 class="section-heading-gradient" data-tr="how_title">Comment ça marche ?</h2>
+  </div>
+  <section class="steps-grid reveal-stagger">
+    <div class="step-item">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <h3 data-tr="step1_t">1. Recherchez</h3>
+      <p style="color: var(--text); opacity: 0.9;" data-tr="step1_d">Décrivez votre besoin et parcourez les profils d'experts qualifiés.</p>
+    </div>
+    <div class="step-item">
+      <i class="fa-solid fa-handshake-simple"></i>
+      <h3 data-tr="step2_t">2. Réservez</h3>
+      <p style="color: var(--text); opacity: 0.9;" data-tr="step2_d">Discutez des détails, fixez un prix et validez la prestation.</p>
+    </div>
+    <div class="step-item">
+      <i class="fa-solid fa-circle-check"></i>
+      <h3 data-tr="step3_t">3. Profitez</h3>
+      <p style="color: var(--text); opacity: 0.9;" data-tr="step3_d">Le travail est fait ? Libérez le paiement et laissez un avis.</p>
+    </div>
+  </section>
+    </div>
+  </div>
+
+  <!-- Mon Planning Needs (accueil — localStorage si non connecté, Firestore si connecté) -->
+  <div class="page-block page-block--dark">
+    <div class="page-block__inner">
+      <div class="section-header reveal">
+        <h2 class="section-heading-gradient" data-tr="agenda_title">Mon Planning Needs</h2>
+        <p style="color: var(--text); opacity: 0.9;" data-tr="agenda_subtitle">Sélectionnez vos services et organisez votre semaine idéale.</p>
+      </div>
+      <section class="agenda-box reveal">
+        <div class="agenda-nav">
+          <div class="agenda-cat-item active" onclick="loadAgendaServices('all', this)">
+            <i class="fa-solid fa-layer-group"></i> <span data-tr="agenda_all_services">Tous les services</span>
+          </div>
+          <div class="agenda-cat-item" onclick="loadAgendaServices('life', this)">
+            <i class="fa-solid fa-car"></i> <span data-tr="cat_life">Mon Quotidien</span>
+          </div>
+          <div class="agenda-cat-item" onclick="loadAgendaServices('home', this)">
+            <i class="fa-solid fa-house"></i> <span data-tr="cat_home">Mon Foyer</span>
+          </div>
+          <div class="agenda-cat-item" onclick="loadAgendaServices('tech', this)">
+            <i class="fa-solid fa-laptop-code"></i> <span data-tr="cat_tech">Mon Digital</span>
+          </div>
+          <div class="agenda-cat-item" onclick="loadAgendaServices('pro', this)">
+            <i class="fa-solid fa-briefcase"></i> <span data-tr="cat_pro">Mes Démarches</span>
+          </div>
+          <div class="agenda-cat-item" onclick="loadAgendaServices('rent', this)">
+            <i class="fa-solid fa-key"></i> <span data-tr="cat_rent">Locations</span>
+          </div>
+          <div class="agenda-cat-item" onclick="loadAgendaServices('event', this)">
+            <i class="fa-solid fa-calendar-star"></i> <span data-tr="cat_event">Événements</span>
+          </div>
+          <input type="text" id="agendaSearch" placeholder="Rechercher un service..." style="margin-top:15px;padding:10px;border-radius:8px;border:2px solid var(--color-border);background:var(--color-bg);color:var(--text);width:100%;font-size:0.9rem;box-sizing:border-box;" oninput="filterAgendaServices()">
+          <div class="services-selection" id="serviceOptions"></div>
+        </div>
+        <div class="day-planner">
+          <div class="calendar-nav-wrapper">
+            <button type="button" class="nav-arrow" onclick="changeWeek(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="week-selector" id="weekSelector"></div>
+            <button type="button" class="nav-arrow" onclick="changeWeek(1)"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+          <div class="planner-header">
+            <div class="planner-date" id="displayDate"></div>
+            <button type="button" class="clear-all-btn" onclick="clearFullAgenda()" title="Vider l'emploi du temps">
+              <i class="fa-solid fa-trash-can"></i> <span data-tr="agenda_clear">Vider</span>
+            </button>
+          </div>
+          <div id="plannerItems">
+            <p style="text-align: center; color: var(--text); margin-top: 80px; opacity: 0.9;" data-tr="agenda_empty">Votre journée est vide...</p>
+          </div>
+          <div style="margin-top: 20px; text-align: right;">
+            <button type="button" class="btn btn-main" onclick="saveToFirebase()" data-tr="agenda_confirm">Synchroniser le planning</button>
+            <button type="button" class="btn btn-secondary" onclick="exportPlanningToIcs()" style="margin-left:10px;"><i class="fa-solid fa-download"></i> Exporter .ics</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="page-block page-block--darker reviews-block" id="reviewsHomeSection">
+    <div class="page-block__inner">
+      <div class="reviews-header reveal">
+        <h2 data-tr="review_title">Retours d'expérience</h2>
+        <p class="reviews-subtitle" data-tr="reviews_subtitle">Ils nous font confiance pour leurs besoins au quotidien.</p>
+        <span class="badge-certified" aria-label="Prestations certifiées"><i class="fa-solid fa-badge-check"></i> <span data-i18n="home_review_certified_badge">Prestation certifiée</span></span>
+      </div>
+      <section class="review-section reveal">
+        <div class="home-reviews-wrap">
+          <div id="homeReviewsFallback" class="home-reviews-fallback-grid" aria-hidden="false">
+            <article class="home-review-card">
+              <p class="home-review-text" data-i18n="home_testimonial_1_text">Service de ménage impeccable, Marie était ponctuelle et très professionnelle. Je recommande vivement Needs !</p>
+              <div class="home-review-name" data-i18n="home_testimonial_1_name">Sophie L.</div>
+              <div class="home-review-place" data-i18n="home_testimonial_1_place">Plateau-Mont-Royal</div>
+              <div class="home-review-stars" aria-hidden="true">⭐⭐⭐⭐⭐</div>
+              <span class="home-review-card-badge" data-i18n="home_review_certified_badge">Prestation certifiée</span>
+            </article>
+            <article class="home-review-card">
+              <p class="home-review-text" data-i18n="home_testimonial_2_text">Mon déménagement s'est passé sans stress. Jean et son équipe ont été efficaces et très soigneux avec mes affaires.</p>
+              <div class="home-review-name" data-i18n="home_testimonial_2_name">Marc T.</div>
+              <div class="home-review-place" data-i18n="home_testimonial_2_place">Mile-End</div>
+              <div class="home-review-stars" aria-hidden="true">⭐⭐⭐⭐⭐</div>
+              <span class="home-review-card-badge" data-i18n="home_review_certified_badge">Prestation certifiée</span>
+            </article>
+            <article class="home-review-card">
+              <p class="home-review-text" data-i18n="home_testimonial_3_text">Cours de français excellents pour ma fille. Le prestataire s'est adapté rapidement à son niveau. Super plateforme !</p>
+              <div class="home-review-name" data-i18n="home_testimonial_3_name">Isabelle R.</div>
+              <div class="home-review-place" data-i18n="home_testimonial_3_place">Outremont</div>
+              <div class="home-review-stars" aria-hidden="true">⭐⭐⭐⭐⭐</div>
+              <span class="home-review-card-badge" data-i18n="home_review_certified_badge">Prestation certifiée</span>
+            </article>
+          </div>
+          <div id="commentWall" class="home-reviews-live-grid" style="display: none;" aria-live="polite"></div>
+        </div>
+        <div class="review-form-box">
+          <h3 data-tr="add_review">Laisser un témoignage</h3>
+          <p class="review-form-desc" data-tr="review_form_desc">Votre avis aide d'autres professionnels à nous faire confiance.</p>
+          <textarea id="userComment" class="review-textarea" rows="4" placeholder="Votre avis nous intéresse..." data-tr-ph="review_ph"></textarea>
+          <button class="btn btn-main" onclick="postComment()" data-tr="post_btn">Publier mon avis</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<div class="ai-chat-trigger" onclick="toggleAIChat()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleAIChat()}" role="button" aria-label="Ouvrir l'assistant Needs" data-i18n-attr="aria-label:home_chat_trigger_aria" tabindex="0">
+      <div class="halo"></div>
+      <i class="fa-solid fa-atom"></i>
+  </div>
+
+  <div class="ai-chat-window ai-chat-window--compact" id="aiChatWindow" style="display: none;">
+      <div class="chat-header">
+          <span><i class="fa-solid fa-comments"></i> <span data-i18n="home_chat_title">Assistant Needs</span></span>
+          <div class="close-chat-btn" onclick="toggleAIChat()" role="button" tabindex="0" aria-label="Fermer le chat IA" data-i18n-attr="aria-label:home_chat_close_aria">
+              <i class="fa-solid fa-xmark"></i>
+          </div>
+      </div>
+
+      <div id="chatBodyAI" class="ai-chat-body--compact" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column;">
+          <div class="msg msg-ai" id="homeChatWelcomeMsg" data-i18n="home_chat_welcome">Décrivez votre besoin en une phrase : je peux vous aider à planifier un service (ex. « Ménage demain à 14 h »).</div>
+      </div>
+
+      <div class="chat-input-area ai-chat-input--compact">
+          <input type="text" id="aiInput" data-i18n-placeholder="home_chat_input_ph" placeholder="Votre message…" onkeypress="if(event.key==='Enter')handleAISubmit()">
+          <button class="btn btn-main ai-chat-send--compact" style="background: var(--ia-primary); border-radius: 50%" onclick="handleAISubmit()" type="button" aria-label="Envoyer le message" data-i18n-attr="aria-label:home_chat_send_aria">
+              <i class="fa-solid fa-arrow-up"></i>
+          </button>
+      </div>
+  </div>
+
+  <!-- Bandeau CTA final -->
+  <section class="home-final-cta page-block" aria-labelledby="homeFinalCtaTitle">
+    <div class="home-final-cta__inner">
+      <h2 class="home-final-cta__title" id="homeFinalCtaTitle" data-tr="cta_title">Prêt à simplifier votre quotidien ?</h2>
+      <p class="home-final-cta__sub" data-tr="cta_text">Rejoignez les Montréalais qui font confiance à Needs</p>
+      <div class="home-final-cta__actions">
+        <a href="services.html" class="btn btn-main home-final-cta__btn" data-tr="cta_btn_services">Trouver un service →</a>
+        <a href="become-provider.html" class="btn home-final-cta__btn home-final-cta__btn--outline" data-tr="cta_btn_provider">Devenir prestataire →</a>
+      </div>
+    </div>
+  </section>
+
+  <button type="button" class="scroll-top" id="scrollTopBtn" aria-label="Retour en haut">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  </main>
+
+<div id="needs-unified-footer"></div>
+
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+<script defer src="js/conversations.js"></script>
+<script defer src="js/messages-nav-badge.js"></script>
+<script defer src="cursor.js"></script>
+<script defer src="js/nav-provider-cta.js"></script>
+<script defer src="main.js"></script>
+<script defer src="js/inject-unified-footer.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (typeof initMessagesNavBadge === 'function') initMessagesNavBadge();
+});
+(function () {
+  var splash = document.getElementById('needsSplash');
+  var fill = document.querySelector('.needs-splash__fill');
+  if (sessionStorage.getItem('needs_loaded')) {
+    if (splash) splash.style.display = 'none';
+    return;
+  }
+  sessionStorage.setItem('needs_loaded', '1');
+  if (!splash || !fill) return;
+  splash.classList.add('needs-splash--visible');
+  var start = Date.now();
+  var dur = 1500;
+  function tick() {
+    var p = Math.min(100, (Date.now() - start) / dur * 100);
+    fill.style.width = p + '%';
+    requestAnimationFrame(tick);
+  }
+  tick();
+  setTimeout(function () {
+    splash.classList.add('needs-splash--out');
+    setTimeout(function () {
+      splash.style.display = 'none';
+      splash.setAttribute('aria-hidden', 'true');
+    }, 450);
+  }, dur);
+})();
+</script>
+
+</body>
+</html>

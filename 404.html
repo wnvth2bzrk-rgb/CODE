@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/404.html">
+  <meta name="theme-color" content="#0A0A0F">
+  <title>404 — Needs</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <meta name="description" content="Page introuvable — Needs">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { min-height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; background: #0a0a0f; color: #f0ede8; font-family: Inter, system-ui, sans-serif; padding: 24px; box-sizing: border-box; }
+    body.light-mode, html.needs-light body { background: #faf8f5; color: #0a0a0f; }
+    .e404 { max-width: 440px; text-align: center; padding: 40px 28px; border-radius: 20px; border: 1px solid rgba(201, 168, 76, 0.25); background: rgba(255, 255, 255, 0.03); }
+    body.light-mode .e404 { background: #fff; border-color: #e5e7eb; }
+    .e404 .logo-3d { margin: 0 auto 16px; }
+    .e404 h1 { font-size: 1.35rem; margin: 0 0 12px; color: #c9a84c; }
+    .e404 p { margin: 0 0 24px; line-height: 1.55; opacity: 0.92; }
+    .e404 .btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .e404 a { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 12px; font-weight: 700; text-decoration: none; }
+    .e404 a.primary { background: #c9a84c; color: #1a1510; }
+    .e404 a.secondary { border: 1px solid rgba(201, 168, 76, 0.4); color: #f0ede8; }
+    body.light-mode .e404 a.secondary { color: #0a0a0f; border-color: #d1d5db; }
+  </style>
+</head>
+<body>
+  <div class="e404">
+    <div class="logo-3d" style="width:48px;height:48px;font-size:1.25rem;">N</div>
+    <h1 data-i18n="error404_title">Oups</h1>
+    <p data-i18n="error404_msg">Cette page n'existe pas... mais vos prestataires, oui ! 😊</p>
+    <div class="btns">
+      <a href="index.html" class="primary" data-i18n="error404_home">Retour à l'accueil</a>
+      <a href="services.html" class="secondary" data-i18n="error404_services">Voir les services</a>
+    </div>
+  </div>
+  <script>
+    try {
+      if (window.__needs_prefs && __needs_prefs.getTheme() === "light") {
+        document.documentElement.classList.add("needs-light");
+        document.body.classList.add("light-mode");
+      }
+      if (window.NeedsI18n) NeedsI18n.applyDOM();
+    } catch (e) {}
+  </script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

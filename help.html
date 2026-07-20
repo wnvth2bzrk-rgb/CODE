@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000" id="meta-theme-color">
+    <title>Needs — Centre d'aide</title>
+    <meta name="description" content="FAQ Needs : paiement séquestre, litiges, réservations, devises et prestataires. Trouvez une réponse ou contactez l'équipe.">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/help.html">
+    <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cursor.css">
+    <style>
+        .hero-help { background: #0a0a0a; padding: 48px 5% 32px; text-align: center; border-bottom: 1px solid #171717; }
+        .hero-help h1 { color: #f0f9ff; margin: 0; font-size: clamp(1.5rem, 4vw, 2rem); }
+        .help-wrap { max-width: min(900px, 100%); margin: 0 auto 80px; padding: 32px 20px 0; box-sizing: border-box; }
+        .help-acc { display: flex; flex-direction: column; gap: 10px; }
+        .help-acc-item { border: 1px solid #2A2A38; border-radius: 14px; background: #0a0a0a; overflow: hidden; }
+        .help-acc-q {
+            width: 100%; text-align: left; padding: 18px 20px; margin: 0; cursor: pointer;
+            background: transparent; border: none; font-size: 1.05rem; font-weight: 600; color: #F0EDE8;
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            transition: background 0.2s ease;
+        }
+        .help-acc-q:hover { background: rgba(240, 237, 232, 0.04); }
+        .help-acc-q i { color: #9B99A6; transition: transform 0.35s ease; flex-shrink: 0; }
+        .help-acc-item.open .help-acc-q i { transform: rotate(180deg); }
+        .help-acc-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease; }
+        .help-acc-item.open .help-acc-panel { grid-template-rows: 1fr; }
+        .help-acc-inner { overflow: hidden; min-height: 0; }
+        .help-acc-a {
+            padding: 0 20px 18px; margin: 0; color: #9B99A6; font-size: 0.95rem; line-height: 1.6;
+            border-top: 1px solid #2A2A38;
+        }
+        .help-acc-a a { color: #38bdf8; }
+        .contact-card { margin-top: 40px; text-align: center; background: #0a0a0a; border: 1px dashed #2A2A38; padding: 36px; border-radius: 20px; }
+        .contact-card h2 { color: #f0f9ff; margin: 0 0 10px; font-size: 1.25rem; }
+        .contact-card p { color: rgba(240,249,255,0.88); margin: 0; }
+        .email-btn { background: #2563eb; color: #fff !important; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; display: inline-block; margin-top: 18px; }
+        .email-btn:hover { filter: brightness(1.08); color: #fff !important; }
+        html.needs-light .hero-help, body.light-mode .hero-help { background: #f9fafb !important; border-color: #e5e7eb !important; }
+        html.needs-light .hero-help h1, body.light-mode .hero-help h1 { color: #111827 !important; }
+        html.needs-light .help-acc-item, body.light-mode .help-acc-item { background: #fff !important; border-color: #e5e7eb !important; }
+        html.needs-light .help-acc-q, body.light-mode .help-acc-q { color: #1c1917 !important; }
+        html.needs-light .help-acc-a, body.light-mode .help-acc-a { color: #57534e !important; border-top-color: #e5e7eb !important; }
+        html.needs-light .contact-card, body.light-mode .contact-card { background: #f9fafb !important; border-color: #d1d5db !important; }
+        html.needs-light .contact-card h2, body.light-mode .contact-card h2 { color: #111827 !important; }
+        html.needs-light .contact-card p, body.light-mode .contact-card p { color: #6b7280 !important; }
+    </style>
+</head>
+<body>
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+    <nav class="subpage-topbar">
+        <a href="index.html" class="subpage-back" id="back_link" data-i18n="help_back">← Retour</a>
+        <div class="subpage-actions">
+            <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+            <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(render)" aria-label="Langue">EN</button>
+        </div>
+    </nav>
+
+    <header class="hero-help">
+        <h1 id="h_title" data-i18n="help_h_title">Centre d'aide</h1>
+    </header>
+
+    <main class="help-wrap">
+        <div class="help-acc" id="helpAccordion">
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_escrow">Le paiement séquestre, comment ça fonctionne exactement ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a"><span data-i18n="help_a_escrow"></span> <a href="insurance.html" data-i18n="help_insurance_link">Assurance Needs</a>.</p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_mtl">Quels quartiers de Montréal sont couverts ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_a_mtl"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_provider">Comment devenir prestataire sur Needs ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_a_provider"></p><p class="help-acc-a"><a href="become-provider.html" data-i18n="help_provider_link">Devenir prestataire</a></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_delay">Quels sont les délais d'intervention ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_a_delay"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_fees">Y a-t-il des frais cachés ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_a_fees"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_cad">Puis-je payer en dollars canadiens ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_a_cad"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_litige_how">Comment ouvrir un litige ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_a_litige_how"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_prov_cancel">Que se passe-t-il si le prestataire annule ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_a_prov_cancel"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_booking_edit">Comment modifier ou annuler ma réservation ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_a_booking_edit"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q_rating_how">Comment fonctionne la notation ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_a_rating_how"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q1_t">Paiement non reçu</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_q1_d"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q2_t">Litige avec un prestataire</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_q2_d"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q3_t">Changer de statut (Client / Expert)</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_q3_d"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q4_t">Annulation et remboursement</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_q4_d"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q5_t">Quelle devise pour les paiements ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_q5_d"></p></div></div>
+            </div>
+            <div class="help-acc-item">
+                <button type="button" class="help-acc-q" aria-expanded="false"><span data-i18n="help_q6_t">Comment partager un service ?</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+                <div class="help-acc-panel"><div class="help-acc-inner"><p class="help-acc-a" data-i18n="help_q6_d"></p></div></div>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <h2 id="c_title" data-i18n="help_c_title">Toujours besoin d'aide ?</h2>
+            <p id="c_desc" data-i18n="help_c_desc">Envoyez un message à l'équipe Needs — même principe qu'un courriel professionnel.</p>
+            <a href="contact.html" class="email-btn" id="c_btn" data-i18n="help_c_btn">Écrire à Needs</a>
+        </div>
+    </main>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+    <script src="subpage-common.js"></script>
+    <script>
+        function render() {
+            if (window.NeedsI18n) NeedsI18n.applyDOM(needsSubpage.getLang());
+            var l = needsSubpage.getLang();
+            document.title = l === "en" ? "Needs — Help Center" : "Needs — Centre d'aide";
+            needsSubpage.updateChromeButtons();
+            var meta = document.getElementById("meta-theme-color");
+            if (meta && window.__needs_prefs) meta.setAttribute("content", __needs_prefs.getTheme() === "light" ? "#ffffff" : "#000000");
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            render();
+            document.querySelectorAll(".help-acc-q").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    var item = btn.closest(".help-acc-item");
+                    var open = !item.classList.contains("open");
+                    document.querySelectorAll(".help-acc-item.open").forEach(function (o) {
+                        if (o !== item) {
+                            o.classList.remove("open");
+                            var b = o.querySelector(".help-acc-q");
+                            if (b) b.setAttribute("aria-expanded", "false");
+                        }
+                    });
+                    item.classList.toggle("open", open);
+                    btn.setAttribute("aria-expanded", open ? "true" : "false");
+                });
+            });
+        });
+    </script>
+    <script src="cursor.js" defer></script>
+</body>
+</html>

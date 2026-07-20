@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/needs-analytics.js"></script>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="canonical" href="https://needs-ae86d.web.app/admin-tracker.html">
+  <meta name="theme-color" content="#0A0A0F">
+  <title>Needs — Tracker prestataires</title>
+  <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body.trk-page {
+      background: #0A0A0F !important;
+      color: #F0EDE8 !important;
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    .trk-shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px 18px 100px;
+    }
+    .trk-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .trk-head h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin: 0;
+      color: #F0EDE8;
+    }
+    .trk-head .trk-back {
+      color: #C9A84C;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .trk-head .trk-back:hover { text-decoration: underline; }
+    .trk-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    @media (max-width: 900px) {
+      .trk-kpis { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .trk-kpis { grid-template-columns: 1fr; }
+    }
+    .trk-kpi {
+      background: rgba(201, 168, 76, 0.08);
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+    .trk-kpi label {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(240, 237, 232, 0.65);
+      margin-bottom: 8px;
+    }
+    .trk-kpi .val {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #C9A84C;
+    }
+    .trk-charts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+    @media (max-width: 768px) {
+      .trk-charts { grid-template-columns: 1fr; }
+    }
+    .trk-chart-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .trk-chart-card h3 {
+      margin: 0 0 14px;
+      font-size: 0.95rem;
+      color: #C9A84C;
+    }
+    .trk-bar-row {
+      display: grid;
+      grid-template-columns: 100px 1fr 36px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 0.82rem;
+    }
+    .trk-bar-label { color: rgba(240, 237, 232, 0.85); }
+    .trk-bar-track {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .trk-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #C9A84C, #e4c56f);
+      border-radius: 6px;
+      min-width: 4px;
+      transition: width 0.25s ease;
+    }
+    .trk-bar-num { text-align: right; color: rgba(240, 237, 232, 0.75); }
+    .trk-add-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(201, 168, 76, 0.22);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+    .trk-add-card h2 {
+      margin: 0 0 16px;
+      font-size: 1.05rem;
+      color: #F0EDE8;
+    }
+    .trk-form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+      align-items: end;
+    }
+    .trk-field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: rgba(240, 237, 232, 0.85);
+    }
+    .trk-field input,
+    .trk-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      background: #12121a;
+      color: #F0EDE8;
+      box-sizing: border-box;
+      font-size: 0.95rem;
+    }
+    .trk-btn-row { margin-top: 16px; }
+    .trk-btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .trk-btn--primary {
+      background: #C9A84C;
+      color: #0A0A0F;
+    }
+    .trk-btn--primary:hover { filter: brightness(1.06); }
+    .trk-btn--ghost {
+      background: transparent;
+      color: #C9A84C;
+      border: 1px solid rgba(201, 168, 76, 0.45);
+    }
+    .trk-btn--danger {
+      background: #E05A5A;
+      color: #fff;
+    }
+    .trk-btn--danger:hover { filter: brightness(1.05); }
+    .trk-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .trk-filters input[type="search"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      background: #12121a;
+      color: #F0EDE8;
+    }
+    .trk-filters select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      background: #12121a;
+      color: #F0EDE8;
+      min-width: 140px;
+    }
+    .trk-quick {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .trk-quick button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(201, 168, 76, 0.35);
+      background: transparent;
+      color: #F0EDE8;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .trk-quick button.is-active {
+      background: rgba(201, 168, 76, 0.25);
+      border-color: #C9A84C;
+      color: #C9A84C;
+    }
+    .trk-table-wrap {
+      overflow-x: auto;
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    table.trk-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .trk-table th {
+      text-align: left;
+      padding: 12px 14px;
+      color: #C9A84C;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+      white-space: nowrap;
+    }
+    .trk-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      vertical-align: middle;
+    }
+    .trk-table tr:last-child td { border-bottom: none; }
+    .trk-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .st-grey { background: #4a4a55; color: #f0ede8; }
+    .st-blue { background: #2563eb; color: #fff; }
+    .st-yellow { background: #C9A84C; color: #0A0A0F; }
+    .st-green-light { background: #86efac; color: #14532d; }
+    .st-green { background: #4CAF82; color: #0a1f14; }
+    .st-red { background: #E05A5A; color: #fff; }
+    .trk-actions-cell {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .trk-select {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      background: #12121a;
+      color: #F0EDE8;
+      font-size: 0.8rem;
+    }
+    .trk-select--sm { max-width: 140px; }
+    .trk-select--inline { max-width: 130px; }
+    .trk-loading {
+      text-align: center;
+      padding: 48px 20px;
+      color: rgba(240, 237, 232, 0.8);
+    }
+    .trk-denied {
+      text-align: center;
+      padding: 48px 20px;
+      color: #f87171;
+      font-weight: 600;
+    }
+    .trk-empty { padding: 32px; text-align: center; color: rgba(240, 237, 232, 0.65); }
+    .trk-export-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+    .trk-panel-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1200;
+    }
+    .trk-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(440px, 100vw);
+      height: 100vh;
+      background: #12121a;
+      border-left: 1px solid rgba(201, 168, 76, 0.3);
+      z-index: 1210;
+      transform: translateX(100%);
+      transition: transform 0.28s ease;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
+    }
+    .trk-panel.is-open { transform: translateX(0); }
+    .trk-panel-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .trk-panel-head h2 { margin: 0; font-size: 1.1rem; color: #C9A84C; }
+    .trk-panel-body {
+      padding: 18px 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .trk-dl { margin: 0 0 16px; font-size: 0.9rem; }
+    .trk-dl dt {
+      color: rgba(240, 237, 232, 0.55);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 12px;
+    }
+    .trk-dl dd { margin: 4px 0 0; color: #F0EDE8; }
+    .trk-panel textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      background: #0A0A0F;
+      color: #F0EDE8;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    .trk-hist-item {
+      list-style: none;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      font-size: 0.85rem;
+    }
+    .trk-hist-msg { color: rgba(240, 237, 232, 0.8); }
+    #pdHistorique { padding: 0; margin: 0; }
+    .trk-bulk {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1a1a24;
+      border-top: 1px solid rgba(201, 168, 76, 0.35);
+      padding: 14px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      z-index: 900;
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.35);
+    }
+    .trk-bulk[hidden] { display: none !important; }
+    .trk-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+    .trk-tab {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      background: transparent;
+      color: #F0EDE8;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .trk-tab.is-active {
+      background: rgba(201, 168, 76, 0.25);
+      border-color: #C9A84C;
+      color: #C9A84C;
+    }
+    .trk-tab-panel[hidden] { display: none !important; }
+    .trk-src-needs {
+      color: #4ade80;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+    .trk-src-manual {
+      color: rgba(240, 237, 232, 0.55);
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+    .trk-needs-badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: rgba(74, 222, 128, 0.12);
+      color: #86efac;
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      vertical-align: middle;
+    }
+    .trk-kpis--wide {
+      grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+    }
+    .trk-reg-wrap { overflow-x: auto; }
+    .trk-reg-wrap .trk-table { min-width: 1100px; }
+  </style>
+</head>
+<body class="trk-page" data-no-inject-footer="true">
+  <a href="#main-content" class="skip-link">Aller au contenu</a>
+
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo-3d">N</div>
+      <span style="font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px;">NEEDS</span>
+    </a>
+    <button type="button" class="burger-btn" onclick="toggleNavDrawer()" aria-label="Ouvrir le menu" aria-expanded="false" id="burgerBtn">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="nav-overlay" id="navOverlay" onclick="toggleNavDrawer()" aria-hidden="true"></div>
+    <nav class="nav-group">
+      <a href="admin-litiges.html" class="nav-link">Litiges</a>
+      <a href="compte.html" class="nav-link">Mon compte</a>
+      <a href="index.html" class="btn btn-main" style="padding: 10px 20px; font-size: 0.9rem;">Accueil</a>
+    </nav>
+    <div class="nav-drawer" id="navDrawer" aria-label="Menu">
+      <a href="admin-litiges.html" class="nav-link">Litiges</a>
+      <a href="compte.html" class="nav-link">Mon compte</a>
+      <a href="index.html" class="btn btn-main" style="width: 100%; justify-content: center;">Accueil</a>
+    </div>
+  </header>
+
+  <main id="main-content" class="trk-shell" tabindex="-1">
+    <p id="trkLoading" class="trk-loading"><i class="fa-solid fa-spinner fa-spin"></i> Chargement…</p>
+    <div id="trkDenied" class="trk-denied" style="display: none;">Accès réservé aux administrateurs.</div>
+
+    <div id="trkApp" style="display: none;">
+      <div class="trk-head">
+        <h1><i class="fa-solid fa-chart-line" style="color: #C9A84C;"></i> Tracker prestataires</h1>
+        <a href="admin-litiges.html" class="trk-back"><i class="fa-solid fa-arrow-left"></i> Retour litiges</a>
+      </div>
+
+      <div class="trk-tabs" role="tablist">
+        <button type="button" class="trk-tab is-active" data-tab="tracker" role="tab" aria-selected="true">Tracker manuel</button>
+        <button type="button" class="trk-tab" data-tab="inscrits" role="tab" aria-selected="false">Prestataires inscrits</button>
+        <button type="button" class="trk-tab" data-tab="leads" role="tab" aria-selected="false">Email Leads</button>
+        <button type="button" class="trk-tab" data-tab="verif" role="tab" aria-selected="false">Vérifications</button>
+      </div>
+
+      <div id="trkTabTracker" class="trk-tab-panel">
+      <div class="trk-kpis trk-kpis--wide">
+        <div class="trk-kpi">
+          <label>Total trackés</label>
+          <div class="val" id="kpiTotal">0</div>
+        </div>
+        <div class="trk-kpi">
+          <label>Taux conversion (inscrits)</label>
+          <div class="val" id="kpiConv">0 %</div>
+        </div>
+        <div class="trk-kpi">
+          <label>Actifs cette semaine</label>
+          <div class="val" id="kpiActifsWeek">0</div>
+        </div>
+        <div class="trk-kpi">
+          <label>En attente de réponse</label>
+          <div class="val" id="kpiAttente">0</div>
+        </div>
+        <div class="trk-kpi">
+          <label>Inscrits via Needs (auto)</label>
+          <div class="val" id="kpiInscritsNeeds">0</div>
+        </div>
+        <div class="trk-kpi">
+          <label>Inscrits prospection (manuel)</label>
+          <div class="val" id="kpiInscritsManuel">0</div>
+        </div>
+        <div class="trk-kpi">
+          <label>Prestataires vérifiés (actifs)</label>
+          <div class="val" id="kpiProvidersVerified">0</div>
+        </div>
+      </div>
+
+      <div class="trk-charts">
+        <div class="trk-chart-card">
+          <h3>Répartition par source</h3>
+          <div id="chartSource"></div>
+        </div>
+        <div class="trk-chart-card">
+          <h3>Répartition par statut</h3>
+          <div id="chartStatut"></div>
+        </div>
+      </div>
+
+      <section class="trk-add-card" aria-labelledby="trkAddTitle">
+        <h2 id="trkAddTitle">Ajouter un prestataire</h2>
+        <form id="trkForm">
+          <div class="trk-form-grid">
+            <div class="trk-field">
+              <label for="trkNom">Nom complet *</label>
+              <input id="trkNom" name="nom" type="text" required autocomplete="name" maxlength="200">
+            </div>
+            <div class="trk-field">
+              <label for="trkEmail">Email *</label>
+              <input id="trkEmail" name="email" type="email" required autocomplete="email" maxlength="320">
+            </div>
+            <div class="trk-field">
+              <label for="trkTel">Téléphone</label>
+              <input id="trkTel" name="tel" type="tel" autocomplete="tel" maxlength="40">
+            </div>
+            <div class="trk-field">
+              <label for="trkService">Service</label>
+              <select id="trkService" name="service">
+                <option value="Ménage">Ménage</option>
+                <option value="Plomberie">Plomberie</option>
+                <option value="Électricité">Électricité</option>
+                <option value="Déménagement">Déménagement</option>
+                <option value="Cours">Cours</option>
+                <option value="Photo">Photo</option>
+                <option value="Tech">Tech</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+            <div class="trk-field">
+              <label for="trkSource">Source</label>
+              <select id="trkSource" name="source">
+                <option value="Facebook">Facebook</option>
+                <option value="Kijiji">Kijiji</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Réseau perso">Réseau perso</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+            <div class="trk-field trk-btn-row">
+              <button type="submit" class="trk-btn trk-btn--primary" style="width: 100%;">Ajouter</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <div class="trk-export-row">
+        <button type="button" class="trk-btn trk-btn--ghost" id="trkExportCsv"><i class="fa-solid fa-file-csv"></i> Exporter CSV</button>
+      </div>
+
+      <div class="trk-filters">
+        <input type="search" id="trkSearch" placeholder="Rechercher nom ou email…" autocomplete="off">
+        <select id="trkFilterStatut" aria-label="Filtrer par statut"></select>
+        <select id="trkFilterSource" aria-label="Filtrer par source"></select>
+        <select id="trkFilterService" aria-label="Filtrer par service"></select>
+      </div>
+
+      <div class="trk-quick">
+        <button type="button" data-quick="a_contacter">À contacter</button>
+        <button type="button" data-quick="sans_rep_5j">Sans réponse 5j+</button>
+        <button type="button" data-quick="actifs">Actifs</button>
+      </div>
+
+      <div class="trk-table-wrap">
+        <table class="trk-table">
+          <thead>
+            <tr>
+              <th style="width:40px;"><input type="checkbox" id="trkSelectAll" aria-label="Tout sélectionner"></th>
+              <th>Nom</th>
+              <th>Service</th>
+              <th>Source</th>
+              <th>Statut</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="trkTbody"></tbody>
+        </table>
+        <div id="trkEmpty" class="trk-empty" style="display: none;">Aucun résultat.</div>
+      </div>
+      </div>
+
+      <div id="trkTabInscrits" class="trk-tab-panel" hidden>
+        <p style="font-size: 0.85rem; color: rgba(240,237,232,0.65); margin: 0 0 14px;">
+          Liste temps réel des comptes <code>users</code> avec <code>role: &quot;provider&quot;</code>. Les comptes apparaissent aussi dans le tracker manuel lorsque la fonction cloud <code>syncUserProviderToPrestatairesTracker</code> est déployée.
+        </p>
+        <div class="trk-table-wrap trk-reg-wrap">
+          <table class="trk-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Service / cat.</th>
+                <th>Quartier</th>
+                <th>Inscription</th>
+                <th>Vérification</th>
+                <th>Plan</th>
+                <th>Annonces</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="trkRegisteredTbody"></tbody>
+          </table>
+          <div id="trkRegisteredEmpty" class="trk-empty" style="display: none;">Aucun prestataire inscrit.</div>
+        </div>
+      </div>
+
+      <div id="trkTabLeads" class="trk-tab-panel" hidden>
+        <div class="trk-kpis" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="trk-kpi">
+            <label>Leads email</label>
+            <div class="val" id="kpiLeadsTotal">0</div>
+          </div>
+          <div class="trk-kpi">
+            <label>Conversion → inscrit</label>
+            <div class="val" id="kpiLeadsConv">0 %</div>
+          </div>
+          <div class="trk-kpi">
+            <label>Taux d’ouverture (pixels)</label>
+            <div class="val" id="kpiLeadsOpen">—</div>
+          </div>
+        </div>
+        <p style="font-size: 0.85rem; color: rgba(240,237,232,0.65); margin: -8px 0 18px;">
+          L’ouverture est estimée via une image 1×1 dans les e-mails (les clients qui bloquent les images peuvent sous-compter).
+        </p>
+        <div class="trk-table-wrap">
+          <table class="trk-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Source</th>
+                <th>Langue</th>
+                <th>Séquence</th>
+                <th>Ouvertures</th>
+                <th>Capture</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="trkLeadsTbody"></tbody>
+          </table>
+          <div id="trkLeadsEmpty" class="trk-empty" style="display: none;">Aucun lead.</div>
+        </div>
+      </div>
+
+      <div id="trkTabVerif" class="trk-tab-panel" hidden>
+        <p style="font-size: 0.85rem; color: rgba(240,237,232,0.65); margin: 0 0 14px;">
+          Demandes <code>pending</code> ou <code>manual_review</code> dans <code>verifications</code> (revue IA ou manuelle). Approuver envoie un e-mail au prestataire et rend ses annonces visibles sur la boutique.
+        </p>
+        <div class="trk-table-wrap">
+          <table class="trk-table">
+            <thead>
+              <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Type pièce</th>
+                <th>Statut</th>
+                <th>UID</th>
+                <th>Fichiers / actions</th>
+              </tr>
+            </thead>
+            <tbody id="trkVerifTbody"></tbody>
+          </table>
+          <div id="trkVerifEmpty" class="trk-empty" style="display: none;">Aucune vérification en attente.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="trkPanelOverlay" class="trk-panel-overlay" hidden></div>
+  <aside id="trkPanel" class="trk-panel" aria-hidden="true">
+    <div class="trk-panel-head">
+      <h2>Détail</h2>
+      <button type="button" class="trk-btn trk-btn--ghost" id="trkPanelClose" aria-label="Fermer">Fermer</button>
+    </div>
+    <div class="trk-panel-body">
+      <dl class="trk-dl">
+        <dt>Nom</dt>
+        <dd id="pdNom">—</dd>
+        <dt>Email</dt>
+        <dd id="pdEmail">—</dd>
+        <dt>Téléphone</dt>
+        <dd id="pdTel">—</dd>
+        <dt>Service</dt>
+        <dd id="pdService">—</dd>
+        <dt>Source</dt>
+        <dd id="pdSource">—</dd>
+      </dl>
+      <div class="trk-field">
+        <label for="pdStatut">Statut</label>
+        <select id="pdStatut" class="trk-select" style="width:100%;"></select>
+      </div>
+      <p style="margin: 14px 0 8px; font-size: 0.9rem;">
+        Tentatives : <strong id="pdTentatives">0</strong>
+        <button type="button" class="trk-btn trk-btn--ghost" id="pdIncTent" style="margin-left:10px;padding:6px 12px;font-size:0.8rem;">+1</button>
+      </p>
+      <dl class="trk-dl">
+        <dt>Premier contact (interaction)</dt>
+        <dd id="pdFirstContact">—</dd>
+        <dt>Dernier contact (interaction)</dt>
+        <dd id="pdLastContact">—</dd>
+      </dl>
+      <div class="trk-field">
+        <label for="pdNotes">Notes</label>
+        <textarea id="pdNotes" placeholder="Notes personnelles…"></textarea>
+      </div>
+      <h3 style="color:#C9A84C;font-size:0.95rem;margin:20px 0 10px;">Historique des interactions</h3>
+      <div class="trk-field" style="margin-bottom:10px;">
+        <label for="pdIntAction">Action</label>
+        <select id="pdIntAction" class="trk-select" style="width:100%;"></select>
+      </div>
+      <div class="trk-field" style="margin-bottom:10px;">
+        <label for="pdIntMsg">Message envoyé</label>
+        <textarea id="pdIntMsg" placeholder="Texte du message…" style="min-height:72px;"></textarea>
+      </div>
+      <div class="trk-field" style="margin-bottom:10px;">
+        <label for="pdIntRep">Réponse</label>
+        <select id="pdIntRep" class="trk-select" style="width:100%;"></select>
+      </div>
+      <button type="button" class="trk-btn trk-btn--primary" id="pdAddInteraction" style="width:100%;">Ajouter une interaction</button>
+      <ul id="pdHistorique"></ul>
+    </div>
+  </aside>
+
+  <div id="trkBulkBar" class="trk-bulk" hidden>
+    <span><strong id="trkBulkCount">0</strong> sélectionné(s)</span>
+    <button type="button" class="trk-btn trk-btn--primary" id="trkBulkContact">Marquer comme Contacté</button>
+    <button type="button" class="trk-btn trk-btn--ghost" id="trkBulkReject">Marquer comme Rejeté</button>
+    <button type="button" class="trk-btn trk-btn--danger" id="trkBulkDelete">Supprimer la sélection</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+  <script src="js/admin-tracker.js"></script>
+  <script>
+    const fbCfg = {
+      apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU",
+      authDomain: "needs-ae86d.firebaseapp.com",
+      projectId: "needs-ae86d",
+      storageBucket: "needs-ae86d.firebasestorage.app",
+      messagingSenderId: "253900994407",
+      appId: "1:253900994407:web:55168e1b73c878761de1c2"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(fbCfg);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    const fns = firebase.app().functions("us-central1");
+
+    auth.onAuthStateChanged(function (user) {
+      var loading = document.getElementById("trkLoading");
+      var denied = document.getElementById("trkDenied");
+      var app = document.getElementById("trkApp");
+
+      if (!user) {
+        window.location.href = "auth.html?next=" + encodeURIComponent("admin-tracker.html");
+        return;
+      }
+
+      db.collection("users")
+        .doc(user.uid)
+        .get()
+        .then(function (snap) {
+          if (loading) loading.style.display = "none";
+          if (!snap.exists || !snap.data().isAdmin) {
+            if (denied) denied.style.display = "block";
+            return;
+          }
+          if (app) app.style.display = "block";
+          if (typeof window.initAdminTracker === "function") {
+            window.initAdminTracker(db, auth, fns);
+          }
+        })
+        .catch(function (e) {
+          console.error(e);
+          if (loading) loading.style.display = "none";
+          if (denied) {
+            denied.style.display = "block";
+            denied.textContent = "Erreur : " + (e.message || String(e));
+          }
+        });
+    });
+  </script>
+</body>
+</html>

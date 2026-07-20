@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/checklist-achat-b2b.html">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Checklist achat B2B</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="cursor.css">
+</head>
+<body>
+  <nav class="subpage-topbar no-print">
+    <a href="entreprise-grands-comptes.html" class="subpage-back">← Pro &amp; Grands comptes</a>
+    <div class="subpage-actions">
+      <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+      <button type="button" class="btn btn-main no-print" onclick="window.print()" style="width:auto;padding:0 16px;border-radius:10px;"><i class="fa-solid fa-print"></i> PDF / Imprimer</button>
+    </div>
+  </nav>
+
+  <div class="checklist-print doc-page">
+    <h1 style="color:#111;">Checklist achat &amp; conformité — Marketplace B2B</h1>
+    <p style="color:#444;font-size:0.95rem;">Document Needs — à utiliser en interne avec vos équipes Achats, Juridique, IT et Finance. <strong>Imprimer en PDF</strong> : bouton ci-dessus ou Ctrl+P / ⌘P.</p>
+
+    <h2 style="color:#111;font-size:1.1rem;margin-top:28px;">1. Juridique &amp; données</h2>
+    <div class="chk-item"><span class="chk-box"></span> CGV / conditions B2B relues (<a href="cgv-b2b.html">cgv-b2b.html</a>)</div>
+    <div class="chk-item"><span class="chk-box"></span> DPA / RGPD : accord signé si traitement pour compte (<a href="dpa.html">dpa.html</a>)</div>
+    <div class="chk-item"><span class="chk-box"></span> Liste des sous-traitants acceptée (<a href="sous-traitants.html">sous-traitants</a>)</div>
+    <div class="chk-item"><span class="chk-box"></span> Pays de stockage des données &amp; transferts hors UE validés</div>
+
+    <h2 style="color:#111;font-size:1.1rem;margin-top:24px;">2. Sécurité &amp; accès</h2>
+    <div class="chk-item"><span class="chk-box"></span> Fiche sécurité lue ; exigences RSSI couvertes (<a href="securite.html">securite.html</a>)</div>
+    <div class="chk-item"><span class="chk-box"></span> Feuille de route SSO / rôles alignée avec IT (<a href="identite-acces.html">identite-acces</a>)</div>
+    <div class="chk-item"><span class="chk-box"></span> Gestion des comptes prestataires sur sites sensibles</div>
+
+    <h2 style="color:#111;font-size:1.1rem;margin-top:24px;">3. Finance &amp; achats</h2>
+    <div class="chk-item"><span class="chk-box"></span> Moyen de paiement : carte vs virement / délai convenu (<a href="facturation-b2b.html">facturation-b2b</a>)</div>
+    <div class="chk-item"><span class="chk-box"></span> Référencement bon de commande (PO) et centre de coût</div>
+    <div class="chk-item"><span class="chk-box"></span> TVA / mentions facture conformes au pays</div>
+    <div class="chk-item"><span class="chk-box"></span> Seuils de validation interne pour les commandes Needs</div>
+
+    <h2 style="color:#111;font-size:1.1rem;margin-top:24px;">4. Opérations</h2>
+    <div class="chk-item"><span class="chk-box"></span> Niveau de support &amp; SLA attendu (<a href="operations-sla.html">operations-sla</a>)</div>
+    <div class="chk-item"><span class="chk-box"></span> Point de contact interne « owner » de la relation Needs</div>
+    <div class="chk-item"><span class="chk-box"></span> Process litige / prestataire défini avec Needs</div>
+
+    <h2 style="color:#111;font-size:1.1rem;margin-top:24px;">5. Assurance</h2>
+    <div class="chk-item"><span class="chk-box"></span> Besoin d’attestation RC / couverture : demande formalisée (<a href="insurance.html">insurance</a>)</div>
+
+    <p style="margin-top:40px;font-size:0.85rem;color:#666;">Needs — needs-app.com — <span id="chk-date"></span></p>
+  </div>
+  <script src="subpage-common.js"></script>
+  <script>
+    document.getElementById("chk-date").textContent = new Date().toLocaleDateString("fr-FR", { dateStyle: "long" });
+    document.addEventListener("DOMContentLoaded", function () { needsSubpage.updateChromeButtons(); });
+  </script>
+  <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

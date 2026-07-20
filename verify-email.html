@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Needs — Vérification de l’email</title>
+  <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+  <link rel="stylesheet" href="theme-needs.css">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      background: var(--navy-bg, #0f0f14);
+      color: var(--text, #f0ede8);
+      font-family: var(--font-alt, system-ui, sans-serif);
+      box-sizing: border-box;
+    }
+    .ve-card {
+      width: 100%;
+      max-width: 420px;
+      background: #1C1C26;
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+      box-sizing: border-box;
+    }
+    .ve-logo {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #C9A84C;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .ve-icon {
+      font-size: 3.2rem;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .ve-icon.ok { color: #10b981; animation: vePop 0.5s ease; }
+    .ve-icon.err { color: #f87171; }
+    @keyframes vePop {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 10px;
+      font-family: var(--font-display, system-ui, sans-serif);
+    }
+    p {
+      margin: 0 0 18px;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: rgba(240, 237, 232, 0.88);
+    }
+    .ve-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+    .ve-btn {
+      display: inline-block;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-family: inherit;
+    }
+    .ve-btn--gold {
+      background: #C9A84C;
+      color: #1a1510;
+    }
+    .ve-btn--gold:hover { filter: brightness(1.06); }
+    .ve-btn--ghost {
+      background: transparent;
+      color: #93c5fd;
+      border: 1px solid rgba(147, 197, 253, 0.45);
+    }
+    .ve-muted { font-size: 0.82rem; color: rgba(240, 237, 232, 0.55); margin-top: 16px; }
+    .ve-loading { color: rgba(240, 237, 232, 0.7); }
+  </style>
+</head>
+<body>
+  <div class="ve-card" id="veCard">
+    <div class="ve-logo">NEEDS</div>
+    <div id="veStateLoading">
+      <p class="ve-loading" id="veLoadingText">Vérification en cours…</p>
+    </div>
+    <div id="veStateSuccess" hidden>
+      <div class="ve-icon ok" aria-hidden="true">&#x2705;</div>
+      <h1 id="veSuccessTitle">Votre email est vérifié !</h1>
+      <p id="veSuccessSub">Votre boutique est maintenant active.</p>
+      <div class="ve-actions">
+        <a class="ve-btn ve-btn--gold" id="veBtnCompte" href="compte.html">Accéder à mon compte →</a>
+      </div>
+    </div>
+    <div id="veStateError" hidden>
+      <div class="ve-icon err" aria-hidden="true">&#x26A0;&#xFE0F;</div>
+      <h1 id="veErrTitle">Lien invalide</h1>
+      <p id="veErrMsg">Ce lien est invalide ou a expiré.</p>
+      <div class="ve-actions">
+        <button type="button" class="ve-btn ve-btn--gold" id="veBtnResend">Renvoyer un email de vérification</button>
+        <a class="ve-btn ve-btn--ghost" id="veBtnAuth" href="auth.html">Se connecter</a>
+      </div>
+    </div>
+  </div>
+  <p class="ve-muted" id="veFooter">L’équipe Needs · Montréal</p>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU",
+      authDomain: "needs-ae86d.firebaseapp.com",
+      projectId: "needs-ae86d",
+      storageBucket: "needs-ae86d.firebasestorage.app",
+      messagingSenderId: "253900994407",
+      appId: "1:253900994407:web:55168e1b73c878761de1c2"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var fns = firebase.app().functions("us-central1");
+
+    function pageLang() {
+      try {
+        var p = new URLSearchParams(window.location.search);
+        var l = (p.get("lang") || "").toLowerCase();
+        if (l === "en" || l === "fr") return l;
+      } catch (e) {}
+      return navigator.language && String(navigator.language).toLowerCase().startsWith("en") ? "en" : "fr";
+    }
+
+    var L = {
+      fr: {
+        loading: "Vérification en cours…",
+        successTitle: "Votre email est vérifié !",
+        successSub: "Votre boutique est maintenant active.",
+        btnCompte: "Accéder à mon compte →",
+        errTitle: "Lien invalide",
+        errMsg: "Ce lien est invalide ou a expiré.",
+        resend: "Renvoyer un email de vérification",
+        login: "Se connecter",
+        needLogin: "Connectez-vous pour renvoyer l’email de vérification.",
+        sending: "Envoi…",
+        resent: "Email envoyé ! Consultez votre boîte mail.",
+        footer: "L’équipe Needs · Montréal"
+      },
+      en: {
+        loading: "Verifying…",
+        successTitle: "Your email is verified!",
+        successSub: "Your shop is now active.",
+        btnCompte: "Go to my account →",
+        errTitle: "Invalid link",
+        errMsg: "This link is invalid or has expired.",
+        resend: "Resend verification email",
+        login: "Sign in",
+        needLogin: "Sign in to resend the verification email.",
+        sending: "Sending…",
+        resent: "Email sent! Check your inbox.",
+        footer: "The Needs team · Montreal"
+      }
+    };
+
+    function t(key) {
+      var lang = pageLang();
+      var pack = L[lang] || L.fr;
+      return pack[key] || L.fr[key] || key;
+    }
+
+    function show(id) {
+      ["veStateLoading", "veStateSuccess", "veStateError"].forEach(function (x) {
+        var el = document.getElementById(x);
+        if (el) el.hidden = el.id !== id;
+      });
+    }
+
+    function applyStrings() {
+      document.documentElement.lang = pageLang();
+      var ld = document.getElementById("veLoadingText");
+      if (ld) ld.textContent = t("loading");
+      var st = document.getElementById("veSuccessTitle");
+      if (st) st.textContent = t("successTitle");
+      var ss = document.getElementById("veSuccessSub");
+      if (ss) ss.textContent = t("successSub");
+      var bc = document.getElementById("veBtnCompte");
+      if (bc) bc.textContent = t("btnCompte");
+      var et = document.getElementById("veErrTitle");
+      if (et) et.textContent = t("errTitle");
+      var em = document.getElementById("veErrMsg");
+      if (em) em.textContent = t("errMsg");
+      var br = document.getElementById("veBtnResend");
+      if (br) br.textContent = t("resend");
+      var ba = document.getElementById("veBtnAuth");
+      if (ba) ba.textContent = t("login");
+      var ft = document.getElementById("veFooter");
+      if (ft) ft.textContent = t("footer");
+    }
+
+    function runVerify() {
+      applyStrings();
+      var params = new URLSearchParams(window.location.search);
+      var token = params.get("token") || "";
+      var uid = params.get("uid") || "";
+      if (!token || !uid) {
+        show("veStateError");
+        return;
+      }
+      fns
+        .httpsCallable("verifyEmailToken")({ token: token, uid: uid })
+        .then(function () {
+          applyStrings();
+          show("veStateSuccess");
+        })
+        .catch(function () {
+          applyStrings();
+          show("veStateError");
+        });
+    }
+
+    document.getElementById("veBtnResend").addEventListener("click", function () {
+      var u = firebase.auth().currentUser;
+      var btn = document.getElementById("veBtnResend");
+      if (!u) {
+        alert(t("needLogin"));
+        window.location.href = "auth.html?redirect=" + encodeURIComponent("compte.html");
+        return;
+      }
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = t("sending");
+      }
+      fns
+        .httpsCallable("sendVerificationEmail")({ locale: pageLang() })
+        .then(function () {
+          alert(t("resent"));
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = t("resend");
+          }
+        })
+        .catch(function (e) {
+          alert((e && e.message) || "Error");
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = t("resend");
+          }
+        });
+    });
+
+    runVerify();
+  </script>
+</body>
+</html>

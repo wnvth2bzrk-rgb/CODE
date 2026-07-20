@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="canonical" href="https://needs-ae86d.web.app/a-propos.html">
+  <meta name="theme-color" content="#0A0A0F" id="meta-theme-color">
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <meta name="description" content="" data-i18n-attr="content:about_meta_desc" />
+  <title data-i18n="about_meta_title">À propos — Needs</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .about-hero {
+      padding: 56px 0 40px;
+      text-align: center;
+      background: radial-gradient(ellipse at top, rgba(201, 168, 76, 0.1) 0%, transparent 55%), #0a0a0f;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .about-hero h1 {
+      font-size: clamp(1.65rem, 4vw, 2.35rem);
+      max-width: 720px;
+      margin: 0 auto 16px;
+      line-height: 1.2;
+    }
+    .about-hero p {
+      max-width: 640px;
+      margin: 0 auto;
+      color: rgba(240, 237, 232, 0.88);
+      font-size: 1.05rem;
+    }
+    body.light-mode .about-hero p {
+      color: #374151;
+    }
+    .about-section {
+      padding: 48px 0;
+    }
+    .about-section h2 {
+      font-size: 1.5rem;
+      margin: 0 0 16px;
+    }
+    .about-section p {
+      color: rgba(240, 237, 232, 0.9);
+      line-height: 1.65;
+      max-width: 720px;
+    }
+    body.light-mode .about-section p {
+      color: #1f2937;
+    }
+    .about-values {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .about-value-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 16px;
+      padding: 22px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .about-value-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(201, 168, 76, 0.15);
+    }
+    body.light-mode .about-value-card {
+      background: #fff;
+      border-color: #e5e7eb;
+    }
+    .about-value-card h3 {
+      color: #c9a84c;
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .about-stat {
+      padding: 18px;
+      border-radius: 14px;
+      background: rgba(201, 168, 76, 0.08);
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      font-weight: 700;
+      color: #f0ede8;
+    }
+    body.light-mode .about-stat {
+      color: #0a0a0f;
+      background: rgba(201, 168, 76, 0.12);
+    }
+    .about-team {
+      margin-top: 28px;
+      padding: 28px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    body.light-mode .about-team {
+      background: #f9fafb;
+      border-color: #e5e7eb;
+    }
+    .about-cta {
+      text-align: center;
+      padding: 56px 20px 80px;
+      background: linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);
+    }
+    body.light-mode .about-cta {
+      background: linear-gradient(180deg, #faf8f5 0%, #f3f0eb 100%);
+    }
+    .about-cta-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      margin-top: 22px;
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link" data-i18n="skip_link">Aller au contenu</a>
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo-3d">N</div>
+      <span style="font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px">NEEDS</span>
+    </a>
+    <button type="button" class="burger-btn" onclick="toggleNavDrawer()" aria-label="Ouvrir le menu" aria-expanded="false" id="burgerBtn">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="nav-overlay" id="navOverlay" onclick="toggleNavDrawer()" aria-hidden="true"></div>
+    <nav class="nav-group">
+      <a href="services.html" class="nav-link" data-i18n="nav_services">Services</a>
+      <a href="messages.html" class="nav-link needs-nav-messages-link" id="navMessagesLink" style="display: none">Messages</a>
+      <a href="javascript:void(0)" onclick="handleAccountClick()" class="nav-link" style="cursor: pointer" role="button" data-i18n="nav_account">Mon Compte</a>
+      <button class="lang-btn" onclick="toggleMode()" id="modeBtn" aria-label="Changer le thème" type="button">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <button class="lang-btn" onclick="switchLang()" id="langBtn" type="button">EN</button>
+      <a href="services.html" class="btn btn-main" style="padding: 10px 20px; font-size: 0.9rem" data-i18n="btn_start">Démarrer</a>
+    </nav>
+    <div class="nav-drawer" id="navDrawer" aria-label="Menu de navigation">
+      <a href="services.html" class="nav-link" data-i18n="nav_services">Services</a>
+      <a href="messages.html" class="nav-link needs-nav-messages-link" id="navMessagesLinkDrawer" style="display: none">Messages</a>
+      <a href="javascript:void(0)" onclick="handleAccountClick()" class="nav-link" role="button" data-i18n="nav_account">Mon Compte</a>
+      <a href="services.html" class="btn btn-main" style="width: 100%; justify-content: center" data-i18n="btn_start">Démarrer</a>
+    </div>
+  </header>
+
+  <main id="main-content" role="main" tabindex="-1">
+    <section class="about-hero page-block__inner" style="max-width: 1200px; margin: 0 auto; padding-left: 20px; padding-right: 20px">
+      <h1 class="section-heading-gradient" data-i18n="about_hero_title">Needs, né à Montréal pour simplifier votre quotidien</h1>
+      <p data-i18n="about_hero_sub">Une plateforme locale qui connecte les Montréalais aux meilleurs professionnels.</p>
+    </section>
+
+    <div class="page-block page-block--dark">
+      <div class="page-block__inner about-section">
+        <h2 class="section-heading-gradient" data-i18n="about_story_title">Notre histoire</h2>
+        <p data-i18n="about_story_p"></p>
+      </div>
+    </div>
+
+    <div class="page-block page-block--darker">
+      <div class="page-block__inner about-section">
+        <h2 class="section-heading-gradient" data-i18n="about_mission_title">Notre mission</h2>
+        <p data-i18n="about_mission_p"></p>
+      </div>
+    </div>
+
+    <div class="page-block page-block--dark">
+      <div class="page-block__inner about-section">
+        <h2 class="section-heading-gradient" data-i18n="about_values_title">Nos valeurs</h2>
+        <div class="about-values">
+          <div class="about-value-card">
+            <h3 data-i18n="about_val_trust_t">Confiance</h3>
+            <p data-i18n="about_val_trust_p"></p>
+          </div>
+          <div class="about-value-card">
+            <h3 data-i18n="about_val_sec_t">Sécurité</h3>
+            <p data-i18n="about_val_sec_p"></p>
+          </div>
+          <div class="about-value-card">
+            <h3 data-i18n="about_val_fast_t">Rapidité</h3>
+            <p data-i18n="about_val_fast_p"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-block page-block--darker">
+      <div class="page-block__inner about-section">
+        <h2 class="section-heading-gradient" data-i18n="about_stats_title">Needs en chiffres</h2>
+        <div class="about-stats">
+          <div class="about-stat" data-i18n="about_stat_providers">200+ prestataires vérifiés</div>
+          <div class="about-stat" data-i18n="about_stat_cats">15+ catégories de services</div>
+          <div class="about-stat" data-i18n="about_stat_rating">4,8/5 note moyenne</div>
+          <div class="about-stat" data-i18n="about_stat_area">Montréal et banlieues couvertes</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-block page-block--dark">
+      <div class="page-block__inner about-section">
+        <h2 class="section-heading-gradient" data-i18n="about_team_title">L'équipe</h2>
+        <div class="about-team">
+          <p data-i18n="about_team_p" style="margin: 0; max-width: none"></p>
+        </div>
+      </div>
+    </div>
+
+    <section class="about-cta">
+      <h2 class="section-heading-gradient" data-i18n="about_cta_title">Prêt à simplifier votre quotidien ?</h2>
+      <div class="about-cta-btns">
+        <a href="services.html" class="btn btn-main" data-i18n="about_cta_find">Trouver un service</a>
+        <a href="become-provider.html" class="btn btn-secondary" data-i18n="about_cta_provider">Devenir prestataire</a>
+      </div>
+    </section>
+
+    <button type="button" class="scroll-top" id="scrollTopBtn" aria-label="Retour en haut">
+      <i class="fa-solid fa-chevron-up"></i>
+    </button>
+  </main>
+
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+  <script defer src="js/conversations.js"></script>
+  <script defer src="js/messages-nav-badge.js"></script>
+  <script defer src="main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (typeof initMessagesNavBadge === "function") initMessagesNavBadge();
+      var btn = document.getElementById("scrollTopBtn");
+      if (btn) {
+        window.addEventListener(
+          "scroll",
+          function () {
+            btn.classList.toggle("visible", window.scrollY > 300);
+          },
+          { passive: true }
+        );
+        btn.addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    });
+  </script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

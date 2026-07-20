@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/insurance.html">
+    <meta name="theme-color" content="#000000" id="meta-theme-color">
+  <title>Needs — Protection</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png?v=1.1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cursor.css">
+    <style>
+        .hero-sub { background: #0a0a0a; padding: 56px 5% 40px; text-align: center; border-bottom: 1px solid #171717; }
+        .hero-sub h1, .hero-sub p { color: #f0f9ff; margin: 0; }
+        .hero-sub p { margin-top: 12px; font-size: 1.1rem; color: rgba(240,249,255,0.88); }
+        .ins-container { max-width: 1000px; margin: -24px auto 80px; padding: 0 20px; }
+        .grid-insurance { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .ins-card { background: #0a0a0a; border: 1px solid #171717; padding: 28px; border-radius: 20px; transition: 0.3s; }
+        .ins-card:hover { border-color: #06b6d4; transform: translateY(-4px); }
+        .ins-card h3 { color: #f0f9ff; margin-bottom: 12px; }
+        .ins-card p { color: rgba(240,249,255,0.88); margin: 0; line-height: 1.55; }
+        .ins-card i { font-size: 2.5rem; color: #f59e0b; margin-bottom: 16px; }
+        html.needs-light .hero-sub, body.light-mode .hero-sub { background: #f9fafb !important; border-color: #e5e7eb !important; }
+        html.needs-light .hero-sub h1, body.light-mode .hero-sub h1 { color: #111827 !important; }
+        html.needs-light .hero-sub p, body.light-mode .hero-sub p { color: #4b5563 !important; }
+        html.needs-light .ins-card, body.light-mode .ins-card { background: #fff !important; border-color: #e5e7eb !important; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+        html.needs-light .ins-card h3, body.light-mode .ins-card h3 { color: #111827 !important; }
+        html.needs-light .ins-card p, body.light-mode .ins-card p { color: #6b7280 !important; }
+        .ins-legal { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; line-height: 1.65; }
+        .ins-legal h2 { font-size: 1.2rem; color: #f0f9ff; margin: 32px 0 12px; }
+        .ins-legal p, .ins-legal li { color: rgba(240,249,255,0.88); font-size: 0.95rem; }
+        .ins-legal .warn { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.35); border-radius: 12px; padding: 16px; margin: 20px 0; font-size: 0.9rem; }
+        html.needs-light .ins-legal h2, body.light-mode .ins-legal h2 { color: #111827 !important; }
+        html.needs-light .ins-legal p, html.needs-light .ins-legal li, body.light-mode .ins-legal p, body.light-mode .ins-legal li { color: #374151 !important; }
+        html.needs-light .ins-legal .warn, body.light-mode .ins-legal .warn { background: #fffbeb !important; border-color: #fcd34d !important; color: #78350f !important; }
+    </style>
+</head>
+<body>
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+    <nav class="subpage-topbar">
+        <a href="index.html" class="subpage-back" id="ins_back" data-i18n="ins_back">← Retour</a>
+        <div class="subpage-actions">
+            <button type="button" class="subpage-icon-btn" id="subpageThemeBtn" onclick="needsSubpage.toggleTheme()" aria-label="Thème"></button>
+            <button type="button" class="subpage-icon-btn" id="subpageLangBtn" onclick="needsSubpage.toggleLang(applyIns)" aria-label="Langue">EN</button>
+        </div>
+    </nav>
+
+    <header class="hero-sub">
+        <h1 id="ins_title" data-i18n="ins_title">Une confiance absolue</h1>
+        <p id="ins_desc" data-i18n="ins_desc">Chaque mission est protégée, chaque utilisateur est sécurisé.</p>
+    </header>
+
+    <main class="ins-container">
+        <div class="grid-insurance">
+            <div class="ins-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3 id="ins_c1_t" data-i18n="ins_c1_t">Responsabilité civile</h3>
+                <p id="ins_c1_d" data-i18n="ins_c1_d">Couverture complète contre les dommages matériels accidentels lors d'une mission.</p>
+            </div>
+            <div class="ins-card">
+                <i class="fa-solid fa-lock"></i>
+                <h3 id="ins_c2_t" data-i18n="ins_c2_t">Paiement séquestre</h3>
+                <p id="ins_c2_d" data-i18n="ins_c2_d">Votre argent est conservé en sécurité et n'est libéré que lorsque vous validez le travail.</p>
+            </div>
+            <div class="ins-card">
+                <i class="fa-solid fa-user-check"></i>
+                <h3 id="ins_c3_t" data-i18n="ins_c3_t">Vérification d'identité</h3>
+                <p id="ins_c3_d" data-i18n="ins_c3_d">Les prestataires premium passent un contrôle d'identité rigoureux.</p>
+            </div>
+        </div>
+    </main>
+
+    <section class="ins-legal doc-page" style="padding-top:0;">
+        <h2 id="ent_h2" data-i18n="ins_ent_h2">Entreprises &amp; attestations</h2>
+        <p id="ent_p1" data-i18n="ins_ent_p1">Pour les services juridiques et assurances de votre groupe, Needs peut fournir une <strong>attestation sur l’existence</strong> des dispositifs décrits sur cette page (séquestre, vérifications, cadre contractuel), dans la limite des polices souscrites par la plateforme et/ou les prestataires.</p>
+        <p id="ent_p2" data-i18n="ins_ent_p2"><strong>Important :</strong> Needs n’est pas un assureur. La couverture de responsabilité civile professionnelle des <strong>prestataires</strong> relève de leurs propres contrats ; la Plateforme facilite la mise en relation et le flux de paiement. Les pays couverts, plafonds et franchises dépendent des contrats effectifs — une <strong>fiche précise</strong> peut être communiquée après analyse de votre cas.</p>
+        <div class="warn" id="ent_warn" data-i18n-html="ins_ent_warn_html"></div>
+        <p style="margin-top:20px;"><a href="entreprise-grands-comptes.html" class="btn btn-main" id="ent_btn" data-i18n="ins_ent_btn">Pack Pro &amp; Grands comptes</a></p>
+    </section>
+
+    <script src="subpage-common.js"></script>
+    <script>
+        function applyIns() {
+            var lang = needsSubpage.getLang();
+            if (window.__needs_prefs) __needs_prefs.setLang(lang);
+            document.documentElement.lang = lang === "en" ? "en" : "fr";
+            if (window.NeedsI18n) NeedsI18n.applyDOM(lang);
+            document.title = lang === "en" ? "Needs — Trust & protection" : "Needs — Protection";
+            needsSubpage.updateChromeButtons();
+            var meta = document.getElementById("meta-theme-color");
+            if (meta && window.__needs_prefs) meta.setAttribute("content", __needs_prefs.getTheme() === "light" ? "#ffffff" : "#000000");
+        }
+
+        document.addEventListener("DOMContentLoaded", applyIns);
+    </script>
+    <script src="cursor.js"></script>
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

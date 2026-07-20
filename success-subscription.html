@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Subscription</title>
+  <link rel="manifest" href="/manifest.json">
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+  <script src="js/i18n.js"></script>
+  <link rel="stylesheet" href="theme-needs.css">
+  <style>
+    body { margin: 0; min-height: 100vh; background: #0A0A0F; color: #F0EDE8; font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .box { text-align: center; max-width: 520px; background: #14141c; border: 1px solid #2A2A38; border-radius: 24px; padding: 40px 28px; }
+    .ico { font-size: 3.5rem; }
+    h1 { font-size: 1.45rem; margin: 12px 0; }
+    .pro h1 { color: #C9A84C; }
+    .biz h1 { color: #a78bfa; }
+    ul { text-align: left; color: #9B99A6; line-height: 1.6; max-width: 400px; margin: 0 auto 24px; padding-left: 1.2rem; }
+    a.btn { display: inline-block; background: #C9A84C; color: #1a1510; font-weight: 800; padding: 14px 28px; border-radius: 12px; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="box" id="subBox">
+    <div class="ico" id="subIco" aria-hidden="true">&#11088;</div>
+    <h1 id="subH1"></h1>
+    <ul id="subList"></ul>
+    <a href="compte.html" class="btn" id="subCta"></a>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var p = new URLSearchParams(window.location.search).get('plan') || 'pro';
+      var box = document.getElementById('subBox');
+      var ico = document.getElementById('subIco');
+      var h1 = document.getElementById('subH1');
+      var list = document.getElementById('subList');
+      var cta = document.getElementById('subCta');
+      if (!window.NeedsI18n) return;
+      document.title = NeedsI18n.t('success_sub_meta') || document.title;
+      if (p === 'business') {
+        box.classList.add('biz');
+        ico.innerHTML = '&#128142;';
+        h1.textContent = NeedsI18n.t('success_sub_h1_biz');
+        list.innerHTML =
+          '<li>' + NeedsI18n.t('success_sub_biz_1') + '</li>' +
+          '<li>' + NeedsI18n.t('success_sub_biz_2') + '</li>' +
+          '<li>' + NeedsI18n.t('success_sub_biz_3') + '</li>';
+      } else {
+        box.classList.add('pro');
+        h1.textContent = NeedsI18n.t('success_sub_h1_pro');
+        list.innerHTML =
+          '<li>' + NeedsI18n.t('success_sub_li1') + '</li>' +
+          '<li>' + NeedsI18n.t('success_sub_li2') + '</li>' +
+          '<li>' + NeedsI18n.t('success_sub_li3') + '</li>';
+      }
+      cta.textContent = NeedsI18n.t('success_sub_cta');
+    });
+  </script>
+</body>
+</html>

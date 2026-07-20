@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/admin.html">
+    <title>Admin Needs - Panneau de Contrôle Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="theme-needs.css">
+    <style>
+        .admin-container { max-width: 900px; margin: 20px auto; padding: 20px; background: var(--navy-light); border-radius: 12px; font-family: var(--font-body); border: 1px solid var(--navy-border); }
+        
+        /* Dashboard Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: var(--navy-card); padding: 20px; border-radius: 8px; text-align: center; border-bottom: 4px solid var(--accent); box-shadow: var(--shadow-raised); }
+        .stat-card h4 { margin: 0; color: var(--text-dim); font-size: 14px; }
+        .stat-card p { margin: 10px 0 0; font-size: 24px; font-weight: bold; color: var(--text); }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--text); }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--navy-border); border-radius: 4px; box-sizing: border-box; background: var(--navy-card); color: var(--text); }
+        
+        /* Buttons */
+        .btn-group { display: flex; gap: 10px; }
+        button { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        button:hover { background: var(--accent-hover); }
+        .btn-cancel { background: var(--muted); color: var(--navy-bg); }
+        
+        .price-row { display: flex; gap: 10px; }
+        .price-row .form-group { flex: 1; }
+
+        /* Géo & Edit Box */
+        .geo-box { background: var(--navy-card); padding: 15px; border-radius: 6px; margin-bottom: 15px; border: 1px solid var(--navy-border); border-left: 4px solid var(--accent); }
+        .loc-status { font-size: 12px; margin-top: 5px; color: var(--text-dim); }
+        
+        .edit-mode-active { border: 2px solid var(--success) !important; background: rgba(34, 197, 94, 0.08) !important; }
+
+        /* List container */
+        .service-list { margin-top: 40px; border-top: 2px solid var(--navy-border); padding-top: 20px; }
+        .service-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--navy-card); margin-bottom: 10px; border-radius: 8px; box-shadow: var(--shadow-raised); border: 1px solid var(--navy-border); }
+        .img-preview { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; margin-right: 15px; background: var(--navy-light); }
+        .item-info { display: flex; align-items: center; }
+        .item-details small { color: var(--accent); font-weight: bold; }
+
+        .actions { display: flex; gap: 5px; }
+        .btn-small { width: auto; padding: 6px 10px; font-size: 12px; }
+        .btn-edit { background: var(--success); }
+        .btn-delete { background: var(--danger); }
+        h2 { color: var(--text); font-family: var(--font-display); }
+        body { background: var(--navy-bg); color: var(--text); margin: 0; }
+    </style>
+    <script src="js/needs-analytics.js"></script>
+</head>
+<body>
+
+<div class="admin-container">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h4>Total Services</h4>
+            <p id="statTotal">0</p>
+        </div>
+        <div class="stat-card">
+            <h4>Prix Moyen</h4>
+            <p id="statAvg">0€</p>
+        </div>
+        <div class="stat-card">
+            <h4>Villes Couvertes</h4>
+            <p id="statCities">0</p>
+        </div>
+    </div>
+
+    <h2 id="formTitle">Ajouter un nouveau service</h2>
+    <form id="serviceForm">
+        <input type="hidden" id="editId">
+
+        <div class="geo-box" id="geoContainer">
+            <label for="serviceAddress"><i class="fa-solid fa-location-dot"></i> Adresse complète du service</label>
+            <input type="text" id="serviceAddress" name="serviceAddress" placeholder="Rue, numéro, ville, code postal (Québec / Canada)" autocomplete="street-address" maxlength="500">
+            <input type="hidden" id="addrLat" value="">
+            <input type="hidden" id="addrLng" value="">
+            <div id="locStatus" class="loc-status" aria-live="polite">Saisissez une adresse valide — elle sera vérifiée automatiquement.</div>
+        </div>
+
+        <div class="form-group">
+            <label>Nom du service</label>
+            <input type="text" id="title" placeholder="ex: Shooting Photo Pro" required>
+        </div>
+
+        <div class="price-row">
+            <div class="form-group">
+                <label>Prix ($)</label>
+                <input type="number" id="price" required>
+            </div>
+            <div class="form-group">
+                <label>Unité</label>
+                <select id="unit">
+                    <option value="total">Prix fixe</option>
+                    <option value="heure">par heure</option>
+                    <option value="jour">par jour</option>
+                    <option value="prestation">par prestation</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>URL de l'image</label>
+            <input type="text" id="imageUrl" placeholder="Lien de l'image...">
+        </div>
+
+        <div class="form-group">
+            <label>Catégorie</label>
+            <select id="cat">
+                <option value="home">Maison (Home)</option>
+                <option value="tech">Technologie</option>
+                <option value="wellness">Bien-être (Wellness)</option>
+                <option value="pro">Affaires (Business)</option>
+                <option value="life">Vie Quotidienne</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea id="description" rows="3" required></textarea>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" id="submitBtn">Publier le service</button>
+            <button type="button" id="cancelEdit" class="btn-cancel" style="display:none;" onclick="resetForm()">Annuler modification</button>
+        </div>
+    </form>
+
+    <div class="service-list">
+        <h3>Gestion des services en ligne</h3>
+        <div id="listContainer">Chargement...</div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU",
+        authDomain: "needs-ae86d.firebaseapp.com",
+        projectId: "needs-ae86d",
+        storageBucket: "needs-ae86d.firebasestorage.app",
+        messagingSenderId: "253900994407",
+        appId: "1:253900994407:web:55168e1b73c878761de1c2"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    let customCoords = { lat: null, lng: null, city: "" };
+    let isEditing = false;
+    let addressVerified = false;
+    let addressDebounceTimer = null;
+
+    function setPublishEnabled(ok) {
+        const btn = document.getElementById('submitBtn');
+        if (!btn) return;
+        btn.disabled = !ok;
+        btn.style.opacity = ok ? '1' : '0.55';
+        btn.style.cursor = ok ? 'pointer' : 'not-allowed';
+    }
+
+    async function runAddressLookup(addr) {
+        const status = document.getElementById('locStatus');
+        const latEl = document.getElementById('addrLat');
+        const lngEl = document.getElementById('addrLng');
+        if (!addr || addr.length < 5) {
+            addressVerified = false;
+            customCoords = { lat: null, lng: null, city: "" };
+            if (latEl) latEl.value = '';
+            if (lngEl) lngEl.value = '';
+            if (status) status.innerHTML = '⌛ Saisissez l’adresse complète…';
+            setPublishEnabled(false);
+            return;
+        }
+        if (status) status.innerHTML = '🔍 Vérification…';
+        try {
+            const url = 'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(addr) + '&format=json&limit=1&countrycodes=ca';
+            const res = await fetch(url, { headers: { 'Accept-Language': 'fr', 'User-Agent': 'NeedsAdmin/1.0 (service publish)' } });
+            const data = await res.json();
+            if (data.length > 0) {
+                customCoords = {
+                    lat: parseFloat(data[0].lat),
+                    lng: parseFloat(data[0].lon),
+                    city: data[0].display_name.split(',')[0].trim()
+                };
+                addressVerified = true;
+                if (latEl) latEl.value = String(customCoords.lat);
+                if (lngEl) lngEl.value = String(customCoords.lng);
+                if (status) status.innerHTML = '✅ Adresse vérifiée — ' + data[0].display_name;
+                setPublishEnabled(true);
+            } else {
+                addressVerified = false;
+                customCoords = { lat: null, lng: null, city: "" };
+                if (latEl) latEl.value = '';
+                if (lngEl) lngEl.value = '';
+                if (status) status.innerHTML = '❌ Adresse introuvable, vérifiez l’orthographe';
+                setPublishEnabled(false);
+            }
+        } catch (e) {
+            addressVerified = false;
+            if (status) status.innerHTML = 'Erreur réseau (Nominatim). Réessayez.';
+            setPublishEnabled(false);
+        }
+    }
+
+    document.getElementById('serviceAddress').addEventListener('input', function() {
+        addressVerified = false;
+        setPublishEnabled(false);
+        clearTimeout(addressDebounceTimer);
+        const v = this.value.trim();
+        addressDebounceTimer = setTimeout(function() { runAddressLookup(v); }, 800);
+    });
+
+    // --- PUBLIER OU MODIFIER ---
+    const serviceForm = document.getElementById('serviceForm');
+    serviceForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const user = auth.currentUser;
+        if (!user) return alert("Connectez-vous d'abord !");
+        const uSnap = await db.collection("users").doc(user.uid).get();
+        const ud = uSnap.data() || {};
+        if (ud.sellerTermsVersion !== "1") {
+            alert("CGU vendeur requises : ouvrez compte.html → « Devenir créateur », acceptez le contrat, puis revenez ici.");
+            return;
+        }
+
+        const addrVal = document.getElementById('serviceAddress').value.trim();
+        if (!addressVerified || customCoords.lat == null || customCoords.lng == null) {
+            alert("Adresse invalide : attendez la coche verte « Adresse vérifiée » ou corrigez l’adresse.");
+            return;
+        }
+
+        const serviceData = {
+            title: document.getElementById('title').value,
+            price: Number(document.getElementById('price').value),
+            unit: document.getElementById('unit').value,
+            imageUrl: document.getElementById('imageUrl').value,
+            cat: document.getElementById('cat').value,
+            description: document.getElementById('description').value,
+            sellerId: user.uid,
+            sellerName: "Admin",
+            address: addrVal,
+            location: {
+                lat: customCoords.lat,
+                lng: customCoords.lng,
+                city: customCoords.city || "Partout"
+            }
+        };
+
+        try {
+            if(isEditing) {
+                const id = document.getElementById('editId').value;
+                await db.collection("services").doc(id).update(serviceData);
+                alert("✅ Service mis à jour !");
+            } else {
+                serviceData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                await db.collection("services").add(serviceData);
+                alert("✅ Service publié !");
+            }
+            resetForm();
+        } catch (error) { alert("Erreur: " + error.message); }
+    });
+
+    // --- FONCTION MODIFIER ---
+    window.startEdit = (id, dataJson) => {
+        const data = JSON.parse(decodeURIComponent(dataJson));
+        isEditing = true;
+        document.getElementById('editId').value = id;
+        document.getElementById('formTitle').innerText = "Modifier : " + data.title;
+        document.getElementById('submitBtn').innerText = "Enregistrer les modifications";
+        document.getElementById('submitBtn').style.background = "var(--success)";
+        document.getElementById('cancelEdit').style.display = "block";
+        document.getElementById('geoContainer').classList.add('edit-mode-active');
+
+        // Remplir les champs
+        document.getElementById('title').value = data.title;
+        document.getElementById('price').value = data.price;
+        document.getElementById('unit').value = data.unit;
+        document.getElementById('imageUrl').value = data.imageUrl;
+        document.getElementById('cat').value = data.cat;
+        document.getElementById('description').value = data.description;
+        document.getElementById('serviceAddress').value = data.address || data.location?.city || "";
+        customCoords = {
+            lat: data.location?.lat != null ? Number(data.location.lat) : null,
+            lng: data.location?.lng != null ? Number(data.location.lng) : null,
+            city: data.location?.city || ""
+        };
+        addressVerified = customCoords.lat != null && customCoords.lng != null && !Number.isNaN(customCoords.lat) && !Number.isNaN(customCoords.lng);
+        document.getElementById('addrLat').value = addressVerified ? String(customCoords.lat) : '';
+        document.getElementById('addrLng').value = addressVerified ? String(customCoords.lng) : '';
+        document.getElementById('locStatus').innerHTML = addressVerified
+            ? '✅ Adresse vérifiée (enregistrée)'
+            : '⌛ Adresse à reconfirmer — modifiez puis attendez la vérification';
+        setPublishEnabled(addressVerified);
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.resetForm = () => {
+        isEditing = false;
+        serviceForm.reset();
+        document.getElementById('formTitle').innerText = "Ajouter un nouveau service";
+        document.getElementById('submitBtn').innerText = "Publier le service";
+        document.getElementById('submitBtn').style.background = "var(--primary)";
+        document.getElementById('cancelEdit').style.display = "none";
+        document.getElementById('geoContainer').classList.remove('edit-mode-active');
+        document.getElementById('locStatus').innerHTML = "Saisissez une adresse valide — elle sera vérifiée automatiquement.";
+        document.getElementById('addrLat').value = '';
+        document.getElementById('addrLng').value = '';
+        customCoords = { lat: null, lng: null, city: "" };
+        addressVerified = false;
+        setPublishEnabled(false);
+    };
+
+    setPublishEnabled(false);
+
+    // --- LISTE & STATS EN TEMPS RÉEL ---
+    db.collection("services").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        const list = document.getElementById('listContainer');
+        list.innerHTML = "";
+        let total = 0, sumPrice = 0, cities = new Set();
+
+        snapshot.forEach((doc) => {
+            const s = doc.data();
+            total++;
+            sumPrice += s.price;
+            if(s.location?.city) cities.add(s.location.city);
+
+            const sJson = encodeURIComponent(JSON.stringify(s));
+            const div = document.createElement('div');
+            div.className = 'service-item';
+            div.innerHTML = `
+                <div class="item-info">
+                    <img src="${s.imageUrl || 'https://via.placeholder.com/60'}" class="img-preview">
+                    <div class="item-details">
+                        <strong>${s.title}</strong><br>
+                        <small><i class="fa-solid fa-location-dot"></i> ${s.location?.city || 'Monde'}</small> • ${s.price}$
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn-small btn-edit" onclick="startEdit('${doc.id}', '${sJson}')">Modifier</button>
+                    <button class="btn-small btn-delete" onclick="deleteService('${doc.id}')">Supprimer</button>
+                </div>
+            `;
+            list.appendChild(div);
+        });
+
+        // Update Stats
+        document.getElementById('statTotal').innerText = total;
+        document.getElementById('statAvg').innerText = total > 0 ? Math.round(sumPrice/total) + "€" : "0€";
+        document.getElementById('statCities').innerText = cities.size;
+    });
+
+    window.deleteService = async (id) => {
+        if(confirm("Supprimer définitivement ?")) await db.collection("services").doc(id).delete();
+    };
+</script>
+
+
+    <div id="needs-unified-footer"></div>
+    <script defer src="js/inject-unified-footer.js"></script>
+</body>
+</html>

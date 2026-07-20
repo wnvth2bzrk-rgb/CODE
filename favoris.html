@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/favoris.html">
+  <title>Needs — Mes Favoris</title>
+  <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="theme-needs.css">
+  <link rel="stylesheet" href="cursor.css">
+  <link rel="stylesheet" href="mobile-app-shell.css">
+
+  <style>
+    html.needs-light .btn-delete { background: rgba(239,68,68,0.1); color: #B91C1C; border-color: rgba(239,68,68,0.3); }
+    html.needs-light .btn-delete:hover { background: var(--danger); color: white; border-color: var(--danger); }
+    html.needs-light .modal-btn.cancel-btn { background: #F1F5F9; color: #1c1917; border-color: #E2E8F0; }
+    html.needs-light .modal-btn.danger-btn { background: #DC2626; color: white; }
+    html.needs-light .modal-btn.danger-btn:hover { background: #B91C1C; }
+    html.needs-light .modal { background: #fff; border-color: #E2E8F0; }
+    html.needs-light .modal h3 { color: #1c1917; }
+    html.needs-light .modal p { color: #475569; }
+    /* Mode jour : textes lisibles (éviter blanc sur blanc) */
+    html.needs-light header { background: rgba(248,250,252,0.9); }
+    html.needs-light .logo { color: #1c1917; }
+    html.needs-light .btn-nav { color: #1c1917; }
+    html.needs-light .btn-nav:hover { background: rgba(15,23,42,0.06); border-color: rgba(15,23,42,0.15); }
+    html.needs-light .btn-icon:hover { color: #1c1917; border-color: rgba(15,23,42,0.2); }
+    html.needs-light .cat-item:hover { color: #1c1917; border-color: rgba(15,23,42,0.2); }
+    html.needs-light .card-body h3 { color: #1c1917; }
+    html.needs-light .price-val { color: #1c1917; }
+    html.needs-light .suggestions-title { color: var(--text-mute); }
+    html.needs-light .suggestions-title span { color: #1c1917; }
+    html.needs-light .suggestion-body h4 { color: #1c1917; }
+    html.needs-light .suggestion-body .s-price strong { color: #1c1917; }
+    html.needs-light .empty h3 { color: #1c1917; }
+    html.needs-light .modal-btn.cancel-btn:hover { background: rgba(15,23,42,0.08); }
+    html.needs-light .toast { background: #fff; color: #1c1917; border-color: #E2E8F0; box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+    html.needs-light #compare-modal .modal { background: #fff; }
+    html.needs-light .compare-table th { color: #475569; }
+    html.needs-light .compare-table td { color: #1c1917; }
+    html.needs-light .compare-table .label-col { color: #475569; }
+    html.needs-light .share-link-box input { color: #1c1917; }
+    html.needs-light .share-info { color: #64748B; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image:
+        radial-gradient(circle at top left, rgba(37,99,235,0.06), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(37,99,235,0.05), transparent 40%);
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 15px 6%; backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(3,7,18,0.85);
+    }
+    .logo {
+      font-weight: 800; font-size: 1.2rem; color: #fff;
+      text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: 1px;
+    }
+    .logo-box {
+      width: 32px; height: 32px; background: var(--primary); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .btn-nav {
+      background: var(--surface); border: 1px solid var(--border); color: #fff;
+      padding: 8px 16px; border-radius: 10px; cursor: pointer;
+      font-size: 12px; font-weight: 700; text-decoration: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-nav:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+
+    /* ── OFFLINE BANNER ── */
+    .offline-banner {
+      position: sticky; top: 62px; z-index: 999;
+      background: rgba(255,71,87,0.1); border-bottom: 1px solid rgba(255,71,87,0.25);
+      text-align: center; padding: 10px;
+      color: var(--danger); font-size: 13px; font-weight: 600;
+      display: none; align-items: center; justify-content: center; gap: 8px;
+    }
+    .offline-banner.show { display: flex; }
+
+    /* ── HERO ── */
+    .hero { text-align: center; padding: 52px 20px 10px; position: relative; z-index: 1; }
+    .hero h1 { font-size: clamp(1.9rem, 4.5vw, 2.9rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 8px; }
+    .hero-count {
+      display: inline-block; background: var(--primary); color: white;
+      padding: 2px 12px; border-radius: 8px; font-size: 0.7em;
+      vertical-align: middle; margin-left: 8px;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+    .hero p { color: var(--text-mute); font-size: 1rem; }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1300px; margin: 28px auto 0; padding: 0 5%;
+      gap: 12px; flex-wrap: wrap; position: relative; z-index: 1;
+    }
+    .toolbar-left { display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap; }
+    .toolbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .search-box { position: relative; flex: 1; min-width: 180px; max-width: 300px; }
+    .search-box i { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--text-mute); font-size: 13px; pointer-events: none; }
+    .search-box input {
+      width: 100%; background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 13px 10px 36px;
+      color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-box input::placeholder { color: var(--text-mute); }
+    .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+
+    .select-ctrl {
+      background: var(--card); border: 1px solid var(--border); color: var(--text);
+      padding: 10px 13px; border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px;
+      cursor: pointer; outline: none; transition: border-color 0.2s;
+    }
+    .select-ctrl:focus { border-color: var(--primary); }
+
+    .btn-icon {
+      background: var(--card); border: 1px solid var(--border); color: var(--text-mute);
+      width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 14px;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .btn-icon:hover { border-color: rgba(255,255,255,0.2); color: white; }
+    .btn-icon.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+    .btn-compare-trigger {
+      background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3); color: #60A5FA;
+      padding: 10px 16px; border-radius: 12px; cursor: pointer; font-size: 13px; font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+    }
+    .btn-compare-trigger:hover { background: rgba(37,99,235,0.2); }
+    .compare-badge {
+      background: var(--primary); color: white; border-radius: 6px;
+      padding: 1px 7px; font-size: 11px;
+    }
+
+    .btn-share {
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-mute);
+      padding: 10px 16px; border-radius: 12px; cursor: pointer; font-size: 13px; font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+    }
+    .btn-share:hover { color: white; border-color: rgba(255,255,255,0.2); }
+
+    .btn-clear-all {
+      background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.2);
+      color: var(--danger); padding: 10px 16px; border-radius: 12px;
+      cursor: pointer; font-size: 13px; font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+    }
+    .btn-clear-all:hover { background: rgba(255,71,87,0.16); }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex; gap: 8px; max-width: 1300px;
+      margin: 16px auto 0; padding: 0 5%; flex-wrap: wrap;
+      position: relative; z-index: 1;
+    }
+    .cat-item {
+      padding: 8px 16px; border-radius: 12px; background: var(--card);
+      border: 1px solid var(--border); color: var(--text-mute);
+      cursor: pointer; font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; gap: 7px; transition: all 0.2s; white-space: nowrap;
+    }
+    .cat-item:hover { border-color: rgba(255,255,255,0.18); color: white; transform: translateY(-2px); }
+    .cat-item.active {
+      background: var(--primary); color: white; border-color: transparent;
+      box-shadow: 0 6px 16px var(--primary-glow);
+    }
+
+    /* ── GRID ── */
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 22px; max-width: 1300px; margin: 28px auto 60px; padding: 0 5%;
+      position: relative; z-index: 1;
+    }
+    .services-grid.list-view { grid-template-columns: 1fr; }
+
+    /* ── SKELETON ── */
+    .skeleton-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; }
+    .skel-img { height: 160px; }
+    .skel-img, .skel-line {
+      background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.03) 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite;
+    }
+    .skel-body { padding: 20px; }
+    .skel-line { height: 11px; border-radius: 6px; margin-bottom: 12px; }
+    .skel-line.w50 { width: 50%; } .skel-line.w70 { width: 70%; } .skel-line.w85 { width: 85%; }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 24px;
+      position: relative; overflow: hidden; backdrop-filter: blur(10px);
+      display: flex; flex-direction: column;
+      animation: card-in 0.35s ease backwards;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    @keyframes card-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .card:hover { transform: translateY(-6px); border-color: var(--border-hover); box-shadow: 0 20px 40px rgba(0,0,0,0.35); }
+    .card.compare-selected { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-glow); }
+
+    /* swipe */
+    .card { touch-action: pan-y; user-select: none; }
+    .card.swiping { transition: transform 0.1s ease; }
+    .card.swipe-out { transition: transform 0.3s ease; transform: translateX(-90px) !important; }
+
+    .swipe-bg {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 80px;
+      background: var(--danger); display: flex; align-items: center; justify-content: center;
+      border-radius: 0 24px 24px 0; z-index: 0; color: white; font-size: 1.1rem; flex-shrink: 0;
+    }
+
+    .card-inner {
+      position: relative; z-index: 1; display: flex; flex-direction: column; flex: 1;
+      background: var(--card); border-radius: 24px;
+      transition: transform 0.25s ease;
+    }
+
+    /* list mode */
+    .services-grid.list-view .card { flex-direction: row; border-radius: 18px; min-height: 110px; }
+    .services-grid.list-view .swipe-bg { border-radius: 0 18px 18px 0; }
+    .services-grid.list-view .card-inner { flex-direction: row; border-radius: 18px; }
+    .services-grid.list-view .img-area { width: 130px; height: 110px; flex-shrink: 0; border-radius: 18px 0 0 18px; }
+    .services-grid.list-view .img-area img { border-radius: 18px 0 0 18px; }
+    .services-grid.list-view .card-body { padding: 14px 16px; display: flex; flex-direction: column; justify-content: center; flex: 1; min-width: 0; }
+    .services-grid.list-view .card-body p { display: none; }
+    .services-grid.list-view .note-area { display: none; }
+    .services-grid.list-view .card-footer { border-top: none; padding-top: 6px; }
+    .services-grid.list-view .card:hover { transform: translateY(-3px); }
+
+    .img-area { width: 100%; height: 160px; position: relative; overflow: hidden; flex-shrink: 0; }
+    .img-area img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; display: block; }
+    .card:hover .img-area img { transform: scale(1.07); }
+    .img-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, rgba(3,7,18,0.5)); }
+
+    .btn-delete {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(3,7,18,0.55); backdrop-filter: blur(10px);
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-mute); cursor: pointer;
+      border: 1px solid var(--border); z-index: 5;
+      transition: all 0.2s;
+    }
+    .btn-delete:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+    .img-area .card-badges { top: 44px; left: 10px; max-width: calc(100% - 56px); }
+    .compare-check {
+      position: absolute; top: 12px; left: 12px;
+      width: 26px; height: 26px; border-radius: 8px;
+      background: rgba(3,7,18,0.55); backdrop-filter: blur(10px);
+      border: 2px solid var(--border); z-index: 5; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; transition: all 0.2s;
+      color: transparent;
+    }
+    .card.compare-selected .compare-check { background: var(--primary); border-color: var(--primary); color: white; }
+
+    .card-body { padding: 20px; flex-grow: 1; }
+    .cat-tag {
+      font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 6px;
+      text-transform: uppercase; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 5px;
+      background: var(--surface); color: var(--text-mute); border: 1px solid var(--border);
+    }
+    .card-body h3 { font-size: 1.15rem; margin-bottom: 8px; font-weight: 700; color: #fff; line-height: 1.3; }
+    .card-body p {
+      color: var(--text-mute); font-size: 13px; line-height: 1.55; margin-bottom: 12px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .date-badge { font-size: 11px; color: var(--text-mute); display: flex; align-items: center; gap: 5px; margin-bottom: 12px; }
+
+    /* NOTE */
+    .note-area { margin-bottom: 14px; }
+    .note-display {
+      font-size: 12px; color: #93C5FD;
+      background: rgba(37,99,235,0.07); border: 1px solid rgba(37,99,235,0.18); border-radius: 8px;
+      padding: 8px 10px; cursor: pointer; line-height: 1.4;
+      display: flex; align-items: flex-start; gap: 6px; transition: background 0.2s;
+    }
+    .note-display:hover { background: rgba(37,99,235,0.12); }
+    .note-display.empty-note { color: var(--text-mute); font-style: italic; }
+    .note-display i { margin-top: 1px; flex-shrink: 0; font-size: 11px; }
+    .note-input-wrap { display: none; }
+    .note-input-wrap.open { display: flex; gap: 6px; flex-direction: column; }
+    .note-input-wrap textarea {
+      width: 100%; background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.3);
+      border-radius: 8px; padding: 8px 10px; color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px;
+      resize: none; outline: none; height: 60px; line-height: 1.4;
+    }
+    .note-actions { display: flex; gap: 6px; }
+    .note-btn {
+      flex: 1; padding: 7px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; transition: all 0.2s;
+    }
+    .note-btn.save { background: var(--primary); color: white; }
+    .note-btn.save:hover { background: var(--primary-hover); }
+    .note-btn.cancel-note { background: var(--surface); color: var(--text-mute); border: 1px solid var(--border); }
+
+    .card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--border); padding-top: 16px; gap: 10px;
+    }
+    .price-val { font-size: 1.5rem; font-weight: 800; color: #fff; }
+    .price-val span { font-size: 11px; color: var(--text-mute); font-weight: 400; }
+    .btn-view {
+      background: #fff; color: #000; padding: 9px 18px; border-radius: 12px;
+      text-decoration: none; font-weight: 800; font-size: 12px;
+      display: flex; align-items: center; gap: 7px; transition: all 0.2s; white-space: nowrap;
+    }
+    .btn-view:hover { background: var(--primary); color: #fff; }
+
+    /* ── SUGGESTIONS ── */
+    .suggestions-section {
+      max-width: 1300px; margin: 0 auto 100px; padding: 0 5%;
+      position: relative; z-index: 1;
+    }
+    .suggestions-title {
+      font-size: 1rem; font-weight: 800; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px; color: var(--text-mute);
+    }
+    .suggestions-title span { color: #fff; }
+    .suggestions-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
+    }
+    .suggestion-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+      overflow: hidden; transition: all 0.2s; display: flex; flex-direction: column;
+    }
+    .suggestion-card:hover { border-color: var(--border-hover); transform: translateY(-4px); }
+    .suggestion-card img { width: 100%; height: 95px; object-fit: cover; display: block; }
+    .suggestion-body { padding: 12px 14px 6px; }
+    .suggestion-body h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; }
+    .suggestion-body .s-price { font-size: 0.82rem; color: var(--text-mute); }
+    .suggestion-body .s-price strong { color: #fff; }
+    .btn-add-fav {
+      margin: 8px 12px 12px; background: var(--primary); color: white;
+      border: none; border-radius: 10px; padding: 8px; cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s;
+    }
+    .btn-add-fav:hover { background: var(--primary-hover); }
+    @media (max-width: 768px){
+      .suggestions-grid{
+        display:flex;
+        overflow-x:auto;
+        gap:12px;
+        padding-bottom:4px;
+        scroll-snap-type:x mandatory;
+      }
+      .suggestion-card{
+        min-width:240px;
+        flex:0 0 240px;
+        scroll-snap-align:start;
+      }
+    }
+
+    /* ── EMPTY ── */
+    .empty { grid-column: 1 / -1; text-align: center; padding: 80px 20px; }
+    .empty-icon {
+      width: 72px; height: 72px; border-radius: 18px;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; font-size: 1.8rem; color: var(--text-mute);
+    }
+    .fav-empty-heart {
+      font-size: 4.25rem;
+      line-height: 1;
+      margin: 0 auto 22px;
+      color: rgba(155, 153, 166, 0.45);
+      font-weight: 300;
+      user-select: none;
+      animation: fav-heart-pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes fav-heart-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.55; }
+      50% { transform: scale(1.06); opacity: 0.85; }
+    }
+    .needs-footer-minimal {
+      margin-top: auto;
+      padding: 20px 16px;
+      background: #0A0A0F;
+      color: #9B99A6;
+      text-align: center;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      border-top: 1px solid rgba(42, 42, 56, 0.9);
+    }
+    .needs-footer-minimal a { color: #C9A84C; text-decoration: none; font-weight: 600; }
+    .needs-footer-minimal a:hover { text-decoration: underline; }
+    .empty h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+    .empty p { color: var(--text-mute); font-size: 14px; margin-bottom: 22px; }
+    .empty a {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--primary); color: white; padding: 12px 24px; border-radius: 12px;
+      text-decoration: none; font-weight: 800; font-size: 14px;
+      box-shadow: 0 8px 20px var(--primary-glow);
+    }
+
+    /* ── MODALS ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(3,7,18,0.82);
+      backdrop-filter: blur(10px); z-index: 9000;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--navy-card); border: 1px solid var(--border); border-radius: 24px;
+      padding: 30px; max-width: 400px; width: 100%; text-align: center;
+      transform: scale(0.9) translateY(16px);
+      transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+    .modal-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; margin: 0 auto 16px;
+    }
+    .modal-icon.red { background: rgba(255,71,87,0.1); color: var(--danger); border: 1px solid rgba(255,71,87,0.2); }
+    .modal-icon.blue { background: rgba(37,99,235,0.1); color: #60A5FA; border: 1px solid rgba(37,99,235,0.25); }
+    .modal h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; }
+    .modal p { color: var(--text-mute); font-size: 14px; margin-bottom: 22px; line-height: 1.55; }
+    .modal-btns { display: flex; gap: 10px; }
+    .modal-btn {
+      flex: 1; padding: 12px; border-radius: 12px; border: none;
+      cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; font-size: 14px; transition: all 0.2s;
+    }
+    .modal-btn.cancel-btn { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .modal-btn.cancel-btn:hover { background: rgba(255,255,255,0.07); }
+    .modal-btn.danger-btn { background: var(--danger); color: white; }
+    .modal-btn.danger-btn:hover { background: #e63e4e; }
+    .modal-btn.primary-btn { background: var(--primary); color: white; }
+    .modal-btn.primary-btn:hover { background: var(--primary-hover); }
+
+    /* Compare modal */
+    #compare-modal .modal { max-width: 860px; text-align: left; overflow-x: auto; }
+    .compare-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    .compare-table th {
+      background: var(--surface); color: var(--text-mute);
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+      padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border);
+    }
+    .compare-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: top; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table .label-col { color: var(--text-mute); font-weight: 700; font-size: 12px; width: 110px; }
+    .compare-img { width: 80px; height: 54px; object-fit: cover; border-radius: 8px; }
+    .compare-price { font-size: 1.2rem; font-weight: 800; }
+
+    /* Share modal */
+    .share-link-box {
+      display: flex; gap: 8px; align-items: center;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 10px 14px; margin-bottom: 14px;
+    }
+    .share-link-box input {
+      flex: 1; background: none; border: none; color: var(--text-mute);
+      font-size: 12px; outline: none; font-family: 'Plus Jakarta Sans', sans-serif; min-width: 0;
+    }
+    .share-link-box button {
+      background: var(--primary); color: white; border: none; border-radius: 8px;
+      padding: 6px 12px; cursor: pointer; font-size: 12px; font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif; white-space: nowrap; transition: background 0.2s;
+    }
+    .share-link-box button:hover { background: var(--primary-hover); }
+    .share-info { font-size: 12px; color: var(--text-mute); line-height: 1.5; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--navy-card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 13px 20px; display: flex; align-items: center; gap: 12px;
+      font-size: 14px; z-index: 9999; opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34,1.3,0.64,1);
+      white-space: nowrap; box-shadow: 0 16px 40px rgba(0,0,0,0.5); pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast-icon { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+    .toast.t-success .toast-icon { background: rgba(16,185,129,0.15); color: var(--success); }
+    .toast.t-danger .toast-icon { background: rgba(255,71,87,0.15); color: var(--danger); }
+    .toast.t-info .toast-icon { background: rgba(37,99,235,0.15); color: #60A5FA; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.7rem; }
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .toolbar-left, .toolbar-right { flex-wrap: wrap; }
+      .search-box { max-width: 100%; }
+    }
+  </style>
+</head>
+<body data-no-inject-footer="true">
+
+<!-- OFFLINE BANNER -->
+<div class="offline-banner" id="offline-banner">
+  <i class="fa-solid fa-wifi-slash"></i>
+  <span id="txt-offline">Mode hors-ligne — vos favoris sont affichés depuis le cache</span>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-box">N</div> NEEDS
+  </a>
+  <div class="nav-right">
+    <a href="services.html" class="btn-nav" id="txt-explore">Services</a>
+    <a href="messages.html" class="btn-nav needs-nav-messages-link" id="navMessagesLink" style="display:none;position:relative;">
+      <i class="fa-solid fa-comments"></i> Messages
+      <span class="needs-unread-msg-badge" id="navUnreadBadge" style="position:absolute;top:-8px;right:-6px;min-width:18px;height:18px;padding:0 5px;background:#dc2626;color:#fff;font-size:.6rem;font-weight:800;border-radius:999px;display:none;align-items:center;justify-content:center;"></span>
+    </a>
+    <button class="btn-nav" onclick="toggleThemeFav()" id="themeBtnFav" title="Jour / Nuit"><i class="fa-solid fa-moon"></i></button>
+    <button class="btn-nav" onclick="toggleLang()" id="langBtn">EN</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h1 id="txt-title">Mes Favoris <span class="hero-count" id="fav-count">0</span></h1>
+  <p id="txt-subtitle">Retrouvez vos services sélectionnés</p>
+</section>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="toolbar-left">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="search-input" placeholder="Rechercher..." oninput="render()">
+    </div>
+    <select class="select-ctrl" id="sort-select" onchange="render()">
+      <option value="default">Trier par</option>
+      <option value="price-asc">Prix ↑</option>
+      <option value="price-desc">Prix ↓</option>
+      <option value="name-asc">A → Z</option>
+      <option value="name-desc">Z → A</option>
+      <option value="date-desc">Plus récent</option>
+      <option value="date-asc">Plus ancien</option>
+    </select>
+    <button class="btn-icon active" id="btn-grid-view" onclick="setView('grid')" title="Vue grille">
+      <i class="fa-solid fa-grip"></i>
+    </button>
+    <button class="btn-icon" id="btn-list-view" onclick="setView('list')" title="Vue liste">
+      <i class="fa-solid fa-list"></i>
+    </button>
+  </div>
+  <div class="toolbar-right">
+    <button class="btn-compare-trigger" id="btn-compare-trigger" onclick="openCompareModal()" style="display:none">
+      <i class="fa-solid fa-scale-balanced"></i>
+      <span id="txt-compare">Comparer</span>
+      <span class="compare-badge" id="compare-count">0</span>
+    </button>
+    <button class="btn-share" onclick="openShareModal()">
+      <i class="fa-solid fa-arrow-up-from-bracket"></i>
+      <span id="txt-share">Partager</span>
+    </button>
+    <button class="btn-clear-all" onclick="openClearModal()">
+      <i class="fa-solid fa-trash"></i>
+      <span id="txt-clear">Tout supprimer</span>
+    </button>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="cat-item active" onclick="setFilter('all',this)"><i class="fa-solid fa-layer-group"></i><span class="c-all">Tous</span></div>
+  <div class="cat-item" onclick="setFilter('home',this)"><i class="fa-solid fa-house"></i><span class="c-home">Maison</span></div>
+  <div class="cat-item" onclick="setFilter('life',this)"><i class="fa-solid fa-spa"></i><span class="c-life">Bien-être</span></div>
+  <div class="cat-item" onclick="setFilter('rent',this)"><i class="fa-solid fa-key"></i><span class="c-rent">Locations</span></div>
+  <div class="cat-item" onclick="setFilter('event',this)"><i class="fa-solid fa-calendar-star"></i><span class="c-event">Événements</span></div>
+  <div class="cat-item" onclick="setFilter('tech',this)"><i class="fa-solid fa-laptop-code"></i><span class="c-tech">Digital</span></div>
+</div>
+
+<!-- GRID -->
+<section class="services-grid" id="grid">
+  <div class="skeleton-card"><div class="skel-img"></div><div class="skel-body"><div class="skel-line w50"></div><div class="skel-line w85"></div><div class="skel-line w70"></div></div></div>
+  <div class="skeleton-card"><div class="skel-img"></div><div class="skel-body"><div class="skel-line w50"></div><div class="skel-line w85"></div><div class="skel-line w70"></div></div></div>
+  <div class="skeleton-card"><div class="skel-img"></div><div class="skel-body"><div class="skel-line w50"></div><div class="skel-line w85"></div><div class="skel-line w70"></div></div></div>
+</section>
+
+<!-- SUGGESTIONS -->
+<div class="suggestions-section" id="suggestions-section" style="display:none">
+  <div class="suggestions-title"><i class="fa-solid fa-wand-magic-sparkles"></i> <span id="txt-suggestions">Vous pourriez aussi aimer</span></div>
+  <div class="suggestions-grid" id="suggestions-grid"></div>
+</div>
+
+<!-- MODAL: DELETE -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal">
+    <div class="modal-icon red"><i class="fa-solid fa-heart-crack"></i></div>
+    <h3 id="del-title">Retirer des favoris ?</h3>
+    <p id="del-desc">Ce service sera retiré de votre liste. Vous pourrez le retrouver depuis la page Services.</p>
+    <div class="modal-btns">
+      <button class="modal-btn cancel-btn" onclick="closeModal('delete-modal')" id="del-cancel">Annuler</button>
+      <button class="modal-btn danger-btn" onclick="confirmDelete()" id="del-confirm">Retirer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CLEAR ALL -->
+<div class="modal-overlay" id="clear-modal">
+  <div class="modal">
+    <div class="modal-icon red"><i class="fa-solid fa-trash-can"></i></div>
+    <h3 id="clr-title">Vider les favoris ?</h3>
+    <p id="clr-desc">Tous vos services sauvegardés seront supprimés. Cette action est irréversible.</p>
+    <div class="modal-btns">
+      <button class="modal-btn cancel-btn" onclick="closeModal('clear-modal')" id="clr-cancel">Annuler</button>
+      <button class="modal-btn danger-btn" onclick="confirmClearAll()" id="clr-confirm">Tout vider</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: COMPARE -->
+<div class="modal-overlay" id="compare-modal">
+  <div class="modal" style="max-width:860px;text-align:left;padding:28px;overflow-x:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h3 id="cmp-title" style="font-size:1.1rem;font-weight:800;">Comparateur de services</h3>
+      <button onclick="closeModal('compare-modal')" style="background:none;border:none;color:var(--text-mute);font-size:1.2rem;cursor:pointer;line-height:1;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="compare-content"></div>
+  </div>
+</div>
+
+<!-- MODAL: SHARE -->
+<div class="modal-overlay" id="share-modal">
+  <div class="modal">
+    <div class="modal-icon blue"><i class="fa-solid fa-share-nodes"></i></div>
+    <h3 id="shr-title">Partager mes favoris</h3>
+    <p id="shr-desc">Ce lien permet de consulter votre liste en lecture seule.</p>
+    <div class="share-link-box">
+      <input type="text" id="share-link-input" readonly>
+      <button onclick="copyShareLink()" id="shr-copy-btn">Copier</button>
+    </div>
+    <p class="share-info" id="shr-info">Le lien inclut vos services actuellement visibles.</p>
+    <div class="modal-btns" style="margin-top:16px;">
+      <button class="modal-btn cancel-btn" onclick="closeModal('share-modal')" id="shr-close">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon"><i id="toast-icon" class="fa-solid fa-check"></i></div>
+  <span id="toast-msg">—</span>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="js/nav-provider-cta.js"></script>
+<script src="js/conversations.js"></script>
+<script src="js/messages-nav-badge.js"></script>
+
+<script>
+// ══════════════════════════════════════════════
+//  FIREBASE INIT
+// ══════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU",
+  authDomain: "needs-ae86d.firebaseapp.com",
+  projectId: "needs-ae86d",
+  storageBucket: "needs-ae86d.firebasestorage.app",
+  messagingSenderId: "253900994407",
+  appId: "1:253900994407:web:55168e1b73c878761de1c2"
+};
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Mode hors-ligne (cache persistant)
+db.enablePersistence({ synchronizeTabs: true }).catch(err => {
+  console.warn('Persistence:', err.code);
+});
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let lang = (window.__needs_prefs && __needs_prefs.getLang()) ? __needs_prefs.getLang() : 'fr';
+let favs            = [];      // [{id, addedAt}] ou string (legacy)
+let notes           = {};      // {serviceId: "texte"}
+let services        = [];      // services filtrés (favoris seulement)
+let allServices     = [];      // tous les services (pour suggestions)
+let filter          = 'all';
+let viewMode        = 'grid';
+let compareIds      = new Set();
+let pendingDeleteId = null;
+let currentUser     = null;
+
+// ══════════════════════════════════════════════
+//  I18N
+// ══════════════════════════════════════════════
+const T = {
+  fr: {
+    title: "Mes Favoris", subtitle: "Retrouvez vos services sélectionnés",
+    explore: "Services", share: "Partager", clear: "Tout supprimer",
+    compare: "Comparer", suggestions: "Vous pourriez aussi aimer",
+    view: "Voir", addFav: "+ Ajouter",
+    searchPlaceholder: "Rechercher dans vos favoris...",
+    empty: "Aucun favori pour le moment",
+    emptyDesc: "Explorez nos services et ajoutez vos prestataires préférés ici",
+    emptySearch: "Aucun résultat",
+    emptySearchDesc: "Essayez un autre mot-clé ou changez de catégorie.",
+    emptyBtn: "Découvrir les services →",
+    noteAdd: "Ajouter une note...", notePlaceholder: "Votre note personnelle...",
+    noteSave: "Sauvegarder", noteCancel: "Annuler",
+    addedAt: "Ajouté",
+    delTitle: "Retirer des favoris ?", delDesc: "Ce service sera retiré de votre liste.",
+    delCancel: "Annuler", delConfirm: "Retirer",
+    clrTitle: "Vider les favoris ?", clrDesc: "Tous vos favoris seront supprimés. Irréversible.",
+    clrCancel: "Annuler", clrConfirm: "Tout vider",
+    cmpTitle: "Comparateur de services",
+    shrTitle: "Partager mes favoris",
+    shrDesc: "Ce lien permet de consulter votre liste en lecture seule.",
+    shrCopy: "Copier", shrClose: "Fermer",
+    shrInfo: "Le lien inclut vos services actuellement visibles.",
+    toastRemoved: "Retiré de vos favoris",
+    toastCleared: "Favoris vidés",
+    toastCopied: "Lien copié !",
+    toastNoteSaved: "Note sauvegardée",
+    toastAdded: "Ajouté aux favoris",
+    priceUnit: "/unité",
+    offline: "Mode hors-ligne — vos favoris sont affichés depuis le cache",
+    cat: { all:"Tous", home:"Maison", life:"Bien-être", rent:"Locations", event:"Événements", tech:"Digital" },
+    catIcons: { home:"fa-house", life:"fa-spa", rent:"fa-key", event:"fa-calendar-star", tech:"fa-laptop-code" }
+  },
+  en: {
+    title: "My Favorites", subtitle: "Your personal collection",
+    explore: "Browse", share: "Share", clear: "Clear all",
+    compare: "Compare", suggestions: "You might also like",
+    view: "View", addFav: "+ Add",
+    searchPlaceholder: "Search your favorites...",
+    empty: "No favorites yet",
+    emptyDesc: "Explore our services and save your favourite providers here",
+    emptySearch: "No results",
+    emptySearchDesc: "Try a different keyword or category.",
+    emptyBtn: "Discover services →",
+    noteAdd: "Add a note...", notePlaceholder: "Your personal note...",
+    noteSave: "Save", noteCancel: "Cancel",
+    addedAt: "Added",
+    delTitle: "Remove from favorites?", delDesc: "This service will be removed from your list.",
+    delCancel: "Cancel", delConfirm: "Remove",
+    clrTitle: "Clear all favorites?", clrDesc: "All saved services will be permanently removed.",
+    clrCancel: "Cancel", clrConfirm: "Clear all",
+    cmpTitle: "Service Comparison",
+    shrTitle: "Share my favorites",
+    shrDesc: "This link lets anyone view your favorites list (read-only).",
+    shrCopy: "Copy", shrClose: "Close",
+    shrInfo: "Link includes your currently visible services.",
+    toastRemoved: "Removed from favorites",
+    toastCleared: "Favorites cleared",
+    toastCopied: "Link copied!",
+    toastNoteSaved: "Note saved",
+    toastAdded: "Added to favorites",
+    priceUnit: "/unit",
+    offline: "Offline mode — favorites loaded from cache",
+    cat: { all:"All", home:"Home", life:"Wellness", rent:"Rentals", event:"Events", tech:"Digital" },
+    catIcons: { home:"fa-house", life:"fa-spa", rent:"fa-key", event:"fa-calendar-star", tech:"fa-laptop-code" }
+  }
+};
+const tx = () => T[lang];
+
+// ══════════════════════════════════════════════
+//  LANG
+// ══════════════════════════════════════════════
+function toggleLang() {
+  lang = lang === 'fr' ? 'en' : 'fr';
+  if (window.__needs_prefs) __needs_prefs.setLang(lang);
+  document.documentElement.lang = lang === 'fr' ? 'fr' : 'en';
+  document.getElementById('langBtn').textContent = lang.toUpperCase();
+  applyTexts();
+  render();
+  if (window.NeedsI18n) try { NeedsI18n.applyDOM(lang); } catch (e) {}
+}
+function toggleThemeFav() {
+  var isLight = document.documentElement.classList.toggle('needs-light');
+  if (document.body) document.body.classList.toggle('light-mode', isLight);
+  if (window.__needs_prefs) __needs_prefs.setTheme(isLight ? 'light' : 'dark');
+  var btn = document.getElementById('themeBtnFav');
+  if (btn) btn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+}
+
+function favT(key, fallback) {
+  if (window.NeedsI18n && typeof NeedsI18n.t === "function") {
+    var v = NeedsI18n.t(key);
+    if (v && v !== key) return v;
+  }
+  return fallback;
+}
+
+function applyTexts() {
+  const t = tx();
+  t.empty = favT("fav_empty_title", t.empty);
+  t.emptyDesc = favT("fav_empty_subtitle", t.emptyDesc);
+  t.emptyBtn = favT("fav_empty_cta", t.emptyBtn);
+  const ids = {
+    'txt-explore': t.explore, 'txt-share': t.share, 'txt-clear': t.clear,
+    'txt-suggestions': t.suggestions, 'txt-offline': t.offline,
+    'del-title': t.delTitle, 'del-desc': t.delDesc, 'del-cancel': t.delCancel, 'del-confirm': t.delConfirm,
+    'clr-title': t.clrTitle, 'clr-desc': t.clrDesc, 'clr-cancel': t.clrCancel, 'clr-confirm': t.clrConfirm,
+    'cmp-title': t.cmpTitle,
+    'shr-title': t.shrTitle, 'shr-desc': t.shrDesc, 'shr-copy-btn': t.shrCopy, 'shr-close': t.shrClose, 'shr-info': t.shrInfo,
+  };
+  Object.entries(ids).forEach(([id, text]) => {
+    const el = document.getElementById(id); if (el) el.textContent = text;
+  });
+  Object.keys(t.cat).forEach(k => {
+    const el = document.querySelector(`.c-${k}`); if (el) el.textContent = t.cat[k];
+  });
+  document.getElementById('search-input').placeholder = t.searchPlaceholder;
+  document.getElementById('txt-title').innerHTML = `${t.title} <span class="hero-count" id="fav-count">${favs.length}</span>`;
+  document.getElementById('txt-subtitle').textContent = t.subtitle;
+  document.getElementById('txt-compare').textContent = t.compare;
+}
+
+// ══════════════════════════════════════════════
+//  FILTER / VIEW
+// ══════════════════════════════════════════════
+function setFilter(c, btn) {
+  filter = c;
+  compareIds.clear();
+  document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function setView(mode) {
+  viewMode = mode;
+  document.getElementById('grid').classList.toggle('list-view', mode === 'list');
+  document.getElementById('btn-grid-view').classList.toggle('active', mode === 'grid');
+  document.getElementById('btn-list-view').classList.toggle('active', mode === 'list');
+}
+
+// ══════════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════════
+// Appliquer thème + langue sauvegardés au chargement
+(function applyPrefsUI() {
+  if (!window.__needs_prefs) return;
+  var theme = __needs_prefs.getTheme();
+  if (theme === 'light') {
+    document.body.classList.add('light-mode');
+    var tb = document.getElementById('themeBtnFav');
+    if (tb) tb.innerHTML = '<i class="fa-solid fa-sun"></i>';
+  }
+  var lb = document.getElementById('langBtn');
+  if (lb) lb.textContent = lang.toUpperCase();
+})();
+
+if (typeof initMessagesNavBadge === 'function') initMessagesNavBadge();
+
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) { window.location.href = "auth.html"; return; }
+  currentUser = user;
+
+  db.collection("users").doc(user.uid).onSnapshot(doc => {
+    const data = doc.data() || {};
+    const raw  = data.favorites || [];
+    // Support legacy (string) et nouveau format (objet avec addedAt)
+    favs  = raw.map(f => typeof f === 'string' ? { id: f, addedAt: null } : f);
+    notes = data.favoriteNotes || {};
+
+    if (allServices.length === 0) fetchServices();
+    else {
+      const favIds = favs.map(f => f.id);
+      services = allServices.filter(s => favIds.includes(s.id));
+      renderSuggestions();
+      render();
+    }
+  });
+});
+
+// ══════════════════════════════════════════════
+//  FETCH ALL SERVICES
+// ══════════════════════════════════════════════
+async function fetchServices() {
+  try {
+    const snap = await db.collection("services").get();
+    allServices = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const favIds = favs.map(f => f.id);
+    services = allServices.filter(s => favIds.includes(s.id));
+    renderSuggestions();
+    render();
+  } catch (err) {
+    console.error("Erreur chargement services:", err);
+  }
+}
+
+function needsBoostActiveFav(s) {
+  if (!s || s.boosted !== true) return false;
+  var until = s.boostedUntil && s.boostedUntil.toDate ? s.boostedUntil.toDate() : null;
+  if (!until) return true;
+  return until.getTime() > Date.now();
+}
+function buildCardBadgesHtmlFav(s) {
+  var parts = [];
+  var isHot = s.popular === true || (s.rating && s.rating >= 4.95);
+  var showCert = s.partnerCertified === true || s.verified === true;
+  var pl = String(s.sellerPlan || "free").toLowerCase();
+  var fr = lang !== "en";
+  if (needsBoostActiveFav(s)) parts.push('<span class="svc-badge-featured">' + (fr ? "EN VEDETTE" : "FEATURED") + "</span>");
+  if (isHot) parts.push('<span class="svc-badge-top-rated">TOP RATED</span>');
+  if (pl === "business") parts.push('<span class="svc-badge-plan-business">BUSINESS</span>');
+  else if (pl === "pro") parts.push('<span class="svc-badge-plan-pro">PRO</span>');
+  if (showCert) parts.push('<span class="svc-badge-partner">' + (fr ? "Partenaire certifié" : "Certified partner") + "</span>");
+  if (!parts.length) return "";
+  return '<div class="card-badges">' + parts.join("") + "</div>";
+}
+
+// ══════════════════════════════════════════════
+//  RENDER PRINCIPAL
+// ══════════════════════════════════════════════
+function render() {
+  applyTexts();
+
+  const t  = tx();
+  const q  = document.getElementById('search-input').value.toLowerCase().trim();
+  const sv = document.getElementById('sort-select').value;
+  const favIds = favs.map(f => f.id);
+
+  let filtered = services.filter(s => {
+    if (!favIds.includes(s.id)) return false;
+    if (filter !== 'all' && s.cat !== filter) return false;
+    if (q && !(s.title||'').toLowerCase().includes(q) && !(s.description||'').toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const getTs = id => {
+    const f = favs.find(x => x.id === id);
+    if (!f?.addedAt) return 0;
+    if (typeof f.addedAt.toMillis === 'function') return f.addedAt.toMillis();
+    if (f.addedAt instanceof Date) return f.addedAt.getTime();
+    return Number(f.addedAt) || 0;
+  };
+
+  if (sv === 'price-asc')  filtered.sort((a,b) => (a.price||0)-(b.price||0));
+  if (sv === 'price-desc') filtered.sort((a,b) => (b.price||0)-(a.price||0));
+  if (sv === 'name-asc')   filtered.sort((a,b) => (a.title||'').localeCompare(b.title||''));
+  if (sv === 'name-desc')  filtered.sort((a,b) => (b.title||'').localeCompare(a.title||''));
+  if (sv === 'date-desc')  filtered.sort((a,b) => getTs(b.id)-getTs(a.id));
+  if (sv === 'date-asc')   filtered.sort((a,b) => getTs(a.id)-getTs(b.id));
+
+  // Mettre à jour le compteur
+  const countEl = document.getElementById('fav-count');
+  if (countEl) countEl.textContent = filtered.length;
+
+  // Mettre à jour le bouton compare
+  const validCmp = [...compareIds].filter(id => filtered.some(s => s.id === id));
+  compareIds = new Set(validCmp);
+  document.getElementById('compare-count').textContent = compareIds.size;
+  document.getElementById('btn-compare-trigger').style.display = compareIds.size >= 2 ? 'flex' : 'none';
+
+  const grid = document.getElementById('grid');
+  grid.classList.toggle('list-view', viewMode === 'list');
+
+  if (filtered.length === 0) {
+    const noFavs = favIds.length === 0;
+    grid.innerHTML = noFavs
+      ? `<div class="empty">
+        <div class="fav-empty-heart" aria-hidden="true">♡</div>
+        <h3>${t.empty}</h3>
+        <p>${t.emptyDesc}</p>
+        <a href="services.html">${t.emptyBtn}</a>
+      </div>`
+      : `<div class="empty">
+        <div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div>
+        <h3>${t.emptySearch}</h3>
+        <p>${t.emptySearchDesc}</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((s, i) => {
+    const favEntry  = favs.find(f => f.id === s.id);
+    const dateStr   = formatDate(favEntry?.addedAt);
+    const note      = notes[s.id] || '';
+    const catIcon   = t.catIcons[s.cat] || 'fa-tag';
+    const catLabel  = t.cat[s.cat] || s.cat || '';
+    const isCompare = compareIds.has(s.id);
+    const unit      = s.unit ? `/${s.unit}` : t.priceUnit;
+
+    return `
+    <div class="card ${isCompare ? 'compare-selected' : ''}" id="card-${s.id}" style="animation-delay:${i*55}ms">
+      <div class="swipe-bg"><i class="fa-solid fa-trash-can"></i></div>
+      <div class="card-inner">
+        <div class="compare-check" onclick="toggleCompare('${s.id}')" title="Comparer">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="btn-delete" onclick="openDeleteModal('${s.id}')" title="Retirer">
+          <i class="fa-solid fa-heart-crack"></i>
+        </div>
+        <div class="img-area">
+          ${buildCardBadgesHtmlFav(s)}
+          <img src="${s.imageUrl||''}" alt="${s.title||''}"
+            onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#1e293b,#0f172a)'">
+          <div class="img-overlay"></div>
+        </div>
+        <div class="card-body">
+          <span class="cat-tag"><i class="fa-solid ${catIcon}"></i> ${catLabel}</span>
+          <h3>${s.title||''}</h3>
+          <p>${s.description||''}</p>
+          ${dateStr ? `<div class="date-badge"><i class="fa-regular fa-clock"></i> ${t.addedAt} ${dateStr}</div>` : ''}
+          <div class="note-area" id="note-area-${s.id}">
+            <div class="note-display ${note?'':'empty-note'}" onclick="openNote('${s.id}')">
+              <i class="fa-solid ${note?'fa-note-sticky':'fa-plus'}"></i>
+              <span id="note-text-${s.id}">${note || t.noteAdd}</span>
+            </div>
+            <div class="note-input-wrap" id="note-wrap-${s.id}">
+              <textarea id="note-ta-${s.id}" placeholder="${t.notePlaceholder}">${note}</textarea>
+              <div class="note-actions">
+                <button class="note-btn save" onclick="saveNote('${s.id}')">${t.noteSave}</button>
+                <button class="note-btn cancel-note" onclick="closeNote('${s.id}')">${t.noteCancel}</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="price-val">${s.price||0}€<span>${unit}</span></div>
+            <a href="services.html?id=${s.id}&cat=${s.cat}" class="btn-view">
+              ${t.view} <i class="fa-solid fa-arrow-right-long"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  initSwipe();
+}
+
+// ══════════════════════════════════════════════
+//  FORMAT DATE
+// ══════════════════════════════════════════════
+function formatDate(ts) {
+  if (!ts) return '';
+  let date;
+  try {
+    if (ts && typeof ts.toDate === 'function') date = ts.toDate();
+    else if (ts instanceof Date) date = ts;
+    else if (typeof ts === 'number') date = new Date(ts);
+    else return '';
+    const diff = Date.now() - date.getTime();
+    const days = Math.floor(diff / 86400000);
+    if (days === 0) return lang === 'fr' ? "aujourd'hui" : "today";
+    if (days === 1) return lang === 'fr' ? "hier" : "yesterday";
+    if (days < 7)  return lang === 'fr' ? `il y a ${days} jours` : `${days} days ago`;
+    return date.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { day:'numeric', month:'short' });
+  } catch(e) { return ''; }
+}
+
+// ══════════════════════════════════════════════
+//  SUGGESTIONS
+// ══════════════════════════════════════════════
+function renderSuggestions() {
+  const t = tx();
+  const favIds  = favs.map(f => f.id);
+  const favCats = [...new Set(services.map(s => s.cat).filter(Boolean))];
+
+  if (!favCats.length || !allServices.length) {
+    document.getElementById('suggestions-section').style.display = 'none'; return;
+  }
+
+  const suggestions = allServices
+    .filter(s => !favIds.includes(s.id) && favCats.includes(s.cat))
+    .slice(0, 3);
+
+  if (!suggestions.length) {
+    document.getElementById('suggestions-section').style.display = 'none'; return;
+  }
+
+  document.getElementById('suggestions-section').style.display = 'block';
+  document.getElementById('suggestions-grid').innerHTML = suggestions.map(s => `
+    <div class="suggestion-card">
+      <img src="${s.imageUrl||''}" alt="${s.title||''}"
+        onerror="this.style.display='none'">
+      <div class="suggestion-body">
+        <h4>${s.title||''}</h4>
+        <div class="s-price"><strong>${s.price||0}€</strong>${s.unit?'/'+s.unit:t.priceUnit}</div>
+      </div>
+      <button class="btn-add-fav" onclick="addToFav('${s.id}')">
+        <i class="fa-solid fa-heart"></i> ${t.addFav}
+      </button>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════
+//  NOTES
+// ══════════════════════════════════════════════
+function openNote(id) {
+  const wrap = document.getElementById(`note-wrap-${id}`);
+  const disp = document.querySelector(`#note-area-${id} .note-display`);
+  if (!wrap || !disp) return;
+  wrap.classList.add('open');
+  disp.style.display = 'none';
+  const ta = document.getElementById(`note-ta-${id}`);
+  if (ta) { ta.focus(); ta.selectionStart = ta.value.length; }
+}
+
+function closeNote(id) {
+  const wrap = document.getElementById(`note-wrap-${id}`);
+  const disp = document.querySelector(`#note-area-${id} .note-display`);
+  if (wrap) wrap.classList.remove('open');
+  if (disp) disp.style.display = '';
+}
+
+function saveNote(id) {
+  if (!currentUser) return;
+  const ta  = document.getElementById(`note-ta-${id}`);
+  if (!ta) return;
+  const val = ta.value.trim();
+  notes[id] = val;
+
+  db.collection("users").doc(currentUser.uid).update({
+    [`favoriteNotes.${id}`]: val
+  }).then(() => {
+    const t    = tx();
+    const disp = document.getElementById(`note-text-${id}`);
+    const nd   = document.querySelector(`#note-area-${id} .note-display`);
+    if (disp) disp.textContent = val || t.noteAdd;
+    if (nd) {
+      nd.querySelector('i').className = `fa-solid ${val ? 'fa-note-sticky' : 'fa-plus'}`;
+      nd.classList.toggle('empty-note', !val);
+    }
+    closeNote(id);
+    showToast(t.toastNoteSaved, 'info');
+  }).catch(err => console.error(err));
+}
+
+// ══════════════════════════════════════════════
+//  SWIPE TO DELETE (mobile)
+// ══════════════════════════════════════════════
+function initSwipe() {
+  document.querySelectorAll('.card').forEach(card => {
+    let startX = 0, curX = 0, dragging = false, triggered = false;
+    const inner = card.querySelector('.card-inner');
+    const id    = card.id.replace('card-', '');
+
+    card.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      curX   = startX;
+      dragging  = true;
+      triggered = false;
+    }, { passive: true });
+
+    card.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      curX = e.touches[0].clientX;
+      const dx = curX - startX;
+      if (dx < 0 && inner) {
+        inner.style.transition = 'none';
+        inner.style.transform  = `translateX(${Math.max(dx, -80)}px)`;
+      } else if (dx > 0 && inner) {
+        inner.style.transition = 'none';
+        inner.style.transform  = 'translateX(0)';
+      }
+    }, { passive: true });
+
+    card.addEventListener('touchend', () => {
+      dragging = false;
+      const dx = curX - startX;
+      if (inner) {
+        inner.style.transition = 'transform 0.3s ease';
+        inner.style.transform  = 'translateX(0)';
+      }
+      if (dx < -60 && !triggered) {
+        triggered = true;
+        setTimeout(() => openDeleteModal(id), 350);
+      }
+    });
+  });
+}
+
+// ══════════════════════════════════════════════
+//  COMPARE
+// ══════════════════════════════════════════════
+function toggleCompare(id) {
+  if (compareIds.has(id)) {
+    compareIds.delete(id);
+  } else {
+    if (compareIds.size >= 3) {
+      showToast(lang === 'fr' ? 'Maximum 3 services à la fois' : 'Max 3 services at once', 'info'); return;
+    }
+    compareIds.add(id);
+  }
+  const card  = document.getElementById(`card-${id}`);
+  const check = card?.querySelector('.compare-check');
+  if (card)  card.classList.toggle('compare-selected', compareIds.has(id));
+  if (check) check.style.color = compareIds.has(id) ? '' : 'transparent';
+  document.getElementById('compare-count').textContent = compareIds.size;
+  document.getElementById('btn-compare-trigger').style.display = compareIds.size >= 2 ? 'flex' : 'none';
+}
+
+function openCompareModal() {
+  const t = tx();
+  const selected = services.filter(s => compareIds.has(s.id));
+  if (selected.length < 2) return;
+
+  const rows = [
+    { label: lang==='fr'?'Image':'Image',            fn: s => `<img class="compare-img" src="${s.imageUrl||''}" alt="" onerror="this.style.display='none'">` },
+    { label: lang==='fr'?'Nom':'Name',               fn: s => `<strong>${s.title||'—'}</strong>` },
+    { label: lang==='fr'?'Catégorie':'Category',     fn: s => t.cat[s.cat]||s.cat||'—' },
+    { label: lang==='fr'?'Prix':'Price',             fn: s => `<span class="compare-price">${s.price||0}€</span>` },
+    { label: lang==='fr'?'Description':'Description',fn: s => `<span style="color:var(--text-mute);font-size:13px">${s.description||'—'}</span>` },
+    { label: lang==='fr'?'Ma note':'My note',        fn: s => notes[s.id] ? `<span style="color:#93C5FD;font-size:12px">${notes[s.id]}</span>` : '<span style="color:var(--text-mute)">—</span>' },
+  ];
+
+  const head = `<tr><th></th>${selected.map(s=>`<th>${s.title||''}</th>`).join('')}</tr>`;
+  const body = rows.map(r => `<tr><td class="label-col">${r.label}</td>${selected.map(s=>`<td>${r.fn(s)}</td>`).join('')}</tr>`).join('');
+  document.getElementById('compare-content').innerHTML = `<table class="compare-table"><thead>${head}</thead><tbody>${body}</tbody></table>`;
+  document.getElementById('cmp-title').textContent = t.cmpTitle;
+  openModal('compare-modal');
+}
+
+// ══════════════════════════════════════════════
+//  SHARE
+// ══════════════════════════════════════════════
+function openShareModal() {
+  const t      = tx();
+  const favIds = favs.map(f => f.id);
+  const url    = `${location.origin}/services.html?shared=${favIds.join(',')}`;
+  document.getElementById('share-link-input').value = url;
+  document.getElementById('shr-title').textContent  = t.shrTitle;
+  document.getElementById('shr-desc').textContent   = t.shrDesc;
+  document.getElementById('shr-info').textContent   = t.shrInfo;
+  openModal('share-modal');
+}
+
+function copyShareLink() {
+  const val = document.getElementById('share-link-input').value;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(val).then(() => showToast(tx().toastCopied, 'success'));
+  } else {
+    const input = document.getElementById('share-link-input');
+    input.select(); document.execCommand('copy');
+    showToast(tx().toastCopied, 'success');
+  }
+}
+
+// ══════════════════════════════════════════════
+//  ADD / REMOVE FAVORIS
+// ══════════════════════════════════════════════
+window.addToFav = function(id) {
+  if (!currentUser) return;
+  if (favs.some(f => f.id === id)) return;
+  const newFav = { id, addedAt: firebase.firestore.Timestamp.now() };
+  db.collection("users").doc(currentUser.uid).update({
+    favorites: firebase.firestore.FieldValue.arrayUnion(newFav)
+  }).then(() => showToast(tx().toastAdded, 'success'))
+    .catch(err => console.error(err));
+};
+
+function openDeleteModal(id) {
+  pendingDeleteId = id;
+  openModal('delete-modal');
+}
+
+function confirmDelete() {
+  if (!pendingDeleteId || !currentUser) return;
+  const id  = pendingDeleteId;
+  const fav = favs.find(f => f.id === id);
+
+  // Essayer de retirer l'objet complet ; si la structure Firestore est en strings, retirer aussi le string
+  const promises = [];
+  if (fav) promises.push(
+    db.collection("users").doc(currentUser.uid).update({
+      favorites: firebase.firestore.FieldValue.arrayRemove(fav)
+    })
+  );
+  // Fallback string legacy
+  promises.push(
+    db.collection("users").doc(currentUser.uid).update({
+      favorites: firebase.firestore.FieldValue.arrayRemove(id)
+    }).catch(() => {})
+  );
+
+  Promise.all(promises)
+    .then(() => showToast(tx().toastRemoved, 'danger'))
+    .catch(err => console.error(err));
+
+  closeModal('delete-modal');
+  pendingDeleteId = null;
+}
+
+function openClearModal() {
+  if (!favs.length) return;
+  openModal('clear-modal');
+}
+
+function confirmClearAll() {
+  if (!currentUser) return;
+  db.collection("users").doc(currentUser.uid).update({ favorites: [] })
+    .then(() => showToast(tx().toastCleared, 'danger'))
+    .catch(err => console.error(err));
+  closeModal('clear-modal');
+}
+
+// ══════════════════════════════════════════════
+//  MODALS
+// ══════════════════════════════════════════════
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    e.preventDefault(); document.getElementById('search-input').focus();
+  }
+});
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  const icons = { success:'fa-check', danger:'fa-trash', info:'fa-info' };
+  document.getElementById('toast-msg').textContent  = msg;
+  document.getElementById('toast-icon').className   = `fa-solid ${icons[type]||'fa-check'}`;
+  toast.className = `toast t-${type}`;
+  void toast.offsetWidth; // reflow
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ══════════════════════════════════════════════
+//  OFFLINE
+// ══════════════════════════════════════════════
+function checkOnline() {
+  document.getElementById('offline-banner').classList.toggle('show', !navigator.onLine);
+}
+window.addEventListener('online',  checkOnline);
+window.addEventListener('offline', checkOnline);
+checkOnline();
+
+// ══════════════════════════════════════════════
+//  INIT VUE
+// ══════════════════════════════════════════════
+setView('grid');
+</script>
+<script src="cursor.js"></script>
+
+<footer class="needs-footer-minimal" role="contentinfo" data-i18n-html="footer_minimal_line"></footer>
+<script>
+(function(){if(window.NeedsI18n&&NeedsI18n.applyDOM){try{NeedsI18n.applyDOM(NeedsI18n.getLang());}catch(e){}}})();
+</script>
+</body>
+</html>

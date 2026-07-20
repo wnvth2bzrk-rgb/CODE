@@ -1,0 +1,185 @@
+/**
+ * Needs — thème premium (palette unifiée)
+ * Inclure après prefs.js, avant cursor.css et les styles locaux.
+ */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap");
+
+:root {
+  /* Palette officielle */
+  --color-bg: #0a0a0f;
+  --color-bg-secondary: #13131a;
+  --color-card: #1c1c26;
+  --color-accent: #c9a84c;
+  --color-accent-hover: #e8c97a;
+  --color-text: #f0ede8;
+  --color-text-secondary: #9b99a6;
+  --color-border: #2a2a38;
+  --color-success: #4caf82;
+  --color-error: #e05a5a;
+
+  /* Héritage / alias sable & surfaces */
+  --sand: var(--color-accent);
+  --sand-dim: rgba(201, 168, 76, 0.14);
+  --navy-bg: var(--color-bg);
+  --navy-card: var(--color-card);
+  --navy-light: var(--color-bg-secondary);
+  --navy-border: var(--color-border);
+  --pro-blue: var(--color-accent);
+  --pro-blue-hover: var(--color-accent-hover);
+  --accent: var(--color-accent);
+  --accent-hover: var(--color-accent-hover);
+  --white: var(--color-text);
+  --text-muted: #c4bfb6;
+  --shadow-premium: 0 24px 64px rgba(0, 0, 0, 0.5), 0 12px 24px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(201, 168, 76, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-raised: 0 12px 40px rgba(0, 0, 0, 0.38), 0 4px 12px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(201, 168, 76, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  --shadow-glow-cyan: 0 0 48px -8px rgba(201, 168, 76, 0.22);
+  --shadow-inner-soft: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
+  --ring-focus: 0 0 0 2px var(--navy-bg), 0 0 0 4px rgba(201, 168, 76, 0.45);
+  --glass-bg: rgba(19, 19, 26, 0.92);
+  --btn-bg: var(--color-accent);
+  --promo-bg: var(--color-bg-secondary);
+  --ia-primary: var(--color-accent);
+  --font-display: "DM Sans", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-alt: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+
+  /* Alias partagés (pages & composants) */
+  --bg: var(--navy-bg);
+  --card: var(--navy-card);
+  --card2: var(--navy-light);
+  --card-bg: var(--navy-card);
+  --border: var(--color-border);
+  --border-hover: rgba(201, 168, 76, 0.45);
+  --surface: rgba(255, 255, 255, 0.04);
+  --primary: var(--color-accent);
+  --primary-hover: var(--color-accent-hover);
+  --primary-glow: rgba(201, 168, 76, 0.28);
+  --blue: var(--color-accent);
+  --blue2: #a88b3d;
+  --text: var(--color-text);
+  --text-mute: var(--color-text-secondary);
+  --muted: var(--color-text-secondary);
+  --green: var(--color-success);
+  --red: var(--color-error);
+  --gold: var(--color-accent);
+  --purple: #8b7fc8;
+  --danger: var(--color-error);
+  --success: var(--color-success);
+  --bg-dark: var(--color-bg);
+  --accent-blue: var(--color-accent);
+  --text-main: var(--color-text);
+  --text-dim: var(--color-text-secondary);
+}
+
+html.needs-light,
+body.light-mode {
+  --color-bg: #faf9f6;
+  --color-bg-secondary: #f3f1ec;
+  --color-card: #ffffff;
+  --color-accent: #b8942e;
+  --color-accent-hover: #c9a84c;
+  --color-text: #1a1a1f;
+  --color-text-secondary: #5c5a66;
+  --color-border: #e4e1d9;
+  --color-success: #3d9a6e;
+  --color-error: #c94a4a;
+
+  --navy-bg: var(--color-bg);
+  --navy-card: var(--color-card);
+  --navy-light: var(--color-bg-secondary);
+  --navy-border: var(--color-border);
+  --pro-blue: var(--color-accent);
+  --pro-blue-hover: var(--color-accent-hover);
+  --accent: var(--color-accent);
+  --accent-hover: var(--color-accent-hover);
+  --white: var(--color-text);
+  --text-muted: var(--color-text-secondary);
+  --sand-dim: rgba(184, 148, 46, 0.18);
+  --shadow-premium: 0 2px 6px rgba(26, 26, 31, 0.04), 0 24px 48px rgba(26, 26, 31, 0.07),
+    0 0 0 1px rgba(228, 225, 217, 0.9);
+  --shadow-raised: 0 1px 2px rgba(26, 26, 31, 0.04), 0 12px 28px rgba(26, 26, 31, 0.05),
+    0 0 0 1px rgba(228, 225, 217, 0.95);
+  --shadow-glow-cyan: 0 12px 40px rgba(184, 148, 46, 0.14);
+  --ring-focus: 0 0 0 2px #faf9f6, 0 0 0 4px rgba(184, 148, 46, 0.35);
+  --glass-bg: #ffffff;
+  --btn-bg: var(--color-accent);
+  --promo-bg: var(--color-bg-secondary);
+  --ia-primary: var(--color-accent);
+
+  --bg: var(--color-bg);
+  --card: #ffffff;
+  --card2: var(--color-bg-secondary);
+  --card-bg: rgba(255, 255, 255, 0.96);
+  --border: var(--color-border);
+  --surface: rgba(26, 26, 31, 0.04);
+  --text: var(--color-text);
+  --text-mute: var(--color-text-secondary);
+  --muted: var(--color-text-secondary);
+  --text-main: var(--color-text);
+  --text-dim: var(--color-text-secondary);
+  --bg-dark: var(--color-bg);
+  --primary-glow: rgba(184, 148, 46, 0.22);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body:not(.light-mode) {
+  background-color: var(--navy-bg);
+  background-image: radial-gradient(ellipse 120% 90% at 0% -10%, rgba(201, 168, 76, 0.1) 0%, transparent 52%),
+    radial-gradient(ellipse 100% 70% at 100% 0%, rgba(201, 168, 76, 0.06) 0%, transparent 48%),
+    radial-gradient(ellipse 80% 50% at 50% 110%, rgba(0, 0, 0, 0.45) 0%, transparent 55%);
+  background-attachment: fixed;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+html.needs-light body,
+body.light-mode {
+  color: var(--color-text) !important;
+  background: var(--color-bg) !important;
+  background-image: none !important;
+}
+
+/* Accueil — blocs thème clair sans flash */
+html.needs-light .page-block--hero {
+  background: var(--color-bg) !important;
+}
+html.needs-light .page-block--dark {
+  background: var(--color-bg-secondary) !important;
+}
+html.needs-light .page-block--darker {
+  background: #ebe8e0 !important;
+}
+html.needs-light .page-block--accent {
+  background: linear-gradient(165deg, #f8f6f1 0%, #f0ede8 55%, #ebe8e0 100%) !important;
+}
+html.needs-light .page-block--black {
+  background: var(--color-bg) !important;
+}
+
+::selection {
+  background: rgba(201, 168, 76, 0.3);
+  color: inherit;
+}
+
+html.needs-light ::selection {
+  background: rgba(184, 148, 46, 0.22);
+}

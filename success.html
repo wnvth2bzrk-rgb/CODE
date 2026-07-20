@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Paiement confirmé — Needs</title>
+    <meta name="description" content="Votre paiement Needs est confirmé. Retrouvez votre commande dans Mon compte.">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://needs-ae86d.web.app/success.html">
+    <script src="prefs.js"></script>
+  <script src="js/theme-init.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/needs-analytics.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="theme-needs.css">
+    <link rel="stylesheet" href="cursor.css">
+    <style>
+        body.success-page {
+            background: var(--navy-bg, #0A0A0F);
+            background-image: radial-gradient(at 20% 20%, rgba(34, 197, 94, 0.14) 0px, transparent 45%);
+            color: var(--text, #F0EDE8);
+            font-family: var(--font-alt, system-ui, sans-serif);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px 100px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .success-confetti {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .success-confetti span {
+            position: absolute;
+            top: -12px;
+            width: 8px;
+            height: 12px;
+            border-radius: 2px;
+            opacity: 0.85;
+            animation: confetti-fall linear infinite;
+        }
+        .success-confetti span:nth-child(1) { left: 8%; background: #22c55e; animation-duration: 4.2s; animation-delay: 0s; }
+        .success-confetti span:nth-child(2) { left: 18%; background: #C9A84C; animation-duration: 5.1s; animation-delay: 0.4s; }
+        .success-confetti span:nth-child(3) { left: 28%; background: #38bdf8; animation-duration: 4.6s; animation-delay: 1.1s; }
+        .success-confetti span:nth-child(4) { left: 42%; background: #22c55e; animation-duration: 5.4s; animation-delay: 0.2s; }
+        .success-confetti span:nth-child(5) { left: 55%; background: #f472b6; animation-duration: 4.9s; animation-delay: 0.8s; }
+        .success-confetti span:nth-child(6) { left: 68%; background: #C9A84C; animation-duration: 5.6s; animation-delay: 1.4s; }
+        .success-confetti span:nth-child(7) { left: 78%; background: #a78bfa; animation-duration: 4.4s; animation-delay: 0.6s; }
+        .success-confetti span:nth-child(8) { left: 90%; background: #22c55e; animation-duration: 5.2s; animation-delay: 1.8s; }
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            8% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0.3; }
+        }
+        .success-container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            background: var(--glass-bg, rgba(18, 18, 26, 0.92));
+            padding: 44px 32px 40px;
+            border-radius: 28px;
+            border: 1px solid var(--navy-border, #2A2A38);
+            backdrop-filter: blur(20px);
+            max-width: 520px;
+            width: 100%;
+            box-shadow: var(--shadow-premium, 0 20px 50px rgba(0,0,0,0.45));
+            animation: success-slide 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes success-slide {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .icon-check-wrap {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid #22c55e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22c55e;
+            font-size: 2.75rem;
+            animation: check-pop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+        }
+        @keyframes check-pop {
+            from { transform: scale(0.2); opacity: 0; }
+            70% { transform: scale(1.08); }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .success-container h1 {
+            font-size: clamp(1.45rem, 4vw, 1.85rem);
+            font-weight: 800;
+            margin: 0 0 12px;
+            letter-spacing: -0.02em;
+            font-family: var(--font-display, inherit);
+        }
+        .success-container .sub {
+            color: var(--text-dim, #9B99A6);
+            line-height: 1.55;
+            margin: 0 0 22px;
+            font-size: 1rem;
+        }
+        .details-box {
+            background: var(--surface, #13131A);
+            border-radius: 16px;
+            padding: 18px 18px 8px;
+            margin-bottom: 26px;
+            text-align: left;
+            border: 1px solid var(--navy-border, #2A2A38);
+        }
+        .details-box h3 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: #9B99A6; margin: 0 0 12px; }
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 0.88rem;
+        }
+        .detail-item:last-child { margin-bottom: 14px; }
+        .label { color: var(--text-dim, #9B99A6); }
+        .value { color: var(--text, #F0EDE8); font-weight: 600; text-align: right; }
+        .btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn-gold {
+            background: #C9A84C;
+            color: #0a0a0f !important;
+            text-decoration: none;
+            padding: 14px 22px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 24px rgba(201, 168, 76, 0.28);
+        }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201, 168, 76, 0.38); color: #0a0a0f !important; }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--navy-border, #2A2A38);
+            color: var(--text, #F0EDE8) !important;
+            box-shadow: none;
+        }
+        .btn-ghost:hover { border-color: #C9A84C; color: #F0EDE8 !important; }
+        .success-note { margin-top: 22px; font-size: 0.78rem; color: var(--text-dim, #9B99A6); line-height: 1.5; }
+        .needs-footer-minimal {
+            position: relative;
+            z-index: 1;
+            margin-top: 28px;
+            padding: 12px;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.78rem;
+            color: #9B99A6;
+            line-height: 1.6;
+        }
+        .needs-footer-minimal a { color: #C9A84C; text-decoration: none; font-weight: 600; }
+        html.needs-light .success-page,
+        body.success-page.light-mode {
+            background-image: radial-gradient(at 20% 20%, rgba(34, 197, 94, 0.1) 0px, transparent 45%);
+        }
+        html.needs-light .success-container,
+        body.success-page.light-mode .success-container {
+            border-color: var(--border);
+            background: rgba(255,255,255,0.95);
+        }
+        html.needs-light .details-box,
+        body.success-page.light-mode .details-box {
+            background: #f9fafb;
+            border-color: var(--border);
+        }
+    </style>
+</head>
+<body class="success-page" data-no-inject-footer="true" data-no-cookie-banner="true">
+    <div class="success-confetti" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="success-container">
+        <div class="icon-check-wrap" aria-hidden="true">✅</div>
+        <h1 data-i18n="success_title">Paiement confirmé ! 🎉</h1>
+        <p class="sub" id="successSubtitle" data-i18n="success_subtitle"></p>
+
+        <div class="details-box" id="detailsBox">
+            <h3 data-i18n="success_recap_title">Récapitulatif</h3>
+            <div class="detail-item">
+                <span class="label" data-i18n="success_detail_status"></span>
+                <span class="value" style="color:#22c55e;" data-i18n="success_detail_status_val"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label" data-i18n="success_detail_payment"></span>
+                <span class="value" data-i18n="success_detail_payment_val"></span>
+            </div>
+            <div class="detail-item" id="rowService" style="display:none;">
+                <span class="label" data-i18n="success_detail_service"></span>
+                <span class="value" id="valService"></span>
+            </div>
+            <div class="detail-item" id="rowAmount" style="display:none;">
+                <span class="label" data-i18n="success_detail_amount"></span>
+                <span class="value" id="valAmount"></span>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <a href="compte.html" class="btn-gold" id="linkOrders" data-i18n="success_btn_order"></a>
+            <a href="services.html" class="btn-gold btn-ghost" data-i18n="success_btn_services"></a>
+        </div>
+
+        <p class="success-note" data-i18n="success_footer_note"></p>
+    </div>
+
+    <footer class="needs-footer-minimal" role="contentinfo" data-i18n-html="footer_minimal_line"></footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-functions.js"></script>
+    <script>
+        (function () {
+            try {
+                if (window.__needs_prefs && __needs_prefs.getTheme() === "light") {
+                    document.documentElement.classList.add("needs-light");
+                    document.body.classList.add("light-mode");
+                } else {
+                    document.documentElement.classList.remove("needs-light");
+                    document.body.classList.remove("light-mode");
+                }
+            } catch (e) {}
+            if (window.NeedsI18n && NeedsI18n.applyDOM) {
+                try { NeedsI18n.applyDOM(NeedsI18n.getLang()); } catch (e) {}
+            }
+        })();
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            try {
+                if (window.NeedsGA && typeof NeedsGA.event === "function") {
+                    NeedsGA.event("purchase", { page: "success" });
+                }
+            } catch (e) {}
+        });
+    </script>
+    <script>
+        (function() {
+            var firebaseConfig = { apiKey: "AIzaSyAQQSVZx38jeI-8-OL-sfaDSxElqrOTJOU", authDomain: "needs-ae86d.firebaseapp.com", projectId: "needs-ae86d", storageBucket: "needs-ae86d.firebasestorage.app", messagingSenderId: "253900994407", appId: "1:253900994407:web:55168e1b73c878761de1c2" };
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            var params = new URLSearchParams(window.location.search);
+            var sessionId = params.get("session_id");
+            function showOrderRecap(order) {
+                if (!order) return;
+                var t = order.title || order.serviceTitle;
+                var amt = order.amount;
+                if (t) {
+                    document.getElementById("valService").textContent = t;
+                    document.getElementById("rowService").style.display = "flex";
+                }
+                if (amt != null && amt !== "") {
+                    document.getElementById("valAmount").textContent =
+                        typeof window.__needs_prefs !== "undefined" && __needs_prefs.formatPriceCad
+                            ? __needs_prefs.formatPriceCad(amt)
+                            : String(amt) + " CA$";
+                    document.getElementById("rowAmount").style.display = "flex";
+                }
+            }
+            if (sessionId) {
+                firebase.auth().onAuthStateChanged(function (user) {
+                    if (!user) return;
+                    var fns = firebase.app().functions("us-central1");
+                    fns.httpsCallable("createOrderFromSession")({ sessionId: sessionId }).then(function (r) {
+                        if (!r.data || !r.data.success) return Promise.reject();
+                        var oid = r.data.orderId || (r.data.orderIds && r.data.orderIds[0]);
+                        if (!oid) return Promise.reject();
+                        return firebase.firestore().collection("orders").doc(oid).get();
+                    }).then(function (snap) {
+                        if (snap && snap.exists) showOrderRecap(snap.data());
+                    }).catch(function () {});
+                });
+            }
+        })();
+    </script>
+    <script src="cursor.js" defer></script>
+</body>
+</html>
