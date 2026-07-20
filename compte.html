@@ -257,7 +257,7 @@ body.dark-mode #actCard .act-ico{color:#C9A84C!important;background:rgba(201,168
 body.dark-mode .card,body.dark-mode .card p,body.dark-mode .card h2,body.dark-mode .card h3,body.dark-mode .card h4,body.dark-mode .card label{color:#F0EDE8;}
 .settings-only{display:none;}
 .settings-shell{display:none;}
-/* Compte dashboard tabs */
+/* Compte dashboard tabs — show/hide without full reload */
 .compte-section{display:none!important;}
 body.compte-tab-dashboard .compte-section-dashboard,
 body.compte-tab-boutique .compte-section-boutique,
@@ -266,9 +266,15 @@ body.compte-tab-messages .compte-section-messages,
 body.compte-tab-favoris .compte-section-favoris,
 body.compte-tab-settings .compte-section-settings,
 body.compte-tab-subscription .compte-section-subscription{display:block!important;}
+/* Preserve grid/flex layouts when a tab section is active */
+body.compte-tab-dashboard .compte-section-dashboard.g4{display:grid!important;}
+body.compte-tab-boutique .compte-section-boutique.g2{display:grid!important;}
+body.compte-tab-dashboard .compte-section-dashboard.dashboard-quick-links{display:flex!important;}
 body.compte-tab-settings .settings-only{display:block;}
 body.compte-tab-settings .settings-shell{display:block;}
 body.compte-tab-dashboard .compte-section-dashboard#dashboardProfileComplete.dph-hidden{display:none!important;}
+/* Soft-hide: JS may hide banners inside an active tab without fighting tab CSS */
+.compte-soft-hide{display:none!important;}
 .dashboard-profile-hero{border:1px solid rgba(201,168,76,.35);background:linear-gradient(135deg,rgba(29,78,216,.1),rgba(201,168,76,.08));padding:20px 22px;margin-bottom:22px;}
 .dashboard-profile-hero .dph-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
 .dashboard-profile-hero .dph-title{font-size:.95rem;font-weight:800;margin:0;}
@@ -280,7 +286,8 @@ html.needs-light .dashboard-profile-hero .dph-bar,body.light-mode .dashboard-pro
 @media(min-width:720px){.dashboard-profile-hero .dph-steps{grid-template-columns:repeat(4,1fr);}}
 .dph-step{display:flex;align-items:center;gap:8px;font-size:.78rem;font-weight:600;color:var(--muted);padding:8px 10px;border-radius:10px;border:1px solid transparent;background:rgba(255,255,255,.03);cursor:pointer;text-align:left;width:100%;font-family:inherit;}
 .dph-step:hover{border-color:rgba(29,78,216,.35);background:rgba(29,78,216,.06);}
-.dph-step.done{color:var(--text-primary,#f1f5f9);}
+.dph-step.done{color:var(--text-primary,#f1f5f9);cursor:default;}
+.dph-step.done:hover{border-color:transparent;background:rgba(16,185,129,.08);}
 .dph-step .fa-circle-check{color:#10B981!important;}
 .dashboard-quick-links{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
 .dql-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:11px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:inherit;font-weight:700;font-size:.8rem;cursor:pointer;font-family:inherit;transition:all .2s;}
@@ -472,7 +479,7 @@ html.needs-light .verify-id-banner,body.light-mode .verify-id-banner{color:#1c19
 #vrfOk{font-size:.82rem;color:#4ade80;margin-top:8px;display:none;}
 </style>
 </head>
-<body class="page-compte" data-no-inject-footer="true">
+<body class="page-compte compte-tab-dashboard" data-no-inject-footer="true">
 
 <div id="pageLoader"><div class="loader-brand">needs</div><i class="fa-solid fa-circle-notch fa-spin" style="color:var(--blue);font-size:1.3rem;"></i></div>
 <div id="pendingPayBanner" role="region" aria-label="Paiements en attente">
@@ -767,9 +774,9 @@ html.needs-light .verify-id-banner,body.light-mode .verify-id-banner{color:#1c19
 <main class="main">
   <div class="top-bar">
     <div><h1 class="pg-title" id="tPT">Dashboard</h1><p class="pg-sub" id="tPS">Bienvenue sur votre espace professionnel</p></div>
-  </div>
-
-  <section class="card dashboard-profile-hero compte-section compte-section-dashboard dph-hidden" id="dashboardProfileComplete" aria-labelledby="dphTitle">
+  
+  <!-- ═══ TAB: DASHBOARD ═══ -->
+<section class="card dashboard-profile-hero compte-section compte-section-dashboard dph-hidden" id="dashboardProfileComplete" aria-labelledby="dphTitle">
     <div class="dph-head">
       <h2 class="dph-title" id="dphTitle" data-i18n="compte_provider_checklist_title">Complétez votre profil (+50% de visibilité)</h2>
       <span class="dph-pct" id="dashboardProfPct">0%</span>
@@ -783,36 +790,7 @@ html.needs-light .verify-id-banner,body.light-mode .verify-id-banner{color:#1c19
     </div>
   </section>
 
-  <!-- BIO : boutique -->
-  <section class="card compte-section compte-section-boutique" id="bioSectionTop">
-    <div class="ct"><div class="ct-left"><i class="fa-solid fa-user-pen"></i><span id="tBioT">Ma Présentation</span></div></div>
-    <textarea id="userBio" rows="3" placeholder="Décrivez vos compétences (min. 10 car.)..."></textarea>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;gap:10px;flex-wrap:wrap;">
-      <button class="btn" onclick="saveBio()" style="padding:9px 18px;" id="tSB3">Enregistrer</button>
-      <span id="bioDisplay" style="font-size:.8rem;color:var(--muted);font-style:italic;"></span>
-    </div>
-  </section>
-
-  <section class="verify-id-banner compte-section compte-section-boutique" id="emailVerifyBanner" style="display:none;border-color:rgba(59,130,246,0.45);background:linear-gradient(135deg,rgba(59,130,246,0.18),rgba(29,78,216,0.08));" role="region" aria-labelledby="emailVerifyTitle">
-    <p id="emailVerifyTitle" style="margin:0 0 10px;"><span data-i18n="compte_email_verify_banner_lead">Vérifiez votre email pour débloquer votre boutique et recevoir des commandes.</span> <span id="emailVerifySentTo" style="opacity:0.9;"></span></p>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
-      <button type="button" class="btn-vrf" id="emailVerifyResendBtn" style="background:#2563eb;" data-i18n="compte_email_verify_resend">Renvoyer l'email de vérification</button>
-      <button type="button" class="btn-o" id="emailVerifyReloadBtn" style="border-color:rgba(59,130,246,0.5);color:#93c5fd;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700;background:transparent;font-family:inherit;" data-i18n="compte_email_verify_done">J'ai vérifié mon email</button>
-    </div>
-    <p id="emailVerifyFb" style="margin:10px 0 0;font-size:.82rem;font-weight:600;min-height:0;"></p>
-  </section>
-
-
-  <section class="verify-id-banner compte-section compte-section-boutique" id="verifyIdBanner" role="region" aria-labelledby="verifyIdBannerTitle">
-    <p id="verifyIdBannerTitle" data-i18n="verify_banner_text">Vérifiez votre identité pour recevoir des paiements. Sans vérification, vos services ne sont pas visibles publiquement.</p>
-    <button type="button" class="btn-vrf" id="verifyIdOpenBtn" data-i18n="verify_banner_cta">Vérifier mon identité →</button>
-  </section>
-  <section class="verify-id-banner verify-pending-banner compte-section compte-section-boutique" id="verifyPendingBanner" role="status">
-    <p data-i18n="verify_pending_text">Votre demande est en cours d’examen. Nous vous répondons sous 48 h.</p>
-  </section>
-
-  <!-- STATS -->
-  <div class="g4 compte-section compte-section-dashboard" style="margin-bottom:20px;">
+<div class="g4 compte-section compte-section-dashboard" style="margin-bottom:20px;">
     <div class="sc">
       <div class="sc-num" id="sRev">0 CA$</div>
       <div class="sc-lbl" id="tSR">Revenus</div>
@@ -835,74 +813,12 @@ html.needs-light .verify-id-banner,body.light-mode .verify-id-banner{color:#1c19
     </div>
   </div>
 
-  <section class="card compte-section compte-section-boutique" id="businessLeadsCard" style="display:none;margin-bottom:20px;">
-    <div class="ct"><div class="ct-left"><i class="fa-solid fa-building" style="color:#a78bfa;"></i><span data-i18n="compte_leads_biz">Leads entreprises</span></div></div>
-    <p style="font-size:.85rem;color:var(--muted);margin:0 0 12px;" data-i18n="compte_leads_biz_desc">Accédez aux demandes grands comptes et B2B.</p>
-    <a href="entreprise-grands-comptes.html" class="btn" style="display:inline-block;padding:10px 16px;text-decoration:none;" data-i18n="compte_leads_biz_cta">Découvrir</a>
-  </section>
-
-  <!-- WALLET + CHART (boutique) -->
-  <div class="g2 compte-section compte-section-boutique">
-    <div class="revenue-card">
-      <div class="rev-h" id="revCardHead">Revenus prestataire</div>
-      <div class="rev-line"><span id="revMonthLbl">Revenus du mois</span><strong id="revMonthAmt">0 CA$</strong></div>
-      <div class="rev-line"><span id="revTotalLbl">Revenus totaux</span><strong id="revTotalAmt">0 CA$</strong></div>
-    </div>
-    <!-- Parrainage -->
-    <div class="card">
-      <div class="ct"><div class="ct-left"><i class="fa-solid fa-gift"></i><span>Parrainage</span></div></div>
-      <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px;">Invitez des amis avec votre code. Ils s'inscrivent, vous recevez un avantage.</p>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-        <code id="referralCode" style="background:rgba(29,78,216,.15);padding:10px 16px;border-radius:10px;font-weight:800;letter-spacing:2px;font-size:1.1rem;">—</code>
-        <button type="button" class="btn" style="padding:8px 14px;font-size:.85rem;" onclick="copyReferralCode()"><i class="fa-solid fa-copy"></i> Copier</button>
-      </div>
-    </div>
-    <div class="card" id="chartCardWrap" style="position:relative;">
-      <div id="statsProOverlay" style="display:none;position:absolute;inset:0;background:rgba(10,10,15,.88);z-index:2;border-radius:12px;align-items:center;justify-content:center;text-align:center;padding:16px;flex-direction:column;">
-        <p id="statsProOverlayTxt" style="margin:0;color:var(--text-primary);font-weight:700;font-size:.88rem;max-width:260px;" data-i18n="compte_stats_locked"></p>
-        <a href="tarifs.html" style="margin-top:12px;display:inline-block;padding:10px 16px;background:#C9A84C;color:#1a1510;font-weight:800;border-radius:10px;text-decoration:none;" data-i18n="compte_sub_cta_tarifs"></a>
-      </div>
-      <div class="ct"><div class="ct-left"><i class="fa-solid fa-chart-line"></i><span id="tCT">Vues — 7 jours</span></div>
-        <select id="chartRange" onchange="reloadChart()" style="width:auto;padding:5px 10px;font-size:.75rem;border-radius:7px;">
-          <option value="7">7j</option><option value="14">14j</option><option value="30">30j</option>
-        </select>
-      </div>
-      <div class="chart-h"><canvas id="viewsChart"></canvas></div>
-    </div>
-  </div>
-
-  <!-- RÉSERVATIONS À PAYER (planning depuis accueil) -->
-  <section class="card reserv-section-highlight compte-section compte-section-commandes" id="reservationsToPay" style="margin-bottom:24px;">
-    <div class="ct"><div class="ct-left" style="color:#ea580c;"><i class="fa-regular fa-clock" style="font-size:1.1rem;"></i><span id="tReservTitle" style="color:#f97316;">Réservations à payer</span></div></div>
-    <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px;" id="tReservDesc">Délai de paiement : 12 h ou 1 h selon l’échéance de la prestation (voir chaque réservation).</p>
-    <div id="reservationsPayAllWrap" style="display:none;margin-bottom:14px;">
-      <button type="button" id="btnPayAllReservations" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;font-size:.9rem;font-weight:700;border:none;border-radius:12px;cursor:pointer;background:#C9A84C;color:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,.15);"><i class="fa-solid fa-credit-card"></i> <span id="tPayAllReserv">Tout payer</span></button>
-    </div>
-    <div id="reservationsList"><p style="color:var(--muted);font-size:.82rem;" id="tNoReserv">Aucune réservation en attente.</p></div>
-  </section>
-
-  <!-- MES COMMANDES (acheteur : preuve + confirmer réception) -->
-  <section class="card compte-section compte-section-commandes" id="orders" style="margin-bottom:24px;">
-    <div class="ct"><div class="ct-left"><i class="fa-solid fa-box-open"></i><span id="tOrdersTitle">Mes commandes</span></div></div>
-    <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px;" id="tOrdersDesc">Commandes payées : confirmez la réception une fois le service effectué.</p>
-    <div id="ordersList"><p style="color:var(--muted);font-size:.82rem;" id="tNoOrders">Aucune commande.</p></div>
-  </section>
-
-  <!-- COMMANDES REÇUES (vendeur : quand quelqu'un paie ton service) -->
-  <section class="card compte-section compte-section-commandes" id="ordersReceived" style="margin-bottom:24px;">
-    <div class="ct"><div class="ct-left"><i class="fa-solid fa-hand-holding-dollar"></i><span id="tOrdersReceivedTitle">Commandes reçues</span></div></div>
-    <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px;" id="tOrdersReceivedDesc">Quand un client paie pour l’un de vos services, la commande apparaît ici.</p>
-    <p id="tTrustOrders" style="font-size:.76rem;color:#f59e0b;margin-bottom:12px;padding:10px 12px;border-radius:10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.28);line-height:1.45;"></p>
-    <div id="ordersReceivedList"><p style="color:var(--muted);font-size:.82rem;" id="tNoOrdersReceived">Aucune commande reçue.</p></div>
-  </section>
-
-  <!-- ACTIVITÉ (dashboard) -->
-  <div class="card compte-section compte-section-dashboard" id="actCard">
+<div class="card compte-section compte-section-dashboard" id="actCard">
       <div class="ct"><div class="ct-left"><i class="fa-solid fa-bell"></i><span id="tAct">Activité récente</span></div></div>
       <div id="actFeed"><p style="color:var(--muted);font-size:.82rem;" id="tNoAct">Aucune activité.</p></div>
   </div>
 
-  <section class="card compte-section compte-section-dashboard" id="dashboardReservSummary">
+  <section class="card compte-section compte-section-dashboard compte-soft-hide" id="dashboardReservSummary">
     <div class="dashboard-reserv-teaser">
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
         <i class="fa-regular fa-clock" style="font-size:1.2rem;color:#f97316;"></i>
@@ -916,42 +832,14 @@ html.needs-light .verify-id-banner,body.light-mode .verify-id-banner{color:#1c19
     </div>
   </section>
 
-  <div class="dashboard-quick-links compte-section compte-section-dashboard">
+<div class="dashboard-quick-links compte-section compte-section-dashboard">
     <button type="button" class="dql-btn" onclick="switchCompteTab('boutique')"><i class="fa-solid fa-shop"></i> <span id="tDqlShop">Boutique</span></button>
     <button type="button" class="dql-btn" onclick="switchCompteTab('messages')"><i class="fa-solid fa-comments"></i> <span id="tDqlMsg">Messages</span></button>
     <button type="button" class="dql-btn" onclick="switchCompteTab('settings')"><i class="fa-solid fa-gear"></i> <span id="tDqlSet">Paramètres</span></button>
   </div>
 
-  <!-- MESSAGES -->
-  <div class="card compte-section compte-section-messages" id="msgSec">
-      <div class="ct"><div class="ct-left"><i class="fa-solid fa-comments"></i><span id="tMsgT">Messages</span></div></div>
-      <div id="chatList">
-        <div id="msgListEl" class="msg-list"></div>
-        <p id="tNoMsg" style="color:var(--muted);font-size:.82rem;display:none;">Aucun message.</p>
-        <p style="margin-top:12px;"><a href="messages.html" class="btn" style="display:inline-block;padding:8px 16px;font-size:.82rem;text-decoration:none;" id="tOpenMsgFull">Ouvrir la messagerie</a></p>
-      </div>
-  </div>
-
-  <!-- AVIS -->
-  <section class="card compte-section compte-section-boutique" id="revSec">
-    <div class="ct">
-      <div class="ct-left"><i class="fa-solid fa-star"></i><span id="tRevTitle">Avis reçus</span></div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span id="avgRatingDisplay" style="font-size:1.1rem;font-weight:800;color:var(--gold);"></span>
-        <span id="reviewCountDisplay" style="font-size:.75rem;color:var(--muted);"></span>
-      </div>
-    </div>
-    <div id="reviewsList"><p style="color:var(--muted);font-size:.82rem;" id="tNoRev">Aucun avis pour le moment.</p></div>
-  </section>
-
-  <!-- PLANNER -->
-  <section class="card settings-only compte-section compte-section-settings">
-    <div class="ct"><div class="ct-left"><i class="fa-solid fa-calendar-check"></i><span id="tPlanT">Emploi du Temps</span></div></div>
-    <div class="wk" id="weekGrid"></div>
-  </section>
-
-  <!-- CRÉATEUR -->
-  <section class="card compte-section compte-section-boutique" id="creatSec">
+  <!-- ═══ TAB: BOUTIQUE ═══ -->
+<section class="card compte-section compte-section-boutique" id="creatSec">
     <div id="creatOverlay" class="creator-lock">
       <div style="font-size:2.5rem;color:var(--blue);opacity:.6;margin-bottom:13px;"><i class="fa-solid fa-lock"></i></div>
       <h3 id="tCrT">Mode Créateur Verrouillé</h3>
@@ -1023,7 +911,144 @@ html.needs-light .verify-id-banner,body.light-mode .verify-id-banner{color:#1c19
 
   </section>
 
-  <div class="settings-shell settings-only compte-section compte-section-settings">
+  <!-- MES ANNONCES -->
+<section class="compte-section compte-section-boutique">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <h2 style="font-size:1rem;font-weight:800;"><i class="fa-solid fa-boxes-stacked" style="color:var(--blue);margin-right:7px;"></i><span id="tMySrv">Mes annonces</span></h2>
+      <span id="srvCntBadge" style="background:rgba(29,78,216,.14);color:var(--blue);font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:9px;">0</span>
+    </div>
+    <div id="srvList"></div>
+  </section>
+
+<section class="card compte-section compte-section-boutique" id="bioSectionTop">
+    <div class="ct"><div class="ct-left"><i class="fa-solid fa-user-pen"></i><span id="tBioT">Ma Présentation</span></div></div>
+    <textarea id="userBio" rows="3" placeholder="Décrivez vos compétences (min. 10 car.)..."></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;gap:10px;flex-wrap:wrap;">
+      <button class="btn" onclick="saveBio()" style="padding:9px 18px;" id="tSB3">Enregistrer</button>
+      <span id="bioDisplay" style="font-size:.8rem;color:var(--muted);font-style:italic;"></span>
+    </div>
+  </section>
+
+<div class="compte-section compte-section-boutique">
+<section class="verify-id-banner" id="emailVerifyBanner" style="display:none;border-color:rgba(59,130,246,0.45);background:linear-gradient(135deg,rgba(59,130,246,0.18),rgba(29,78,216,0.08));" role="region" aria-labelledby="emailVerifyTitle">
+    <p id="emailVerifyTitle" style="margin:0 0 10px;"><span data-i18n="compte_email_verify_banner_lead">Vérifiez votre email pour débloquer votre boutique et recevoir des commandes.</span> <span id="emailVerifySentTo" style="opacity:0.9;"></span></p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+      <button type="button" class="btn-vrf" id="emailVerifyResendBtn" style="background:#2563eb;" data-i18n="compte_email_verify_resend">Renvoyer l'email de vérification</button>
+      <button type="button" class="btn-o" id="emailVerifyReloadBtn" style="border-color:rgba(59,130,246,0.5);color:#93c5fd;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700;background:transparent;font-family:inherit;" data-i18n="compte_email_verify_done">J'ai vérifié mon email</button>
+    </div>
+    <p id="emailVerifyFb" style="margin:10px 0 0;font-size:.82rem;font-weight:600;min-height:0;"></p>
+  </section>
+</div>
+
+<div class="compte-section compte-section-boutique">
+<section class="verify-id-banner" id="verifyIdBanner" role="region" aria-labelledby="verifyIdBannerTitle">
+    <p id="verifyIdBannerTitle" data-i18n="verify_banner_text">Vérifiez votre identité pour recevoir des paiements. Sans vérification, vos services ne sont pas visibles publiquement.</p>
+    <button type="button" class="btn-vrf" id="verifyIdOpenBtn" data-i18n="verify_banner_cta">Vérifier mon identité →</button>
+  </section>
+</div>
+
+<div class="compte-section compte-section-boutique">
+<section class="verify-id-banner verify-pending-banner" id="verifyPendingBanner" role="status">
+    <p data-i18n="verify_pending_text">Votre demande est en cours d’examen. Nous vous répondons sous 48 h.</p>
+  </section>
+</div>
+
+<div class="g2 compte-section compte-section-boutique">
+    <div class="revenue-card">
+      <div class="rev-h" id="revCardHead">Revenus prestataire</div>
+      <div class="rev-line"><span id="revMonthLbl">Revenus du mois</span><strong id="revMonthAmt">0 CA$</strong></div>
+      <div class="rev-line"><span id="revTotalLbl">Revenus totaux</span><strong id="revTotalAmt">0 CA$</strong></div>
+    </div>
+    <!-- Parrainage -->
+    <div class="card">
+      <div class="ct"><div class="ct-left"><i class="fa-solid fa-gift"></i><span>Parrainage</span></div></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px;">Invitez des amis avec votre code. Ils s'inscrivent, vous recevez un avantage.</p>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <code id="referralCode" style="background:rgba(29,78,216,.15);padding:10px 16px;border-radius:10px;font-weight:800;letter-spacing:2px;font-size:1.1rem;">—</code>
+        <button type="button" class="btn" style="padding:8px 14px;font-size:.85rem;" onclick="copyReferralCode()"><i class="fa-solid fa-copy"></i> Copier</button>
+      </div>
+    </div>
+    <div class="card" id="chartCardWrap" style="position:relative;">
+      <div id="statsProOverlay" style="display:none;position:absolute;inset:0;background:rgba(10,10,15,.88);z-index:2;border-radius:12px;align-items:center;justify-content:center;text-align:center;padding:16px;flex-direction:column;">
+        <p id="statsProOverlayTxt" style="margin:0;color:var(--text-primary);font-weight:700;font-size:.88rem;max-width:260px;" data-i18n="compte_stats_locked"></p>
+        <a href="tarifs.html" style="margin-top:12px;display:inline-block;padding:10px 16px;background:#C9A84C;color:#1a1510;font-weight:800;border-radius:10px;text-decoration:none;" data-i18n="compte_sub_cta_tarifs"></a>
+      </div>
+      <div class="ct"><div class="ct-left"><i class="fa-solid fa-chart-line"></i><span id="tCT">Vues — 7 jours</span></div>
+        <select id="chartRange" onchange="reloadChart()" style="width:auto;padding:5px 10px;font-size:.75rem;border-radius:7px;">
+          <option value="7">7j</option><option value="14">14j</option><option value="30">30j</option>
+        </select>
+      </div>
+      <div class="chart-h"><canvas id="viewsChart"></canvas></div>
+    </div>
+  </div>
+
+<section class="card compte-section compte-section-boutique" id="revSec">
+    <div class="ct">
+      <div class="ct-left"><i class="fa-solid fa-star"></i><span id="tRevTitle">Avis reçus</span></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="avgRatingDisplay" style="font-size:1.1rem;font-weight:800;color:var(--gold);"></span>
+        <span id="reviewCountDisplay" style="font-size:.75rem;color:var(--muted);"></span>
+      </div>
+    </div>
+    <div id="reviewsList"><p style="color:var(--muted);font-size:.82rem;" id="tNoRev">Aucun avis pour le moment.</p></div>
+  </section>
+
+<div class="compte-section compte-section-boutique">
+<section class="card" id="businessLeadsCard" style="display:none;margin-bottom:20px;">
+    <div class="ct"><div class="ct-left"><i class="fa-solid fa-building" style="color:#a78bfa;"></i><span data-i18n="compte_leads_biz">Leads entreprises</span></div></div>
+    <p style="font-size:.85rem;color:var(--muted);margin:0 0 12px;" data-i18n="compte_leads_biz_desc">Accédez aux demandes grands comptes et B2B.</p>
+    <a href="entreprise-grands-comptes.html" class="btn" style="display:inline-block;padding:10px 16px;text-decoration:none;" data-i18n="compte_leads_biz_cta">Découvrir</a>
+  </section>
+</div>
+
+  <!-- ═══ TAB: COMMANDES ═══ -->
+<section class="card reserv-section-highlight compte-section compte-section-commandes" id="reservationsToPay" style="margin-bottom:24px;">
+    <div class="ct"><div class="ct-left" style="color:#ea580c;"><i class="fa-regular fa-clock" style="font-size:1.1rem;"></i><span id="tReservTitle" style="color:#f97316;">Réservations à payer</span></div></div>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px;" id="tReservDesc">Délai de paiement : 12 h ou 1 h selon l’échéance de la prestation (voir chaque réservation).</p>
+    <div id="reservationsPayAllWrap" style="display:none;margin-bottom:14px;">
+      <button type="button" id="btnPayAllReservations" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;font-size:.9rem;font-weight:700;border:none;border-radius:12px;cursor:pointer;background:#C9A84C;color:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,.15);"><i class="fa-solid fa-credit-card"></i> <span id="tPayAllReserv">Tout payer</span></button>
+    </div>
+    <div id="reservationsList"><p style="color:var(--muted);font-size:.82rem;" id="tNoReserv">Aucune réservation en attente.</p></div>
+  </section>
+
+<section class="card compte-section compte-section-commandes" id="orders" style="margin-bottom:24px;">
+    <div class="ct"><div class="ct-left"><i class="fa-solid fa-box-open"></i><span id="tOrdersTitle">Mes commandes</span></div></div>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px;" id="tOrdersDesc">Commandes payées : confirmez la réception une fois le service effectué.</p>
+    <div id="ordersList"><p style="color:var(--muted);font-size:.82rem;" id="tNoOrders">Aucune commande.</p></div>
+  </section>
+
+<section class="card compte-section compte-section-commandes" id="ordersReceived" style="margin-bottom:24px;">
+    <div class="ct"><div class="ct-left"><i class="fa-solid fa-hand-holding-dollar"></i><span id="tOrdersReceivedTitle">Commandes reçues</span></div></div>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px;" id="tOrdersReceivedDesc">Quand un client paie pour l’un de vos services, la commande apparaît ici.</p>
+    <p id="tTrustOrders" style="font-size:.76rem;color:#f59e0b;margin-bottom:12px;padding:10px 12px;border-radius:10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.28);line-height:1.45;"></p>
+    <div id="ordersReceivedList"><p style="color:var(--muted);font-size:.82rem;" id="tNoOrdersReceived">Aucune commande reçue.</p></div>
+  </section>
+
+  <!-- ═══ TAB: MESSAGES ═══ -->
+<div class="card compte-section compte-section-messages" id="msgSec">
+      <div class="ct"><div class="ct-left"><i class="fa-solid fa-comments"></i><span id="tMsgT">Messages</span></div></div>
+      <div id="chatList">
+        <div id="msgListEl" class="msg-list"></div>
+        <p id="tNoMsg" style="color:var(--muted);font-size:.82rem;display:none;">Aucun message.</p>
+        <p style="margin-top:12px;"><a href="messages.html" class="btn" style="display:inline-block;padding:8px 16px;font-size:.82rem;text-decoration:none;" id="tOpenMsgFull">Ouvrir la messagerie</a></p>
+      </div>
+  </div>
+
+  <!-- ═══ TAB: FAVORIS ═══ -->
+<section class="card compte-section compte-section-favoris" id="favorisSec">
+    <div class="ct"><div class="ct-left"><i class="fa-solid fa-heart" style="color:#ef4444;"></i><span id="tFavorisSecTitle">Mes favoris</span></div></div>
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px;" id="tFavorisSecSub">Services que vous avez enregistrés.</p>
+    <div id="compteFavorisList"><p style="color:var(--muted);font-size:.82rem;" id="tNoCompteFavs">Aucun favori.</p></div>
+    <p style="margin-top:14px;"><a href="favoris.html" class="btn-o" style="display:inline-block;padding:8px 16px;font-size:.82rem;text-decoration:none;" id="tFavorisFullLink">Ouvrir la page favoris →</a></p>
+  </section>
+
+  <!-- ═══ TAB: PARAMÈTRES ═══ -->
+<section class="card settings-only compte-section compte-section-settings">
+    <div class="ct"><div class="ct-left"><i class="fa-solid fa-calendar-check"></i><span id="tPlanT">Emploi du Temps</span></div></div>
+    <div class="wk" id="weekGrid"></div>
+  </section>
+
+<div class="settings-shell settings-only compte-section compte-section-settings">
     <section class="settings-hero">
       <h2 data-i18n="compte_settings_nav">Paramètres</h2>
       <p data-i18n="compte_settings_privacy">Confidentialité</p>
@@ -1096,28 +1121,21 @@ html.needs-light .verify-id-banner,body.light-mode .verify-id-banner{color:#1c19
     </div>
   </div>
 
-  <div class="compte-section compte-section-subscription">
+  <!-- ═══ TAB: ABONNEMENT ═══ -->
+<div class="compte-section compte-section-subscription">
   <section class="card settings-full" id="subscriptionCard" style="display:none;">
     <div class="ct"><div class="ct-left"><i class="fa-solid fa-crown" style="color:#C9A84C;"></i><span data-i18n="compte_sub_title">Mon abonnement</span></div></div>
     <div id="subscriptionBody" style="font-size:.88rem;line-height:1.5;color:var(--muted);"></div>
   </section>
   </div>
 
-  <!-- MES ANNONCES -->
-  <section class="compte-section compte-section-boutique">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-      <h2 style="font-size:1rem;font-weight:800;"><i class="fa-solid fa-boxes-stacked" style="color:var(--blue);margin-right:7px;"></i><span id="tMySrv">Mes annonces</span></h2>
-      <span id="srvCntBadge" style="background:rgba(29,78,216,.14);color:var(--blue);font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:9px;">0</span>
-    </div>
-    <div id="srvList"></div>
-  </section>
+  <!-- overlays / misc -->
+</div>
+  
 
-  <section class="card compte-section compte-section-favoris" id="favorisSec">
-    <div class="ct"><div class="ct-left"><i class="fa-solid fa-heart" style="color:#ef4444;"></i><span id="tFavorisSecTitle">Mes favoris</span></div></div>
-    <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px;" id="tFavorisSecSub">Services que vous avez enregistrés.</p>
-    <div id="compteFavorisList"><p style="color:var(--muted);font-size:.82rem;" id="tNoCompteFavs">Aucun favori.</p></div>
-    <p style="margin-top:14px;"><a href="favoris.html" class="btn-o" style="display:inline-block;padding:8px 16px;font-size:.82rem;text-decoration:none;" id="tFavorisFullLink">Ouvrir la page favoris →</a></p>
-  </section>
+  
+
+  
 
   <div id="sellerOrderDetailOverlay" class="modal" style="z-index:9999;" onclick="if(event.target===this)closeSellerOrderDetail()" aria-modal="true" role="dialog">
     <div class="card" style="max-width:560px;width:100%;max-height:88vh;overflow:auto;margin:auto;" onclick="event.stopPropagation()">
@@ -2698,13 +2716,26 @@ function switchCompteTab(tab){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function dashProfileStep(action){
+  var stepMap={photo:'dphStepPhoto',bio:'dphStepBio',service:'dphStepService',id:'dphStepId'};
+  var stepEl=document.getElementById(stepMap[action]||'');
+  if(stepEl&&stepEl.classList.contains('done')) return;
   if(action==='photo'){ openAvModal(); return; }
-  if(action==='bio'){ switchCompteTab('boutique'); return; }
-  if(action==='service'){ switchCompteTab('boutique'); return; }
+  if(action==='bio'){
+    switchCompteTab('boutique');
+    var bio=document.getElementById('userBio');
+    if(bio) setTimeout(function(){ bio.focus(); bio.scrollIntoView({behavior:'smooth',block:'center'}); },60);
+    return;
+  }
+  if(action==='service'){
+    switchCompteTab('boutique');
+    var pub=document.getElementById('creatSec')||document.getElementById('btnPub');
+    if(pub) setTimeout(function(){ pub.scrollIntoView({behavior:'smooth',block:'start'}); },60);
+    return;
+  }
   if(action==='id'){
+    switchCompteTab('boutique');
     var btn=document.getElementById('verifyIdOpenBtn');
-    if(btn&&typeof btn.click==='function') btn.click();
-    else switchCompteTab('boutique');
+    if(btn&&typeof btn.click==='function') setTimeout(function(){ btn.click(); },80);
   }
 }
 function loadCompteFavoris(){
@@ -3162,7 +3193,10 @@ function loadReservationsToPay(planData){
 }
 function syncDashboardReservCount(n){
   var c=document.getElementById('dashboardReservCount');
-  if(c) c.textContent=String(typeof n==='number'?n:0);
+  var card=document.getElementById('dashboardReservSummary');
+  var count=typeof n==='number'?n:0;
+  if(c) c.textContent=String(count);
+  if(card) card.classList.toggle('compte-soft-hide', count<=0);
 }
 async function payAllReservationsFromCompte(){
   if(!uid)return;
@@ -3420,8 +3454,10 @@ function updateProviderOnboardingChecklist(d, serviceCount){
   var card=document.getElementById('dashboardProfileComplete');
   if(!card) return;
   var isProv=d&&d.role==='provider';
-  card.classList.toggle('dph-hidden',!isProv);
-  if(!isProv) return;
+  if(!isProv){
+    card.classList.add('dph-hidden');
+    return;
+  }
   var cnt=typeof serviceCount==='number'?serviceCount:(window._sellerServiceCount||0);
   var hasRealPhoto=d.photoURL&&String(d.photoURL).indexOf('ui-avatars.com')===-1;
   var hasBio=(d.bio||'').trim().length>=10;
@@ -3434,7 +3470,10 @@ function updateProviderOnboardingChecklist(d, serviceCount){
       el.style.color=ok?'#10B981':'';
     }
     var step=document.getElementById(stepId);
-    if(step) step.classList.toggle('done',!!ok);
+    if(step){
+      step.classList.toggle('done',!!ok);
+      step.setAttribute('aria-disabled', ok?'true':'false');
+    }
   }
   ic('dashChkPhotoI',hasRealPhoto,'dphStepPhoto');
   ic('dashChkBioI',hasBio,'dphStepBio');
@@ -3445,6 +3484,8 @@ function updateProviderOnboardingChecklist(d, serviceCount){
   var barEl=document.getElementById('dashboardProfBar');
   if(pctEl) pctEl.textContent=score+'%';
   if(barEl) barEl.style.width=score+'%';
+  /* Hide bar once complete so Dashboard stays lean */
+  card.classList.toggle('dph-hidden', score>=100);
 }
 
 wireCompteNav();
